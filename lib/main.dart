@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'login/email_login_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -81,7 +83,6 @@ class MyHomePage extends StatelessWidget {
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0)),
-                      //padding: const EdgeInsets.all(20.0),
                       padding: EdgeInsets.symmetric(
                           horizontal: 97.5.w, vertical: 16.h),
                       backgroundColor: grayColor,
@@ -115,7 +116,9 @@ class MyHomePage extends StatelessWidget {
                     height: 12.h,
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const EmailLoginPage()));
+                    },
                     style: OutlinedButton.styleFrom(
                         side: BorderSide(width: 1.0, color: grayColor),
                         padding: EdgeInsets.symmetric(
