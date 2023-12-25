@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'join/email_authentication_page.dart';
 import 'login/email_login_page.dart';
 
 void main() {
@@ -145,7 +146,9 @@ class MyHomePage extends StatelessWidget {
                     width: 135.w,
 
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const EmailAuthenticationPage()));
+                        },
                         style: TextButton.styleFrom(
                          padding: EdgeInsets.symmetric(vertical: 0.1.h)
                         ),
