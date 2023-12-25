@@ -104,166 +104,170 @@ class EmailLoginWidget extends State<_EmailLoginWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w,  vertical: 0.0),
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child:  Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 128.h),
-                  child: Column(
-                    children: [
-                      Container(
-                        //color : Colors.green,
-                        height: 80.h,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset : false,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.0),
 
-                        alignment: Alignment.centerLeft,
-                        child: FittedBox(
+            child:  Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 88.h),
+                    child: Column(
+                      children: [
+                        Container(
+                          //color : Colors.green,
+                          height: 80.h,
 
-                          child: Text(
-                            '가입하신 아이디와\n'
-                            '비밀번호를 입력해주세요.',
-                            style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              fontSize: 28.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-
+                          alignment: Alignment.centerLeft,
+                          child: FittedBox(
+                            child: Text(
+                              '가입하신 아이디와\n'
+                              '비밀번호를 입력해주세요.',
+                              style: TextStyle(
+                                fontFamily: 'PretendardRegular',
+                                fontSize: 28.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 48.h,
-                      ),
-                      Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextField(
-                            style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              decorationThickness: 0,
-                              fontSize: ScreenUtil().setSp(16),
-                              color: _emailTextColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            showCursor: false,
-                            controller: _inputEmailController,
-                            focusNode: _emailFocus,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 20.0.h, horizontal: 16.w),
-                              hintText: '이메일',
-                              hintStyle: TextStyle(
+                        SizedBox(
+                          height: 48.h,
+                        ),
+                        Column(
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextField(
+                              style: TextStyle(
                                 fontFamily: 'PretendardRegular',
-                                color: noFocusColor,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              labelStyle: TextStyle(color: brandPointColor),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
-                                borderSide:
-                                BorderSide(width: 1.w, color: brandPointColor),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
-                                borderSide:
-                                BorderSide(width: 1.w, color: noFocusColor),
-                              ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          SizedBox(
-                            height: 12.h,
-                          ),
-                          TextField(
-                            style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              decorationThickness: 0,
-                              fontSize: 16.sp,
-                              color: _passwordTextColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            textAlign: TextAlign.start,
-                            controller: _inputPasswordController,
-                            focusNode: _passwordFocus,
-                            showCursor: false,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16.0.w, vertical: 20.h),
-                              hintText: '비밀번호',
-                              hintStyle: TextStyle(
                                 decorationThickness: 0,
-                                color: noFocusColor,
-                                fontSize: 16.sp,
+                                fontSize: ScreenUtil().setSp(16),
+                                color: _emailTextColor,
                                 fontWeight: FontWeight.w600,
                               ),
-                              labelStyle: TextStyle(color: brandPointColor),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
-                                borderSide:
-                                BorderSide(width: 1.w, color: brandPointColor),
+                              showCursor: false,
+                              controller: _inputEmailController,
+                              focusNode: _emailFocus,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 20.0.h, horizontal: 16.w),
+                                hintText: '이메일',
+                                hintStyle: TextStyle(
+                                  fontFamily: 'PretendardRegular',
+                                  color: noFocusColor,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                labelStyle: TextStyle(color: brandPointColor),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4)),
+                                  borderSide: BorderSide(
+                                      width: 1.w, color: brandPointColor),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4)),
+                                  borderSide:
+                                      BorderSide(width: 1.w, color: noFocusColor),
+                                ),
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
-                                borderSide:
-                                BorderSide(width: 1.w, color: noFocusColor),
-                              ),
+                              keyboardType: TextInputType.emailAddress,
                             ),
-                            keyboardType: TextInputType.text,
-                            obscureText: true,
+                            SizedBox(
+                              height: 12.h,
+                            ),
+                            TextField(
+                              style: TextStyle(
+                                fontFamily: 'PretendardRegular',
+                                decorationThickness: 0,
+                                fontSize: 16.sp,
+                                color: _passwordTextColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textAlign: TextAlign.start,
+                              controller: _inputPasswordController,
+                              focusNode: _passwordFocus,
+                              showCursor: false,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16.0.w, vertical: 20.h),
+                                hintText: '비밀번호',
+                                hintStyle: TextStyle(
+                                  decorationThickness: 0,
+                                  color: noFocusColor,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                labelStyle: TextStyle(color: brandPointColor),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4)),
+                                  borderSide: BorderSide(
+                                      width: 1.w, color: brandPointColor),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4)),
+                                  borderSide:
+                                      BorderSide(width: 1.w, color: noFocusColor),
+                                ),
+                              ),
+                              keyboardType: TextInputType.text,
+                              obscureText: true,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child:Align(
+                      alignment: Alignment.bottomCenter,
+                      child:TextButton(
+                        onPressed: () {
+                          setState(() {
+                            finalEmail = _inputEmailController.text;
+                            finalPassword = _inputPasswordController.text;
+                            print("[final email] : $finalEmail");
+                            print("[final password] : $finalPassword");
+                          });
+                        },
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 158.w, vertical: 20.h),
+                          backgroundColor:
+                              _loginButtonState ? Colors.black : noFocusColor,
+                        ),
+                        child: Text(
+                          "로그인",
+                          style: TextStyle(
+                            fontFamily: 'PretendardRegular',
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700,
+                            color: _loginButtonState
+                                ? brandPointColor
+                                : Colors.white,
                           ),
-                        ],
-                      ),
-
-                    ],
-                  ),
-
-                ),
-
-                Padding(
-                  padding: EdgeInsets.only(bottom:40.h),
-                  child:
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        finalEmail = _inputEmailController.text;
-                        finalPassword = _inputPasswordController.text;
-                        print("[final email] : $finalEmail");
-                        print("[final password] : $finalPassword");
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 158.w, vertical: 20.h),
-                      backgroundColor:
-                          _loginButtonState ? Colors.black : noFocusColor,
-                    ),
-                    child: Text(
-                      "로그인",
-                      style: TextStyle(
-                        fontFamily: 'PretendardRegular',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color: _loginButtonState ? brandPointColor : Colors.white,
+                        ),
                       ),
                     ),
-
                   ),
-                ),
-              ],
-            ),
+                ],
+
+
           ),
         ),
-
+      ),
     );
   }
 }
