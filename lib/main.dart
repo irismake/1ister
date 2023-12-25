@@ -39,6 +39,7 @@ class MyHomePage extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 0.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: EdgeInsets.only(top: 256.h),
@@ -72,11 +73,9 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top:300.h),
+              padding: EdgeInsets.only(bottom:40.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-
-
                 children: [
                   TextButton(
                     onPressed: () {},
@@ -84,12 +83,10 @@ class MyHomePage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0)),
                       padding: EdgeInsets.symmetric(
-                          horizontal: 97.5.w, vertical: 16.h),
+                          horizontal: 97.5.w, vertical: 20.h),
                       backgroundColor: grayColor,
                     ),
-                    child: SizedBox(
-                      height: 24.h,
-                      width: 163.w,
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -102,7 +99,7 @@ class MyHomePage extends StatelessWidget {
                             "구글 계정으로 로그인",
 
                             style: TextStyle(
-                              fontFamily: 'PretendardRegular',
+                             fontFamily: 'PretendardRegular',
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -111,7 +108,7 @@ class MyHomePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
+
                   SizedBox(
                     height: 12.h,
                   ),
@@ -122,16 +119,11 @@ class MyHomePage extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                         side: BorderSide(width: 1.0, color: grayColor),
                         padding: EdgeInsets.symmetric(
-                            horizontal: 128.5.w, vertical: 16.h),
+                            horizontal: 128.5.w, vertical: 20.h),
                         shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0)))),
-                    child: SizedBox(
-                      height: 24.h,
-                      width: 101.w,
-                      // fit: BoxFit.scaleDown,
-
-                      child: FittedBox(
+                    child:FittedBox(
                         child: Text(
                           "이메일로 로그인",
                           textAlign: TextAlign.center,
@@ -144,7 +136,7 @@ class MyHomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
+
                   SizedBox(
                     height: 20.h,
                   ),
