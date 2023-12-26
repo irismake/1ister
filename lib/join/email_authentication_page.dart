@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,12 +15,11 @@ class _EmailAuthenticationScreenState extends State<EmailAuthenticationPage> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder: (BuildContext context, child) =>
-          MaterialApp(
-            title: 'Flutter Demo',
-            home: _EmailAuthenticationWidget(),
-            debugShowCheckedModeBanner: false,
-          ),
+      builder: (BuildContext context, child) => MaterialApp(
+        title: 'Flutter Demo',
+        home: _EmailAuthenticationWidget(),
+        debugShowCheckedModeBanner: false,
+      ),
       designSize: const Size(390, 844),
 
       //minTextAdapt: true, // 텍스트 크기를 자동으로 조정하여 화면에 맞추는 기능을 활성화
@@ -41,49 +42,77 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
   final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
   final errorColor = Color(0xffFA5252);
-  final noFocusButtonColor = Color(0xffF1F3F5);
+  final noFocusButtonColor = Color(0xffF9FAFB);
+  final focusButtonColor = Color(0xffF1F3F5);
 
+  Color _emailAddressTextColor = Colors.black;
+  Color _emailAuthenticationTextColor = Colors.black;
 
-  Color _emailTextColor = Colors.black;
-  Color _passwordTextColor = Colors.black;
-
-  String inputEmail = '';
-  String inputPassword = '';
-  String finalEmail = '';
-  String finalPassword = '';
-
-  bool _loginButtonState = false;
+  bool _nextButtonState = false;
   bool emailValidateState = false;
+  bool emailAuthenticationValidateState = false;
 
-  FocusNode _emailFocus = FocusNode();
-  FocusNode _passwordFocus = FocusNode();
+  // bool _emailAddressState = false;
 
-  final _emailFormKey = GlobalKey<FormState>();
-  final _certificationFormKey = GlobalKey<FormState>();
+  FocusNode _emailAddressFocus = FocusNode();
+  FocusNode _emailAuthenticationFocus = FocusNode();
+
+  final _emailAddressFormKey = GlobalKey<FormState>();
+  final _emailAuthenticationFormKey = GlobalKey<FormState>();
+
+  String userEmailAddress = '';
+  String authenticationNumber = '';
+
+  int _seconds = 0;
+  bool _isRunning = false;
+  late Timer _timer;
+
+  void _startTimer() {
+    _isRunning = true;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _seconds++;
+      });
+    });
+  }
 
   @override
   void initState() {
     super.initState();
 
-    _emailFocus.addListener(() {
+    _emailAddressFocus.addListener(() {
       setState(() {
-        // final formKeyState = _emailFormKey.currentState;
+        // final formKeyState = _emailAddressFormKey.currentState;
         // if (formKeyState != null && formKeyState.validate()) {
         //   formKeyState.save();
         // }
-        final formKeyState = _emailFormKey.currentState!;
+        final formKeyState = _emailAddressFormKey.currentState!;
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-        _emailTextColor =
-        _emailFocus.hasFocus ? Colors.black : noFocusTextColor;
+        _emailAddressTextColor =
+            _emailAddressFocus.hasFocus ? Colors.black : noFocusTextColor;
+
+        // _emailAddressState = formKeyState.validate() ? true : false;
       });
     });
 
-    _passwordFocus.addListener(() {
+    _emailAuthenticationFocus.addListener(() {
       setState(() {
-        _passwordTextColor =
-        _passwordFocus.hasFocus ? Colors.black : noFocusTextColor;
+        final formKeyState = _emailAuthenticationFormKey.currentState!;
+        if (formKeyState.validate()) {
+          formKeyState.save();
+        }
+
+        _emailAuthenticationTextColor = _emailAuthenticationFocus.hasFocus
+            ? Colors.black
+            : noFocusTextColor;
+
+        // if (formKeyState.validate() && _emailAddressState) {
+        //   _nextButtonState = true;
+        // } else {
+        //   _nextButtonState = false;
+        // }
       });
     });
   }
@@ -113,7 +142,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                       child: FittedBox(
                         child: Text(
                           '회원가입을 위해\n'
-                              '이메일을 인증해주세요.',
+                          '이메일을 인증해주세요.',
                           style: TextStyle(
                             fontFamily: 'PretendardRegular',
                             fontSize: 28.sp,
@@ -145,31 +174,35 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                           height: 9.h,
                         ),
                         Form(
-                          key: _emailFormKey,
+                          key: _emailAddressFormKey,
                           child: TextFormField(
                             validator: (value) {
-                              if (value!.isEmpty && !_emailFocus.hasFocus) {
-                                emailValidateState = true;
-                                return '이메일을 입력해주세요.';
-                              } else {
-                                emailValidateState = false;
-                                return null;
-                              }
+
+                                if (value!.isEmpty &&
+                                    !_emailAddressFocus.hasFocus) {
+                                  emailValidateState = false;
+                                  return '이메일을 입력해주세요.';
+                                }
+                                if (value!.isNotEmpty) {
+                                  emailValidateState = true;
+                                  return null;
+                                }
+
                             },
                             style: TextStyle(
                               fontFamily: 'PretendardRegular',
                               decorationThickness: 0,
                               fontSize: 16.sp,
-                              color: _emailTextColor,
+                              color: _emailAddressTextColor,
                               fontWeight: FontWeight.w600,
                             ),
                             showCursor: false,
-                            focusNode: _emailFocus,
+                            focusNode: _emailAddressFocus,
                             decoration: InputDecoration(
                               isDense: true,
                               prefix: Container(width: 16.w),
                               contentPadding:
-                              EdgeInsets.symmetric(vertical: 20.0.h),
+                                  EdgeInsets.symmetric(vertical: 20.0.h),
                               hintText: emailValidateState ? null : "이메일 주소",
                               hintStyle: TextStyle(
                                 fontFamily: 'PretendardRegular',
@@ -179,21 +212,24 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(4)),
+                                    BorderRadius.all(Radius.circular(4)),
                                 borderSide: BorderSide(
                                     width: 1.w, color: brandPointColor),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(4)),
+                                    BorderRadius.all(Radius.circular(4)),
                                 borderSide:
-                                BorderSide(width: 1.w, color: noFocusColor),
+                                    BorderSide(width: 1.w, color: noFocusColor),
                               ),
+                              focusedErrorBorder:
+                                  //UnderlineInputBorder ( borderSide : BorderSide ( color : Colors . purpleAccent )),
+                                  InputBorder.none,
                               errorBorder: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(4)),
+                                    BorderRadius.all(Radius.circular(4)),
                                 borderSide:
-                                BorderSide(width: 1.w, color: errorColor),
+                                    BorderSide(width: 1.w, color: errorColor),
                               ),
                               errorStyle: TextStyle(
                                 fontFamily: 'PretendardRegular',
@@ -227,50 +263,73 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                           alignment: Alignment.centerRight,
                           children: [
                             Form(
-                              key: _certificationFormKey,
+                              key: _emailAuthenticationFormKey,
                               child: TextFormField(
-                                validator: (value) {},
+                                validator: (value) {
+                                  setState(() {
+                                    if (value!.isNotEmpty &&
+                                        emailValidateState) {
+                                      _nextButtonState = true;
+                                    } else
+                                      _nextButtonState = false;
+                                  });
+
+                                  //     //emailAuthenticationValidateState = true;
+                                  //     return '잘못된 인증번호에요.';
+                                  //   } else {
+                                  //     //emailAuthenticationValidateState = false;
+                                  //     return null;
+                                  //   }
+                                },
                                 style: TextStyle(
                                   fontFamily: 'PretendardRegular',
                                   decorationThickness: 0,
                                   fontSize: 16.sp,
-                                  color: _passwordTextColor,
+                                  color: _emailAuthenticationTextColor,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 showCursor: false,
-                                focusNode: _passwordFocus,
+                                focusNode: _emailAuthenticationFocus,
                                 decoration: InputDecoration(
                                   isDense: true,
                                   prefix: Container(width: 16.w),
                                   // Give container some width.
                                   contentPadding:
-                                  EdgeInsets.symmetric(vertical: 20.h),
-                                  hintText: '인증번호',
+                                      EdgeInsets.symmetric(vertical: 20.h),
+                                  hintText: "인증 번호",
                                   hintStyle: TextStyle(
                                     fontFamily: 'PretendardRegular',
                                     decorationThickness: 0,
-                                    color: noFocusColor,
+                                    color: emailAuthenticationValidateState
+                                        ? errorColor
+                                        : noFocusColor,
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,
                                   ),
 
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(4)),
+                                        BorderRadius.all(Radius.circular(4)),
                                     borderSide: BorderSide(
                                         width: 1.w, color: brandPointColor),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(4)),
-                                    borderSide:
-                                    BorderSide(width: 1.w, color: noFocusColor),
+                                        BorderRadius.all(Radius.circular(4)),
+                                    borderSide: BorderSide(
+                                        width: 1.w, color: noFocusColor),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4)),
+                                    borderSide: BorderSide(
+                                        width: 1.w, color: errorColor),
                                   ),
                                   errorBorder: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(4)),
-                                    borderSide:
-                                    BorderSide(width: 1.w, color: errorColor),
+                                        BorderRadius.all(Radius.circular(4)),
+                                    borderSide: BorderSide(
+                                        width: 1.w, color: errorColor),
                                   ),
                                   errorStyle: TextStyle(
                                     fontFamily: 'PretendardRegular',
@@ -283,30 +342,30 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                               ),
                             ),
                             Padding(
-                             padding: EdgeInsets.only(right: 16.w, top: 0),
+                              padding: EdgeInsets.only(right: 16.w, top: 0),
                               child: TextButton(
-                                child:Text('인증 요청',
+                                child: Text(
+                                  '인증 요청',
                                   style: TextStyle(
-                                  fontFamily: 'PretendardRegular',
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color:
-                                  noFocusColor
-                                ),),
-
+                                      fontFamily: 'PretendardRegular',
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: emailValidateState
+                                          ? darkGrayColor
+                                          : noFocusColor),
+                                ),
                                 onPressed: () {
-                                  setState(() {
-
-                                  });
+                                  setState(() {});
                                 },
                                 style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50.0)),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16.w, vertical: 9.h),
-                                  backgroundColor:
-                                  noFocusButtonColor,
-                                ),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50.0)),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16.w, vertical: 9.h),
+                                    backgroundColor: emailValidateState
+                                        ? focusButtonColor
+                                        : noFocusButtonColor),
                               ),
                             ),
                           ],
@@ -321,7 +380,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                   alignment: Alignment.bottomCenter,
                   child: TextButton(
                     onPressed: () {
-                      final formKeyState = _emailFormKey.currentState!;
+                      final formKeyState = _emailAddressFormKey.currentState!;
                       if (formKeyState.validate()) {
                         formKeyState.save();
                       }
@@ -333,7 +392,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 158.w, vertical: 20.h),
                       backgroundColor:
-                      _loginButtonState ? Colors.black : noFocusColor,
+                          _nextButtonState ? Colors.black : noFocusColor,
                     ),
                     child: Text(
                       "다음",
@@ -342,7 +401,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         color:
-                        _loginButtonState ? brandPointColor : Colors.white,
+                            _nextButtonState ? brandPointColor : Colors.white,
                       ),
                     ),
                   ),
