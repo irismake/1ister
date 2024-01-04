@@ -69,23 +69,21 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-
-        if (_emailAddressState && _emailAuthenticationState){
+        if(_emailAddressState && _emailAuthenticationState){
           _nextButtonState = true;
         }else{
-          _nextButtonState =false;
-        }
-      });
+          _nextButtonState = false;
+      }});
     });
 
     _emailAuthenticationFocus.addListener(() {
       setState(() {
-
-        if (_emailAddressState && _emailAuthenticationState){
+        if(_emailAddressState && _emailAuthenticationState){
           _nextButtonState = true;
         }else{
           _nextButtonState = false;
         }
+
       });
     });
   }
@@ -98,9 +96,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
         final responseData = json.decode(response.body);
-
         if (responseData['ok']) {
           print('Valid 코드 전송 성공!');
         } else {
@@ -199,27 +195,17 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                             onChanged: (value) {
                               setState(() {
                                 userEmailAddress = value!;
-                                print('이메일 주소 : $userEmailAddress');
-
 
                               });
                             },
                             validator: (value) {
-                              if (_emailAddressFocus.hasFocus) {
+                              if(value!.isNotEmpty || _emailAddressFocus.hasFocus){
                                 _emailAddressState = true;
-                              }
-
-                              if(value!.isEmpty && !_emailAddressFocus.hasFocus){
+                              }else{
                                 _emailAddressState = false;
-                              }
-
-                              if (!_emailAddressState) {
-
                                 return '이메일을 입력해주세요.';
-                              } else {
-
-                                return null;
                               }
+
                             },
                             style: TextStyle(
                               fontFamily: 'PretendardRegular',
@@ -304,26 +290,16 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                               child: TextFormField(
                                 onChanged: (value) {
                                   setState(() {
-                                    if(value!.isNotEmpty){
-                                      print("true");
+                                    if(_emailAuthenticationFocus.hasFocus || value!.isNotEmpty){
                                       _emailAuthenticationState = true;
-                                    }else{
-                                      _emailAuthenticationState = false;
                                     }
-                                    authenticationNumber = value!;
-                                    print('인증 코드 : $authenticationNumber');
+                                    authenticationNumber = value;
                                   });
                                 },
-                                validator: (value) {
-
-
-
-                                  if(_emailAuthenticationState){
-                                    return null;
-                                  }else{
+                                validator: (value){
+                                  if(!_emailAuthenticationState){
                                     return '잘못된 인증번호에요.';
                                   }
-
                                 },
                                 style: TextStyle(
                                   fontFamily: 'PretendardRegular',
@@ -404,10 +380,10 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                                           : noFocusColor),
                                 ),
                                 onPressed: () {
-                                  if (_emailAddressState) {
-                                    print(userEmailAddress);
-                                    sendValidCode(userEmailAddress);
-                                  }
+                                    if(_emailAddressState){
+                                      print('이메일 주소 : $userEmailAddress');
+                                      sendValidCode(userEmailAddress);
+                                    }
                                 },
                                 style: TextButton.styleFrom(
                                     shape: RoundedRectangleBorder(
@@ -432,11 +408,16 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                   alignment: Alignment.bottomCenter,
                   child: TextButton(
                     onPressed: () {
-                      checkValidCode(authenticationNumber);
-                      final formKeyState = _emailAuthenticationFormKey.currentState!;
-                      if (formKeyState.validate()) {
-                        formKeyState.save();
-                      }
+                      setState(() {
+                        if( _nextButtonState){
+                          checkValidCode(authenticationNumber);
+                        }
+                        final formKeyState = _emailAuthenticationFormKey.currentState!;
+                        if (formKeyState.validate()) {
+                          formKeyState.save();
+                        }
+                      });
+
                     },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
