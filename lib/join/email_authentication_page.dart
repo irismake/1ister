@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lister/model/text_form_field.dart';
 
 class EmailAuthenticationPage extends StatefulWidget {
   const EmailAuthenticationPage({Key? key}) : super(key: key);
@@ -96,7 +97,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://172.30.1.87:5999/user/send-valid-code?email=$userEmailAddress'),
+            'http://192.168.0.5:5999/user/send-valid-code?email=$userEmailAddress'),
       );
 
       if (response.statusCode == 200) {
@@ -116,7 +117,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://172.30.1.87:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
+            'http://192.168.0.5:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
       );
 
       if (response.statusCode == 200) {
@@ -194,9 +195,13 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                         SizedBox(
                           height: 9.h,
                         ),
+
+                        
+
                         Form(
                           key: _emailAddressFormKey,
                           child: TextFormField(
+
                             onChanged: (value) {
                               setState(() {
                                 userEmailAddress = value!;
@@ -295,12 +300,14 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                                 onChanged: (value) {
                                   setState(() {
                                     authenticationNumber = value;
+                                    print('인증번호 : $authenticationNumber');
                                   });
                                 },
                                 validator: (value) {
                                   if(_emailAuthenticationFocus.hasFocus){
                                     _emailAuthenticationState=true;
                                   }
+
 
                                   if (!_emailAuthenticationState) {
                                     _authenticationRequestButton = true;
@@ -372,38 +379,42 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                                 keyboardType: TextInputType.number,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 16.w, top: 0),
-                              child: TextButton(
-                                child: Text(
-                                  _authenticationRequestButton
-                                      ? '재인증'
-                                      : '인증 요청',
-                                  style: TextStyle(
-                                      fontFamily: 'PretendardRegular',
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: _emailAddressState
-                                          ? darkGrayColor
-                                          : noFocusColor),
+
+                            Positioned(
+                              top: 12.h,
+                                right: 16.w,
+                                child: TextButton(
+                                  child: Text(
+                                    _authenticationRequestButton
+                                        ? '재인증'
+                                        : '인증 요청',
+                                    style: TextStyle(
+                                        fontFamily: 'PretendardRegular',
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: _emailAddressState
+                                            ? darkGrayColor
+                                            : noFocusColor),
+                                  ),
+                                  onPressed: () {
+                                     FocusScope.of(context).requestFocus(_emailAuthenticationFocus);
+                                    if (_emailAddressState) {
+                                      print('이메일 주소 : $userEmailAddress');
+                                      sendValidCode(userEmailAddress);
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0)),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16.w, vertical: 9.h),
+                                      backgroundColor: _emailAddressState
+                                          ? focusButtonColor
+                                          : noFocusButtonColor),
                                 ),
-                                onPressed: () {
-                                  if (_emailAddressState) {
-                                    print('이메일 주소 : $userEmailAddress');
-                                    sendValidCode(userEmailAddress);
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(50.0)),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.w, vertical: 9.h),
-                                    backgroundColor: _emailAddressState
-                                        ? focusButtonColor
-                                        : noFocusButtonColor),
                               ),
-                            ),
+                           // ),
                           ],
                         ),
                       ],
