@@ -13,11 +13,10 @@ class SetIdNamePage extends StatefulWidget {
 }
 
 class _SetIdNamePageState extends State<SetIdNamePage> {
-
   final noFocusColor = Color(0xffCED4DA);
   final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
-  final mildGrayColor= Color(0xffADB5BD);
+  final mildGrayColor = Color(0xffADB5BD);
   final noFocusButtonColor = Color(0xffF9FAFB);
   final focusButtonColor = Color(0xffF1F3F5);
 
@@ -26,7 +25,6 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
   bool _userNameState = false;
   bool _userIDValid = false;
   bool _userNameValid = false;
-
 
   FocusNode _userIdFocus = FocusNode();
   FocusNode _userNameFocus = FocusNode();
@@ -96,19 +94,18 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                     ),
                     Column(
                       children: [
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:[
+                          children: [
                             Text(
-                            '사용자 아이디',
-                            style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: darkGrayColor,
+                              '사용자 아이디',
+                              style: TextStyle(
+                                fontFamily: 'PretendardRegular',
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                color: darkGrayColor,
+                              ),
                             ),
-                          ),
                             Text(
                               '영어, 숫자 포함 n자 이내',
                               style: TextStyle(
@@ -118,7 +115,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                                 color: mildGrayColor,
                               ),
                             ),
-                ],
+                          ],
                         ),
                         SizedBox(
                           height: 9.h,
@@ -131,12 +128,12 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                             onChanged: (value) {
                               setState(() {
                                 userId = value!;
-                                if(value!.isNotEmpty){
+                                if (value!.isNotEmpty) {
                                   _userIdState = true;
-                                  if(_userNameState){
+                                  if (_userNameState) {
                                     _nextButtonState = true;
                                   }
-                                }else{
+                                } else {
                                   _userIdState = false;
                                   _nextButtonState = false;
                                 }
@@ -150,7 +147,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:[
+                          children: [
                             Text(
                               '이름',
                               style: TextStyle(
@@ -174,29 +171,28 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                         SizedBox(
                           height: 9.h,
                         ),
-
-                            Form(
-                              key: _userNameFormKey,
-                              child: CustomTextFormField(
-                                hintText: '이름을 설정해 주세요.',
-                                focusNode: _userNameFocus,
-                                onChanged: (value) {
-                                  setState(() {
-                                    userName = value!;
-                                    if(value!.isNotEmpty){
-                                      _userNameState = true;
-                                      if(_userIdState){
-                                        _nextButtonState = true;
-                                      }
-                                    }else{
-                                      _userNameState = false;
-                                      _nextButtonState = false;
-                                    }
-                                  });
-                                },
-                                keyboardType: TextInputType.text,
-                              ),
-                            ),
+                        Form(
+                          key: _userNameFormKey,
+                          child: CustomTextFormField(
+                            hintText: '이름을 설정해 주세요.',
+                            focusNode: _userNameFocus,
+                            onChanged: (value) {
+                              setState(() {
+                                userName = value!;
+                                if (value!.isNotEmpty) {
+                                  _userNameState = true;
+                                  if (_userIdState) {
+                                    _nextButtonState = true;
+                                  }
+                                } else {
+                                  _userNameState = false;
+                                  _nextButtonState = false;
+                                }
+                              });
+                            },
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -206,17 +202,17 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: TextButton(
-                    onPressed: ()  {
-                      if(_nextButtonState){
-                        checkUserName(userName);
+                    onPressed: () async {
+                      if (_nextButtonState) {
+                        await checkUserName(userName);
                         if (_userNameValid) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SetPasswordPage()));
+                                  builder: (context) =>
+                                      const SetPasswordPage()));
                         }
                       }
-
                     },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -224,7 +220,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 158.w, vertical: 20.h),
                       backgroundColor:
-                      _nextButtonState ? Colors.black : noFocusColor,
+                          _nextButtonState ? Colors.black : noFocusColor,
                     ),
                     child: Text(
                       "다음",
@@ -233,7 +229,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         color:
-                        _nextButtonState ? brandPointColor : Colors.white,
+                            _nextButtonState ? brandPointColor : Colors.white,
                       ),
                     ),
                   ),
