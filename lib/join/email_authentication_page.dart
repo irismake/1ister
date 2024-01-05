@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lister/join/set_id_name_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 
 class EmailAuthenticationPage extends StatefulWidget {
@@ -168,7 +169,6 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                       height: 40.h,
                     ),
                     Column(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
@@ -204,6 +204,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                                 return '이메일을 입력해주세요.';
                               }
                             },
+                            keyboardType: TextInputType.emailAddress,
                           ),
                         ),
                         SizedBox(
@@ -245,6 +246,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                                     return '잘못된 인증번호에요.';
                                   }
                                 },
+                                keyboardType: TextInputType.number,
                               ),
                             ),
                             Positioned(
@@ -296,16 +298,22 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                   child: TextButton(
                     onPressed: () async {
                       if (_nextButtonState) {
-                        _emailAuthenticationState =
-                            await checkValidCode(authenticationNumber);
                         final formKeyState =
                             _emailAuthenticationFormKey.currentState!;
                         if (formKeyState.validate()) {
                           formKeyState.save();
                         }
+                        _emailAuthenticationState =
+                            await checkValidCode(authenticationNumber);
+                        if (_emailAuthenticationState) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SetIdNamePage()));
+                        }
                       }
                       setState(() {
-                        if (_nextButtonState && !_emailAuthenticationState){
+                        if (_nextButtonState && !_emailAuthenticationState) {
                           _authenticationRequestButton = true;
                         }
                       });
