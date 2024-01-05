@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/model/text_form_field.dart';
+import 'package:lister/model/custom_text_form_field.dart';
 
 class EmailAuthenticationPage extends StatefulWidget {
   const EmailAuthenticationPage({Key? key}) : super(key: key);
@@ -17,13 +17,10 @@ class _EmailAuthenticationScreenState extends State<EmailAuthenticationPage> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder: (BuildContext context, child) => MaterialApp(
-        title: 'Flutter Demo',
         home: _EmailAuthenticationWidget(),
         debugShowCheckedModeBanner: false,
       ),
       designSize: const Size(390, 844),
-
-      //minTextAdapt: true, // 텍스트 크기를 자동으로 조정하여 화면에 맞추는 기능을 활성화
       splitScreenMode: true,
     );
   }
@@ -39,10 +36,8 @@ class _EmailAuthenticationWidget extends StatefulWidget {
 
 class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
   final noFocusColor = Color(0xffCED4DA);
-  final noFocusTextColor = Color(0xff868E96);
   final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
-  final errorColor = Color(0xffFA5252);
   final noFocusButtonColor = Color(0xffF9FAFB);
   final focusButtonColor = Color(0xffF1F3F5);
 
@@ -121,15 +116,12 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
         final responseData = json.decode(response.body);
 
         if (responseData['is_valid']) {
           return true;
-          print('Valid 코드 유효성 검사 성공!');
         } else {
           return false;
-          print('Valid 코드 유효성 검사 실패!');
         }
       }
       return false;
@@ -157,9 +149,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                 child: Column(
                   children: [
                     Container(
-                      //color : Colors.green,
                       height: 80.h,
-
                       alignment: Alignment.centerLeft,
                       child: FittedBox(
                         child: Text(
@@ -195,13 +185,11 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                         SizedBox(
                           height: 9.h,
                         ),
-
-                        
-
                         Form(
                           key: _emailAddressFormKey,
-                          child: TextFormField(
-
+                          child: CustomTextFormField(
+                            hintText: '이메일 주소',
+                            focusNode: _emailAddressFocus,
                             onChanged: (value) {
                               setState(() {
                                 userEmailAddress = value!;
@@ -216,61 +204,6 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                                 return '이메일을 입력해주세요.';
                               }
                             },
-                            style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              decorationThickness: 0,
-                              fontSize: 16.sp,
-                              color: _emailAddressFocus.hasFocus
-                                  ? Colors.black
-                                  : noFocusTextColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            showCursor: false,
-                            focusNode: _emailAddressFocus,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              prefix: Container(width: 16.w),
-                              contentPadding:
-                                  EdgeInsets.symmetric(vertical: 20.0.h),
-                              hintText: "이메일 주소",
-                              hintStyle: TextStyle(
-                                fontFamily: 'PretendardRegular',
-                                color: noFocusColor,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4)),
-                                borderSide: BorderSide(
-                                    width: 1.w, color: brandPointColor),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4)),
-                                borderSide:
-                                    BorderSide(width: 1.w, color: noFocusColor),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4)),
-                                borderSide:
-                                    BorderSide(width: 1.w, color: errorColor),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4)),
-                                borderSide:
-                                    BorderSide(width: 1.w, color: errorColor),
-                              ),
-                              errorStyle: TextStyle(
-                                fontFamily: 'PretendardRegular',
-                                color: errorColor,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
                           ),
                         ),
                         SizedBox(
@@ -296,125 +229,60 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                           children: [
                             Form(
                               key: _emailAuthenticationFormKey,
-                              child: TextFormField(
+                              child: CustomTextFormField(
+                                hintText: '인증 번호',
+                                focusNode: _emailAuthenticationFocus,
                                 onChanged: (value) {
                                   setState(() {
-                                    authenticationNumber = value;
-                                    print('인증번호 : $authenticationNumber');
+                                    authenticationNumber = value!;
                                   });
                                 },
                                 validator: (value) {
-                                  if(_emailAuthenticationFocus.hasFocus){
-                                    _emailAuthenticationState=true;
+                                  if (_emailAuthenticationFocus.hasFocus) {
+                                    _emailAuthenticationState = true;
                                   }
-
-
                                   if (!_emailAuthenticationState) {
-                                    _authenticationRequestButton = true;
                                     return '잘못된 인증번호에요.';
                                   }
                                 },
-                                style: TextStyle(
-                                  fontFamily: 'PretendardRegular',
-                                  decorationThickness: 0,
-                                  fontSize: 16.sp,
-                                  color: _emailAuthenticationFocus.hasFocus
-                                      ? Colors.black
-                                      : noFocusTextColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                showCursor: false,
-                                focusNode: _emailAuthenticationFocus,
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  prefix: Container(width: 16.w),
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 20.h),
-                                  hintText: "인증 번호",
-                                  hintStyle: TextStyle(
-                                    fontFamily: 'PretendardRegular',
-                                    //decorationThickness: 0,
-                                    color: noFocusColor,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    borderSide: BorderSide(
-                                        width: 1.w, color: brandPointColor),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    borderSide: BorderSide(
-                                        width: 1.w, color: noFocusColor),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    borderSide: BorderSide(
-                                        width: 1.w, color: errorColor),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    borderSide: BorderSide(
-                                        width: 1.w, color: errorColor),
-                                  ),
-                                  errorStyle: TextStyle(
-                                    fontFamily: 'PretendardRegular',
-                                    color: errorColor,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    borderSide: BorderSide(
-                                        width: 1.w, color: noFocusColor),
-                                  ),
-                                ),
-                                //enabled: _emailAuthenticationState,
-                                keyboardType: TextInputType.number,
                               ),
                             ),
-
                             Positioned(
                               top: 12.h,
-                                right: 16.w,
-                                child: TextButton(
-                                  child: Text(
-                                    _authenticationRequestButton
-                                        ? '재인증'
-                                        : '인증 요청',
-                                    style: TextStyle(
-                                        fontFamily: 'PretendardRegular',
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: _emailAddressState
-                                            ? darkGrayColor
-                                            : noFocusColor),
-                                  ),
-                                  onPressed: () {
-                                     FocusScope.of(context).requestFocus(_emailAuthenticationFocus);
-                                    if (_emailAddressState) {
-                                      print('이메일 주소 : $userEmailAddress');
-                                      sendValidCode(userEmailAddress);
-                                    }
-                                  },
-                                  style: TextButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0)),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16.w, vertical: 9.h),
-                                      backgroundColor: _emailAddressState
-                                          ? focusButtonColor
-                                          : noFocusButtonColor),
+                              right: 16.w,
+                              child: TextButton(
+                                child: Text(
+                                  _authenticationRequestButton
+                                      ? '재인증'
+                                      : '인증 요청',
+                                  style: TextStyle(
+                                      fontFamily: 'PretendardRegular',
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: _emailAddressState
+                                          ? darkGrayColor
+                                          : noFocusColor),
                                 ),
+                                onPressed: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(_emailAuthenticationFocus);
+                                  if (_emailAddressState) {
+                                    print('이메일 주소 : $userEmailAddress');
+                                    sendValidCode(userEmailAddress);
+                                  }
+                                },
+                                style: TextButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50.0)),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16.w, vertical: 9.h),
+                                    backgroundColor: _emailAddressState
+                                        ? focusButtonColor
+                                        : noFocusButtonColor),
                               ),
-                           // ),
+                            ),
+                            // ),
                           ],
                         ),
                       ],
@@ -428,19 +296,18 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
                   child: TextButton(
                     onPressed: () async {
                       if (_nextButtonState) {
-
                         _emailAuthenticationState =
                             await checkValidCode(authenticationNumber);
-                        print(_emailAuthenticationState);
                         final formKeyState =
-                        _emailAuthenticationFormKey.currentState!;
+                            _emailAuthenticationFormKey.currentState!;
                         if (formKeyState.validate()) {
                           formKeyState.save();
                         }
                       }
-
                       setState(() {
-                        _authenticationRequestButton = !_emailAuthenticationState;
+                        if (_nextButtonState && !_emailAuthenticationState){
+                          _authenticationRequestButton = true;
+                        }
                       });
                     },
                     style: TextButton.styleFrom(

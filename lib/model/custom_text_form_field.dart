@@ -5,37 +5,45 @@ class CustomTextFormField extends StatefulWidget {
   final String hintText;
   final FocusNode focusNode;
   final Function(String) onChanged;
-  final Function(String?) validator;
+  final String? Function(String?)? validator;
   final bool isObscureText;
   final TextInputType keyboardType;
 
-  const CustomTextFormField({
+   const CustomTextFormField({
     Key? key,
     required this.hintText,
     required this.focusNode,
     required this.onChanged,
-    required this.validator,
+    this.validator,
     this.isObscureText = false,
     this.keyboardType = TextInputType.text,
   }) : super(key: key);
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+
 }
+
+final noFocusColor = Color(0xffCED4DA);
+final noFocusTextColor = Color(0xff868E96);
+final brandPointColor = Color(0xff5BFF7F);
+final errorColor = Color(0xffFA5252);
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       onChanged: widget.onChanged,
-      validator: widget.validator,
+      validator: (value) {
+        return widget.validator?.call(value) ?? null;
+      },
       obscureText: widget.isObscureText,
       keyboardType: widget.keyboardType,
       style: TextStyle(
         fontFamily: 'PretendardRegular',
         decorationThickness: 0,
         fontSize: 16.sp,
-        color: widget.focusNode.hasFocus ? Colors.black : Colors.grey,
+        color: widget.focusNode.hasFocus ? Colors.black :  noFocusTextColor,
         fontWeight: FontWeight.w600,
       ),
       showCursor: false,
@@ -47,17 +55,41 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         hintText: widget.hintText,
         hintStyle: TextStyle(
           fontFamily: 'PretendardRegular',
-          color: Colors.grey,
+          color: noFocusColor,
           fontSize: 16.sp,
           fontWeight: FontWeight.w600,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
-          borderSide: BorderSide(width: 1.w, color: Colors.green),
+          borderSide: BorderSide(width: 1.w, color: brandPointColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
-          borderSide: BorderSide(width: 1.w, color: Colors.grey),
+          borderSide: BorderSide(width: 1.w, color: noFocusColor),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius:
+          BorderRadius.all(Radius.circular(4)),
+          borderSide: BorderSide(
+              width: 1.w, color: errorColor),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius:
+          BorderRadius.all(Radius.circular(4)),
+          borderSide: BorderSide(
+              width: 1.w, color: errorColor),
+        ),
+        errorStyle: TextStyle(
+          fontFamily: 'PretendardRegular',
+          color: errorColor,
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w500,
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius:
+          BorderRadius.all(Radius.circular(4)),
+          borderSide: BorderSide(
+              width: 1.w, color: noFocusColor),
         ),
       ),
     );
