@@ -93,7 +93,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.0.5:5999/user/send-valid-code?email=$userEmailAddress'),
+            'http://172.30.1.87:5999/user/send-valid-code?email=$userEmailAddress'),
       );
 
       if (response.statusCode == 200) {
@@ -113,7 +113,7 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.0.5:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
+            'http://172.30.1.87:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
       );
 
       if (response.statusCode == 200) {

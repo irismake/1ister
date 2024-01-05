@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lister/join/set_password_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,14 +41,16 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.0.5:5999/user/check-duplicate-username?username=$userName'),
+            'http://172.30.1.87:5999/user/check-duplicate-username?username=$userName'),
       );
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         if (responseData['result']) {
+          _userNameValid = false;
           print('이미 사용중인 이름입니다');
         } else {
+          _userNameValid = true;
           print('사용 가능한 이름입니다');
         }
       }
@@ -206,6 +209,12 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                     onPressed: ()  {
                       if(_nextButtonState){
                         checkUserName(userName);
+                        if (_userNameValid) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SetPasswordPage()));
+                        }
                       }
 
                     },
