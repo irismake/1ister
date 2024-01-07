@@ -32,6 +32,41 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
   String password = '';
   String passwordCheck = '';
 
+
+  @override
+  void initState() {
+    super.initState();
+
+    _passwordFocus.addListener(() {
+      setState(() {
+        final formKeyState = _passwordFormkey.currentState!;
+        if (formKeyState.validate()) {
+          formKeyState.save();
+        }
+        if (_passwordState && _passwordCheckState) {
+          _nextButtonState = true;
+        } else {
+          _nextButtonState = false;
+        }
+      });
+    });
+
+    _passwordCheckFocus.addListener(() {
+      setState(() {
+        final formKeyState = _passwordCheckFormkey.currentState!;
+        if (formKeyState.validate()) {
+          formKeyState.save();
+        }
+        if (_passwordState && _passwordCheckState) {
+          _nextButtonState = true;
+        } else {
+          _nextButtonState = false;
+        }
+      });
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -111,12 +146,10 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                                 password = value!;
                                 if(value!.isNotEmpty){
                                   _passwordState = true;
-                                  if(_passwordCheckState){
-                                    _nextButtonState = true;
-                                  }
+
                                 }else{
                                   _passwordState = false;
-                                  _nextButtonState = false;
+
                                 }
                               });
                             },
@@ -154,12 +187,10 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                                 passwordCheck = value!;
                                 if(value!.isNotEmpty){
                                   _passwordCheckState = true;
-                                  if(_passwordState){
-                                    _nextButtonState = true;
-                                  }
+
                                 }else{
                                   _passwordCheckState = false;
-                                  _nextButtonState = false;
+
                                 }
                               });
                             },
@@ -176,17 +207,21 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                   alignment: Alignment.bottomCenter,
                   child: TextButton(
                     onPressed: ()  {
-                      if(_nextButtonState){
-                        final formKeyState =
-                        _passwordFormkey.currentState!;
-                        if (formKeyState.validate()) {
-                          formKeyState.save();
+                      setState(() {
+                        if(_nextButtonState) {
+                          final formKeyState =
+                          _passwordFormkey.currentState!;
+                          if (formKeyState.validate()) {
+                            formKeyState.save();
+                          }
+                          if (password != passwordCheck) {
+                            _passwordState = false;
+                          }
                         }
-                        if( password != passwordCheck){
-                          _passwordState = false;
-                        }
+                      });
 
-                      }
+
+
                     },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(

@@ -33,6 +33,41 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
   String userId = '';
   String userName = '';
 
+
+  @override
+  void initState() {
+    super.initState();
+
+    _userIdFocus.addListener(() {
+      setState(() {
+        final formKeyState = _userIdFormKey.currentState!;
+        if (formKeyState.validate()) {
+          formKeyState.save();
+        }
+        if (_userIdState && _userNameState) {
+          _nextButtonState = true;
+        } else {
+          _nextButtonState = false;
+        }
+      });
+    });
+
+    _userNameFocus.addListener(() {
+      setState(() {
+        final formKeyState = _userNameFormKey.currentState!;
+        if (formKeyState.validate()) {
+          formKeyState.save();
+        }
+        if (_userIdState && _userNameState) {
+          _nextButtonState = true;
+        } else {
+          _nextButtonState = false;
+        }
+      });
+    });
+  }
+
+
   Future<void> checkUserName(String userName) async {
     try {
       final response = await http.get(
@@ -128,12 +163,10 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                                 userId = value!;
                                 if (value!.isNotEmpty) {
                                   _userIdState = true;
-                                  if (_userNameState) {
-                                    _nextButtonState = true;
-                                  }
+
                                 } else {
                                   _userIdState = false;
-                                  _nextButtonState = false;
+
                                 }
                               });
                             },
@@ -179,12 +212,10 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                                 userName = value!;
                                 if (value!.isNotEmpty) {
                                   _userNameState = true;
-                                  if (_userIdState) {
-                                    _nextButtonState = true;
-                                  }
+
                                 } else {
                                   _userNameState = false;
-                                  _nextButtonState = false;
+
                                 }
                               });
                             },
