@@ -7,38 +7,14 @@ class EmailLoginPage extends StatefulWidget {
   const EmailLoginPage({Key? key}) : super(key: key);
 
   @override
-  State<EmailLoginPage> createState() => _EmailLoginScreenState();
+  State<EmailLoginPage> createState() => _EmailLoginPageState();
 }
 
-class _EmailLoginScreenState extends State<EmailLoginPage> {
+class _EmailLoginPageState extends State<EmailLoginPage> {
   @override
-  Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      builder: (BuildContext context, child) => MaterialApp(
-        home: _EmailLoginWidget(),
-        debugShowCheckedModeBanner: false,
-      ),
-      designSize: const Size(390, 844),
-
-      //minTextAdapt: true, // 텍스트 크기를 자동으로 조정하여 화면에 맞추는 기능을 활성화
-      splitScreenMode: true,
-    );
-  }
-}
-
-class _EmailLoginWidget extends StatefulWidget {
-  const _EmailLoginWidget({super.key});
-
-  @override
-  State<_EmailLoginWidget> createState() => EmailLoginWidget();
-}
-
-class EmailLoginWidget extends State<_EmailLoginWidget> {
   final noFocusColor = Color(0xffCED4DA);
   final noFocusTextColor = Color(0xff868E96);
   final brandPointColor = Color(0xff5BFF7F);
-
-
 
   String finalEmail = '';
   String finalPassword = '';
@@ -53,11 +29,8 @@ class EmailLoginWidget extends State<_EmailLoginWidget> {
   @override
   void initState() {
     super.initState();
-
-
   }
 
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -121,7 +94,7 @@ class EmailLoginWidget extends State<_EmailLoginWidget> {
                         CustomTextFormField(
                           hintText: '비밀번호',
                           focusNode: _passwordFocus,
-                          isObscureText:true,
+                          isObscureText: true,
                           onChanged: (value) {
                             setState(() {
                               finalPassword = value!;

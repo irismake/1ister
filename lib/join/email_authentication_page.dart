@@ -10,32 +10,12 @@ class EmailAuthenticationPage extends StatefulWidget {
 
   @override
   State<EmailAuthenticationPage> createState() =>
-      _EmailAuthenticationScreenState();
+      _EmailAuthenticationPageState();
 }
 
-class _EmailAuthenticationScreenState extends State<EmailAuthenticationPage> {
+class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   @override
-  Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      builder: (BuildContext context, child) => MaterialApp(
-        home: _EmailAuthenticationWidget(),
-        debugShowCheckedModeBanner: false,
-      ),
-      designSize: const Size(390, 844),
-      splitScreenMode: true,
-    );
-  }
-}
 
-class _EmailAuthenticationWidget extends StatefulWidget {
-  const _EmailAuthenticationWidget({super.key});
-
-  @override
-  State<_EmailAuthenticationWidget> createState() =>
-      EmailAuthenticationWidget();
-}
-
-class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
   final noFocusColor = Color(0xffCED4DA);
   final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
@@ -132,7 +112,6 @@ class EmailAuthenticationWidget extends State<_EmailAuthenticationWidget> {
     }
   }
 
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
