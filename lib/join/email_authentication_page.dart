@@ -40,8 +40,9 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   String userEmailAddress = '';
   String authenticationNumber = '';
 
-  int remainingTime = 180; // 3 minutes in seconds
+
   late Timer timer;
+  int remainingTime = 180; // 3 minutes in seconds
 
   @override
   void initState() {
@@ -148,6 +149,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   }
 
   void startTimer() {
+    remainingTime = 180; // 3 minutes in seconds
     _timerState = true;
     const Duration interval = Duration(seconds: 1);
 
@@ -168,7 +170,6 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     setState(() {
       _timerState = false;
       timer.cancel();
-      remainingTime = 180; // Reset the remaining time to 3 minutes
     });
   }
 
@@ -320,6 +321,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                                 ),
                                 onPressed: () {
                                   if (_emailAddressState) {
+                                    startTimer();
                                     print('이메일 주소 : $userEmailAddress');
                                     final formKeyState =
                                     _emailAddressFormKey.currentState!;
@@ -327,7 +329,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                                       formKeyState.save();
                                     }
                                     sendValidCode(userEmailAddress);
-                                    startTimer();
+
                                   }
                                   FocusScope.of(context)
                                       .requestFocus(_emailAuthenticationFocus);
