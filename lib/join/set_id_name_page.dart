@@ -170,6 +170,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                                 }
                               });
                             },
+
                             keyboardType: TextInputType.text,
                           ),
                         ),

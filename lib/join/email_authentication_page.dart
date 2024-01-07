@@ -16,7 +16,6 @@ class EmailAuthenticationPage extends StatefulWidget {
 
 class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   @override
-
   final noFocusColor = Color(0xffCED4DA);
   final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
@@ -26,7 +25,6 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   bool _nextButtonState = false;
   bool _emailAddressState = false;
   bool _emailExistState = false;
-  bool _emailDuplicateState = false;
   bool _timerState = false;
   bool _emailAuthenticationState = false;
   bool _authenticationRequestButton = false;
@@ -40,7 +38,6 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   String userEmailAddress = '';
   String authenticationNumber = '';
 
-
   late Timer timer;
   int remainingTime = 180; // 3 minutes in seconds
 
@@ -50,6 +47,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
 
     _emailAddressFocus.addListener(() {
       setState(() {
+        _emailExistState = false;
         final formKeyState = _emailAddressFormKey.currentState!;
         if (formKeyState.validate()) {
           formKeyState.save();
@@ -79,46 +77,30 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
 
   Future<void> sendValidCode(String userEmailAddress) async {
     try {
-      // final duplicateResponse = await http.get(
-      //   Uri.parse(
-      //       'http://172.30.1.87:5999/user/check-duplicate-email?email=$userEmailAddress'),
-      // );
-      //
-      // final existResponse = await http.get(
-      //   Uri.parse(
-      //       'http://172.30.1.87:5999/user/check-email?email=$userEmailAddress'),
-      // );
-      //
-      // if (duplicateResponse.statusCode == 200 && existResponse.statusCode == 200) {
-      //   final duplicateData = json.decode(duplicateResponse.body);
-      //   final existData = json.decode(existResponse.body);
-      //
-      //   if (duplicateData['result']){
-      //     _emailDuplicateState = true;
-      //     print('이미 존재 하는 이메일');
-      //     return;
-      //   }
-      //   if (!existData['result']) {
-      //     _emailExistState = true;
-      //     print('존재하지 않는 이메일');
-      //     return;
-      //   }
+      final existResponse = await http.get(
+        Uri.parse(
+            'http://172.30.1.87:5999/user/check-email?email=$userEmailAddress'),
+      );
+      if (existResponse.statusCode == 200) {
+        final existData = json.decode(existResponse.body);
+        if (existData['result']) {
+          _emailExistState = true;
+          print('이미 사용중인 이메일');
+          return;
+        }
+      }
 
-        // Proceed with sending validation code
-        final response = await http.get(
-          Uri.parse(
-              'http://172.30.1.87:5999/user/send-valid-code?email=$userEmailAddress'),
-        );
-
-        if (response.statusCode == 200) {
-          final responseData = json.decode(response.body);
-          if (responseData['ok']) {
-            print('Valid 코드 전송 성공!');
-
-          } else {
-            print('Valid 코드 전송 실패!');
-          }
-
+      final response = await http.get(
+        Uri.parse(
+            'http://172.30.1.87:5999/user/send-valid-code?email=$userEmailAddress'),
+      );
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData['ok']) {
+          print('Valid 코드 전송 성공!');
+        } else {
+          print('Valid 코드 전송 실패!->잘못된 이메일 형식');
+        }
       }
     } catch (e) {
       print('이메일 인증 번호 전송 오류 발생: $e');
@@ -149,6 +131,10 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   }
 
   void startTimer() {
+    if (_timerState) {
+      return;
+    }
+
     remainingTime = 180; // 3 minutes in seconds
     _timerState = true;
     const Duration interval = Duration(seconds: 1);
@@ -161,7 +147,6 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
       } else {
         timer.cancel(); // Stop the timer when it reaches 0
         print('3-minute timer expired. Implement your logic here.');
-        // Add your logic here when the timer expires
       }
     });
   }
@@ -172,7 +157,6 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
       timer.cancel();
     });
   }
-
 
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -244,7 +228,9 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                                 _emailAddressState = false;
                                 return '이메일을 입력해주세요.';
                               }
-
+                              if(_emailExistState){
+                                return '이미 존재하는 이메일.';
+                              }
                             },
                             keyboardType: TextInputType.emailAddress,
                           ),
@@ -294,14 +280,17 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                             Positioned(
                               top: 21.h,
                               right: 108.w,
-                              child:  Text(
-                              '${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(2, '0')}',
-                              style: TextStyle(
-                                  fontFamily: 'PretendardRegular',
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: _timerState ? noFocusColor : Colors.transparent),
-                            ),),
+                              child: Text(
+                                '${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(2, '0')}',
+                                style: TextStyle(
+                                    fontFamily: 'PretendardRegular',
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: _timerState
+                                        ? noFocusColor
+                                        : Colors.transparent),
+                              ),
+                            ),
 
                             Positioned(
                               top: 12.h,
@@ -320,19 +309,21 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                                           : noFocusColor),
                                 ),
                                 onPressed: () {
-                                  if (_emailAddressState) {
-                                    startTimer();
-                                    print('이메일 주소 : $userEmailAddress');
-                                    final formKeyState =
-                                    _emailAddressFormKey.currentState!;
-                                    if (formKeyState.validate()) {
-                                      formKeyState.save();
+                                  setState(() {
+                                    if (_emailAddressState) {
+                                      startTimer();
+                                      print('이메일 주소 : $userEmailAddress');
+                                      final formKeyState =
+                                      _emailAddressFormKey.currentState!;
+                                      if (formKeyState.validate()) {
+                                        formKeyState.save();
+                                      }
+                                      sendValidCode(userEmailAddress);
                                     }
-                                    sendValidCode(userEmailAddress);
+                                    FocusScope.of(context)
+                                        .requestFocus(_emailAuthenticationFocus);
+                                  });
 
-                                  }
-                                  FocusScope.of(context)
-                                      .requestFocus(_emailAuthenticationFocus);
                                 },
                                 style: TextButton.styleFrom(
                                     shape: RoundedRectangleBorder(
@@ -358,8 +349,8 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                   alignment: Alignment.bottomCenter,
                   child: TextButton(
                     onPressed: () async {
+                      resetTimer();
                       if (_nextButtonState) {
-
                         _emailAuthenticationState =
                             await checkValidCode(authenticationNumber);
                         if (_emailAuthenticationState) {
@@ -371,13 +362,12 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                       }
                       setState(() {
                         final formKeyState =
-                        _emailAuthenticationFormKey.currentState!;
+                            _emailAuthenticationFormKey.currentState!;
                         if (formKeyState.validate()) {
                           formKeyState.save();
                         }
                         if (_nextButtonState && !_emailAuthenticationState) {
                           _authenticationRequestButton = true;
-                          resetTimer();
                         }
                       });
                     },

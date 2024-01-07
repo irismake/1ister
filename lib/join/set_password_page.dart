@@ -66,7 +66,61 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
     });
   }
 
+  Future<void> signUp(String name, String email, String password, String userName) async {
+    try {
+      final Uri uri = Uri.parse('http://172.30.1.87:5999/user/signup');
 
+      final Map<String, dynamic> requestBody = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "username": userName,
+      };
+
+      final http.Response response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print(responseData);
+      } else {
+        print('회원가입 실패 - 상태 코드: ${response.statusCode}');
+        // 실패 시에 대한 추가적인 처리를 할 수 있습니다.
+      }
+    } catch (e) {
+      print('회원가입 오류: $e');
+    }
+  }
+
+  void _agreementPopUp() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        //backgroundColor: Colors.black.withOpacity(30),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 280.h,
+            width: double.infinity,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('Modal BottomSheet'),
+                  ElevatedButton(
+                    child: const Text('Done!'),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                ],
+              ),
+
+          );
+        });
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -137,9 +191,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                             focusNode: _passwordFocus,
                             isObscureText:true,
                             validator: (value) {
-                              if(!_passwordState){
-                                return 'hjhg';
-                              }
+
                             },
                             onChanged: (value) {
                               setState(() {
@@ -209,14 +261,17 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                     onPressed: ()  {
                       setState(() {
                         if(_nextButtonState) {
-                          final formKeyState =
-                          _passwordFormkey.currentState!;
-                          if (formKeyState.validate()) {
-                            formKeyState.save();
-                          }
-                          if (password != passwordCheck) {
-                            _passwordState = false;
-                          }
+
+                          // final formKeyState =
+                          // _passwordFormkey.currentState!;
+                          // if (formKeyState.validate()) {
+                          //   formKeyState.save();
+                          // }
+                          // if (password != passwordCheck) {
+                          //   _passwordState = false;
+                          // }
+                          //_agreementPopUp();
+                          signUp('아보카도', 'iris3455@gmail.com','kgh0125', 'lister001');
                         }
                       });
 
