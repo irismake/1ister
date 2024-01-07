@@ -38,6 +38,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         return widget.validator?.call(value) ?? null;
       },
       obscureText: widget.isObscureText,
+      obscuringCharacter: '●',
       keyboardType: widget.keyboardType,
       style: TextStyle(
         fontFamily: 'PretendardRegular',
@@ -45,6 +46,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         fontSize: 16.sp,
         color: widget.focusNode.hasFocus ? Colors.black :  noFocusTextColor,
         fontWeight: FontWeight.w600,
+        letterSpacing: widget.isObscureText? 6.0.w : 0.0,
       ),
       showCursor: false,
       focusNode: widget.focusNode,
@@ -58,6 +60,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           color: noFocusColor,
           fontSize: 16.sp,
           fontWeight: FontWeight.w600,
+          letterSpacing: 0.0.w,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),

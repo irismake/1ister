@@ -98,7 +98,6 @@ class MyHomePage extends StatelessWidget {
                           ),
                           Text(
                             "구글 계정으로 로그인",
-
                             style: TextStyle(
                              fontFamily: 'PretendardRegular',
                               fontSize: 16.sp,
@@ -166,7 +165,6 @@ class MyHomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-
                 ],
               ),
             ),

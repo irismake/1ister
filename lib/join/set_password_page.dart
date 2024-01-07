@@ -102,6 +102,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                           child: CustomTextFormField(
                             hintText: '비밀번호를 설정해 주세요.',
                             focusNode: _passwordFocus,
+                            isObscureText:true,
                             onChanged: (value) {
                               setState(() {
                                 password = value!;
@@ -144,6 +145,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                           child: CustomTextFormField(
                             hintText: '비밀번호를 다시 입력해 주세요.',
                             focusNode: _passwordCheckFocus,
+                            isObscureText:true,
                             onChanged: (value) {
                               setState(() {
                                 passwordCheck = value!;
@@ -173,20 +175,18 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                     onPressed: ()  {
                       if(_nextButtonState){
                         //checkpasswordCheck(passwordCheck);
-
                       }
-
                     },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0)),
                       padding: EdgeInsets.symmetric(
-                          horizontal: 158.w, vertical: 20.h),
+                          horizontal: 151.w, vertical: 20.h),
                       backgroundColor:
                       _nextButtonState ? Colors.black : noFocusColor,
                     ),
                     child: Text(
-                      "다음",
+                      "회원가입",
                       style: TextStyle(
                         fontFamily: 'PretendardRegular',
                         fontSize: 16.sp,
