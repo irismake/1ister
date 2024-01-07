@@ -13,7 +13,6 @@ class EmailLoginPage extends StatefulWidget {
 class _EmailLoginPageState extends State<EmailLoginPage> {
   @override
   final noFocusColor = Color(0xffCED4DA);
-  final noFocusTextColor = Color(0xff868E96);
   final brandPointColor = Color(0xff5BFF7F);
 
   String finalEmail = '';

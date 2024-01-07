@@ -17,8 +17,6 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
   final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
   final mildGrayColor = Color(0xffADB5BD);
-  final noFocusButtonColor = Color(0xffF9FAFB);
-  final focusButtonColor = Color(0xffF1F3F5);
 
   bool _nextButtonState = false;
   bool _userIdState = false;

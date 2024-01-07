@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder: (BuildContext context, child) => MaterialApp(
-        title: 'Flutter Demo',
         home: MyHomePage(),
         debugShowCheckedModeBanner: false,
       ),

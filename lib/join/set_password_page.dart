@@ -17,8 +17,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
   final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
   final mildGrayColor= Color(0xffADB5BD);
-  final noFocusButtonColor = Color(0xffF9FAFB);
-  final focusButtonColor = Color(0xffF1F3F5);
+
 
   bool _nextButtonState = false;
   bool _passwordState = false;
@@ -70,7 +69,6 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                     ),
                     Column(
                       children: [
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children:[
@@ -103,6 +101,11 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                             hintText: '비밀번호를 설정해 주세요.',
                             focusNode: _passwordFocus,
                             isObscureText:true,
+                            validator: (value) {
+                              if(!_passwordState){
+                                return 'hjhg';
+                              }
+                            },
                             onChanged: (value) {
                               setState(() {
                                 password = value!;
@@ -174,7 +177,15 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                   child: TextButton(
                     onPressed: ()  {
                       if(_nextButtonState){
-                        //checkpasswordCheck(passwordCheck);
+                        final formKeyState =
+                        _passwordFormkey.currentState!;
+                        if (formKeyState.validate()) {
+                          formKeyState.save();
+                        }
+                        if( password != passwordCheck){
+                          _passwordState = false;
+                        }
+
                       }
                     },
                     style: TextButton.styleFrom(
