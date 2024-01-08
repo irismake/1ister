@@ -5,23 +5,30 @@ import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 
 class SetPasswordPage extends StatefulWidget {
-  const SetPasswordPage({Key? key}) : super(key: key);
+  final String userEmail;
+  final String userId;
+  final String userName;
+
+  const SetPasswordPage(
+      {Key? key,
+      required this.userEmail,
+      required this.userName,
+      required this.userId})
+      : super(key: key);
 
   @override
   State<SetPasswordPage> createState() => _SetPasswordPageState();
 }
 
 class _SetPasswordPageState extends State<SetPasswordPage> {
-
   final noFocusColor = Color(0xffCED4DA);
   final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
-  final mildGrayColor= Color(0xffADB5BD);
+  final mildGrayColor = Color(0xffADB5BD);
 
-
-  bool _nextButtonState = false;
   bool _passwordState = false;
   bool _passwordCheckState = false;
+  bool _passwordCheckValid = false;
 
   FocusNode _passwordFocus = FocusNode();
   FocusNode _passwordCheckFocus = FocusNode();
@@ -31,7 +38,6 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
 
   String password = '';
   String passwordCheck = '';
-
 
   @override
   void initState() {
@@ -43,11 +49,11 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-        if (_passwordState && _passwordCheckState) {
-          _nextButtonState = true;
-        } else {
-          _nextButtonState = false;
-        }
+        // if (_passwordState && _passwordCheckState) {
+        //   _nextButtonState = true;
+        // } else {
+        //   _nextButtonState = false;
+        // }
       });
     });
 
@@ -57,16 +63,28 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-        if (_passwordState && _passwordCheckState) {
-          _nextButtonState = true;
-        } else {
-          _nextButtonState = false;
-        }
+        // if (_passwordState && _passwordCheckState) {
+        //   _nextButtonState = true;
+        // } else {
+        //   _nextButtonState = false;
+        // }
       });
     });
   }
 
-  Future<void> signUp(String name, String email, String password, String userName) async {
+  String? _checkPasswordCheckValid(String? value) {
+    if (_passwordCheckFocus.hasFocus) {
+      _passwordCheckValid = false;
+      return null;
+    }
+    if (password != passwordCheck && _passwordCheckValid) {
+        return '비밀번호가 일치하지 않습니다';
+    }
+    return null;
+  }
+
+  Future<void> signUp(
+      String name, String email, String password, String userName) async {
     try {
       final Uri uri = Uri.parse('http://172.30.1.87:5999/user/signup');
 
@@ -88,7 +106,6 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
         print(responseData);
       } else {
         print('회원가입 실패 - 상태 코드: ${response.statusCode}');
-        // 실패 시에 대한 추가적인 처리를 할 수 있습니다.
       }
     } catch (e) {
       print('회원가입 오류: $e');
@@ -107,20 +124,20 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
             height: 280.h,
             width: double.infinity,
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Text('Modal BottomSheet'),
-                  ElevatedButton(
-                    child: const Text('Done!'),
-                    onPressed: () => Navigator.pop(context),
-                  )
-                ],
-              ),
-
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text('Modal BottomSheet'),
+                ElevatedButton(
+                  child: const Text('Done!'),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
+            ),
           );
         });
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -160,7 +177,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:[
+                          children: [
                             Text(
                               '비밀번호',
                               style: TextStyle(
@@ -189,22 +206,16 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                           child: CustomTextFormField(
                             hintText: '비밀번호를 설정해 주세요.',
                             focusNode: _passwordFocus,
-                            isObscureText:true,
-                            validator: (value) {
-
-                            },
+                            isObscureText: true,
                             onChanged: (value) {
                               setState(() {
                                 password = value!;
-                                if(value!.isNotEmpty){
-                                  _passwordState = true;
-
-                                }else{
-                                  _passwordState = false;
-
-                                }
+                                value == ''
+                                    ? _passwordState = false
+                                    : _passwordState = true;
                               });
                             },
+                            validator: (value) {},
                             keyboardType: TextInputType.text,
                           ),
                         ),
@@ -214,37 +225,43 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                              '비밀번호 확인',
-                              style: TextStyle(
-                                fontFamily: 'PretendardRegular',
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: darkGrayColor,
-                              ),
+                            '비밀번호 확인',
+                            style: TextStyle(
+                              fontFamily: 'PretendardRegular',
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: darkGrayColor,
                             ),
-
+                          ),
                         ),
                         SizedBox(
                           height: 9.h,
                         ),
-
                         Form(
                           key: _passwordCheckFormkey,
                           child: CustomTextFormField(
                             hintText: '비밀번호를 다시 입력해 주세요.',
                             focusNode: _passwordCheckFocus,
-                            isObscureText:true,
+                            isObscureText: true,
                             onChanged: (value) {
                               setState(() {
                                 passwordCheck = value!;
-                                if(value!.isNotEmpty){
-                                  _passwordCheckState = true;
-
-                                }else{
-                                  _passwordCheckState = false;
-
-                                }
+                                value == ''
+                                    ? _passwordCheckState = false
+                                    : _passwordCheckState = true;
                               });
+                            },
+                            validator: (value) {
+                              List<String? Function(String)> validators = [
+                                _checkPasswordCheckValid,
+                              ];
+                              for (var validator in validators) {
+                                var result = validator(value!);
+                                if (result != null) {
+                                  return result;
+                                }
+                              }
+                              return null;
                             },
                             keyboardType: TextInputType.text,
                           ),
@@ -258,33 +275,28 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: TextButton(
-                    onPressed: ()  {
+                    onPressed: () {
                       setState(() {
-                        if(_nextButtonState) {
-
-                          // final formKeyState =
-                          // _passwordFormkey.currentState!;
-                          // if (formKeyState.validate()) {
-                          //   formKeyState.save();
-                          // }
-                          // if (password != passwordCheck) {
-                          //   _passwordState = false;
-                          // }
-                          //_agreementPopUp();
-                          signUp('아보카도', 'iris3455@gmail.com','kgh0125', 'lister001');
+                        if (_passwordState && _passwordCheckState) {
+                          _passwordCheckValid = true;
+                          final formKeyState =
+                              _passwordCheckFormkey.currentState!;
+                          if (formKeyState.validate()) {
+                            formKeyState.save();
+                            signUp(widget.userId, widget.userEmail, password,
+                                widget.userName);
+                          }
                         }
                       });
-
-
-
                     },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0)),
                       padding: EdgeInsets.symmetric(
                           horizontal: 151.w, vertical: 20.h),
-                      backgroundColor:
-                      _nextButtonState ? Colors.black : noFocusColor,
+                      backgroundColor: _passwordState && _passwordCheckState
+                          ? Colors.black
+                          : noFocusColor,
                     ),
                     child: Text(
                       "회원가입",
@@ -292,8 +304,9 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                         fontFamily: 'PretendardRegular',
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
-                        color:
-                        _nextButtonState ? brandPointColor : Colors.white,
+                        color: _passwordState && _passwordCheckState
+                            ? brandPointColor
+                            : Colors.white,
                       ),
                     ),
                   ),

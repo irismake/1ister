@@ -381,8 +381,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                      const SetIdNamePage()));
+                                      builder: (context) => SetIdNamePage(userEmail: userEmailAddress)));
                             }
                           }
 

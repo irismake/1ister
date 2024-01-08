@@ -6,7 +6,9 @@ import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 
 class SetIdNamePage extends StatefulWidget {
-  const SetIdNamePage({Key? key}) : super(key: key);
+  final String userEmail;
+
+  const SetIdNamePage({Key? key, required this.userEmail}) : super(key: key);
 
   @override
   State<SetIdNamePage> createState() => _SetIdNamePageState();
@@ -18,7 +20,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
   final darkGrayColor = Color(0xff495057);
   final mildGrayColor = Color(0xffADB5BD);
 
-  bool _nextButtonState = false;
+  //bool _nextButtonState = false;
   bool _userIdState = false;
   bool _userNameState = false;
   bool _userIDValid = false;
@@ -33,7 +35,6 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
   String userId = '';
   String userName = '';
 
-
   @override
   void initState() {
     super.initState();
@@ -44,11 +45,11 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-        if (_userIdState && _userNameState) {
-          _nextButtonState = true;
-        } else {
-          _nextButtonState = false;
-        }
+        // if (_userIdState && _userNameState) {
+        //   _nextButtonState = true;
+        // } else {
+        //   _nextButtonState = false;
+        // }
       });
     });
 
@@ -58,15 +59,25 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-        if (_userIdState && _userNameState) {
-          _nextButtonState = true;
-        } else {
-          _nextButtonState = false;
-        }
+        // if (_userIdState && _userNameState) {
+        //   _nextButtonState = true;
+        // } else {
+        //   _nextButtonState = false;
+        // }
       });
     });
   }
 
+  String? _checkUserNameValid(String? value) {
+    if (_userNameFocus.hasFocus) {
+      return null;
+    }
+    if (!_userNameState) {
+      _userNameState = true;
+      return '이미 사용중인 이메일입니다.';
+    }
+    return null;
+  }
 
   Future<void> checkUserName(String userName) async {
     try {
@@ -161,17 +172,15 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                             onChanged: (value) {
                               setState(() {
                                 userId = value!;
-                                if (value!.isNotEmpty) {
-                                  _userIdState = true;
-
-                                } else {
-                                  _userIdState = false;
-
-                                }
+                                value == ''
+                                    ? _userIdState = false
+                                    : _userIdState = true;
                               });
                             },
+                            validator: (value){
 
-                            keyboardType: TextInputType.text,
+                            },
+                            keyboardType: TextInputType.name,
                           ),
                         ),
                         SizedBox(
@@ -211,16 +220,25 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                             onChanged: (value) {
                               setState(() {
                                 userName = value!;
-                                if (value!.isNotEmpty) {
-                                  _userNameState = true;
-
-                                } else {
-                                  _userNameState = false;
-
-                                }
+                                value == ''
+                                    ? _userNameState = false
+                                    : _userNameState = true;
                               });
                             },
-                            keyboardType: TextInputType.text,
+                            validator: (value){
+                              // List<String? Function(String)> validators = [
+                              //   _checkUserNameValid,
+                              // ];
+                              // for (var validator in validators) {
+                              //   var result = validator(value!);
+                              //   if (result != null) {
+                              //     return result;
+                              //   }
+                              // }
+                              // return null;
+                            },
+
+                            keyboardType: TextInputType.name,
                           ),
                         ),
                       ],
@@ -233,15 +251,21 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                   alignment: Alignment.bottomCenter,
                   child: TextButton(
                     onPressed: () async {
-                      if (_nextButtonState) {
+                      if (_userIdState && _userNameState) {
                         await checkUserName(userName);
-                        if (_userNameValid) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SetPasswordPage()));
-                        }
+                        final formKeyState = _userNameFormKey.currentState!;
+                        if (formKeyState.validate()) {
+                          formKeyState.save();
+                         if (_userNameValid) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SetPasswordPage(
+                                        userEmail: widget.userEmail,
+                                        userId: userId,
+                                        userName: userName)));
+                          }
+                       }
                       }
                     },
                     style: TextButton.styleFrom(
@@ -250,7 +274,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 158.w, vertical: 20.h),
                       backgroundColor:
-                          _nextButtonState ? Colors.black : noFocusColor,
+                      _userIdState && _userNameState ? Colors.black : noFocusColor,
                     ),
                     child: Text(
                       "다음",
@@ -259,7 +283,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         color:
-                            _nextButtonState ? brandPointColor : Colors.white,
+                        _userIdState && _userNameState ? brandPointColor : Colors.white,
                       ),
                     ),
                   ),
