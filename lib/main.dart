@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'join/email_authentication_page.dart';
@@ -9,8 +11,53 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final storage = FlutterSecureStorage();
+  String? authToken;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAuthToken();
+  }
+
+  Future<void> _loadAuthToken() async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    //final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
+    final dio = Dio();
+    print("access Token :$accessToken");
+
+    if(authToken == null){
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+
+    }else{
+     
+    }
+/*
+    // Refresh Token을 이용해 Access Token 발급 로직
+    // Refresh Token 만료시 자동로그인 안됨 , 다시 로그인 페이지
+    try {
+      final resp = await dio.post(
+        'http://$testUrl/token',
+        options: Options(headers: {'authorization': 'Bearer $refreshToken'}),
+      );
+    } catch (e) {
+      // 토큰이 없으면 로그인 페이지로 이동
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+    }*/
+
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +79,9 @@ class MyHomePage extends StatelessWidget {
   final mildGrayColor = Color(0xff868E96);
 
   MyHomePage({super.key});
+
+
+
 
   @override
   Widget build(BuildContext context) {

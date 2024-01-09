@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import '../model/custom_text_form_field.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class EmailLoginPage extends StatefulWidget {
   const EmailLoginPage({Key? key}) : super(key: key);
@@ -16,6 +16,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
   @override
   final noFocusColor = Color(0xffCED4DA);
   final brandPointColor = Color(0xff5BFF7F);
+  final storage = FlutterSecureStorage();
 
   String _userEmail = '';
   String _userPassword = '';
@@ -29,7 +30,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
 
   Future<void> signIn(String email, String password) async {
     try {
-      final Uri uri = Uri.parse('http://192.168.0.212:5999/user/signin');
+      final Uri uri = Uri.parse('http://172.30.1.87:5999/user/signin');
 
       final Map<String, dynamic> requestBody = {
         "email": email,
@@ -42,9 +43,16 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
         headers: {'Content-Type': 'application/json'},
       );
 
+
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        print(responseData);
+        int userId = responseData['user_id'];
+        String accessToken = responseData['access_token'];
+
+        await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+        // await storage.write(
+        //     key: 'REFRESH_TOKEN', value: refreshToken);
+        print(accessToken);
       } else {
         print('로그인 실패 - 상태 코드: ${response.statusCode}');
       }
