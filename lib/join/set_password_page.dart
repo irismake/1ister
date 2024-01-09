@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lister/join/sign_up_congratulation_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 
@@ -350,6 +351,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                             if (_isChecked_A && _isChecked_B && _isChecked_C) {
                               signUp(widget.userId, widget.userEmail, password,
                                   widget.userName);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpCongratulationPage()),);
                             }
                           });
                         },
