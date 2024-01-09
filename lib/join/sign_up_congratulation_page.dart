@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../login/login_page.dart';
 import '../main.dart';
 
 class SignUpCongratulationPage extends StatelessWidget {
@@ -62,7 +63,7 @@ class SignUpCongratulationPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()),);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
 
                   // Navigator.of(context).pushAndRemoveUntil(
                   //     CupertinoPageRoute(builder: (context) => MyHomePage()), (
