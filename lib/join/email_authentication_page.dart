@@ -96,7 +96,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     try {
       final existResponse = await http.get(
         Uri.parse(//172.30.1.87
-            'http://172.30.1.87:5999/user/check-email?email=$userEmailAddress'),
+            'http://192.168.0.212:5999/user/check-email?email=$userEmailAddress'),
       );
       if (existResponse.statusCode == 200) {
         final existData = json.decode(existResponse.body);
@@ -111,7 +111,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
 
       final response = await http.get(
         Uri.parse(
-            'http://172.30.1.87:5999/user/send-valid-code?email=$userEmailAddress'),
+            'http://192.168.0.212:5999/user/send-valid-code?email=$userEmailAddress'),
       );
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
@@ -130,7 +130,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://172.30.1.87:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
+            'http://192.168.0.212:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
       );
 
       if (response.statusCode == 200) {

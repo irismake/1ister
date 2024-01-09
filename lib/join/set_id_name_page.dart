@@ -83,7 +83,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://172.30.1.87:5999/user/check-duplicate-username?username=$userName'),
+            'http://192.168.0.212:5999/user/check-duplicate-username?username=$userName'),
       );
 
       if (response.statusCode == 200) {
