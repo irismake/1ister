@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:http/http.dart' as http;
 import '../model/custom_text_form_field.dart';
 
 class EmailLoginPage extends StatefulWidget {
@@ -15,15 +17,42 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
   final noFocusColor = Color(0xffCED4DA);
   final brandPointColor = Color(0xff5BFF7F);
 
-  String finalEmail = '';
-  String finalPassword = '';
+  String _userEmail = '';
+  String _userPassword = '';
 
   bool _emailState = false;
   bool _passwordState = false;
-  bool _loginButtonState = false;
 
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
+
+
+  Future<void> signIn(String email, String password) async {
+    try {
+      final Uri uri = Uri.parse('http://192.168.0.212:5999/user/signin');
+
+      final Map<String, dynamic> requestBody = {
+        "email": email,
+        "password": password,
+      };
+
+      final http.Response response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print(responseData);
+      } else {
+        print('로그인 실패 - 상태 코드: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('로그인 오류: $e');
+    }
+  }
+
 
   @override
   void initState() {
@@ -47,7 +76,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                     Container(
                       //color : Colors.green,
                       height: 80.h,
-
                       alignment: Alignment.centerLeft,
                       child: FittedBox(
                         child: Text(
@@ -73,15 +101,11 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                           focusNode: _emailFocus,
                           onChanged: (value) {
                             setState(() {
-                              finalEmail = value!;
+                              _userEmail = value!;
                               if (value!.isNotEmpty) {
                                 _emailState = true;
-                                if (_emailState) {
-                                  _loginButtonState = true;
-                                }
                               } else {
                                 _emailState = false;
-                                _loginButtonState = false;
                               }
                             });
                           },
@@ -96,15 +120,11 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                           isObscureText: true,
                           onChanged: (value) {
                             setState(() {
-                              finalPassword = value!;
+                              _userPassword = value!;
                               if (value!.isNotEmpty) {
                                 _passwordState = true;
-                                if (_passwordState) {
-                                  _loginButtonState = true;
-                                }
                               } else {
                                 _passwordState = false;
-                                _loginButtonState = false;
                               }
                             });
                           },
@@ -121,8 +141,9 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        print("[final email] : $finalEmail");
-                        print("[final password] : $finalPassword");
+                        print("[final email] : $_userEmail");
+                        print("[final password] : $_userPassword");
+                        signIn(_userEmail,_userPassword);
                       });
                     },
                     style: TextButton.styleFrom(
@@ -131,7 +152,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 158.w, vertical: 20.h),
                       backgroundColor:
-                          _loginButtonState ? Colors.black : noFocusColor,
+                      _emailState && _passwordState ? Colors.black : noFocusColor,
                     ),
                     child: Text(
                       "로그인",
@@ -140,7 +161,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         color:
-                            _loginButtonState ? brandPointColor : Colors.white,
+                        _emailState && _passwordState ? brandPointColor : Colors.white,
                       ),
                     ),
                   ),
