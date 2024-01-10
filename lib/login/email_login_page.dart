@@ -15,7 +15,6 @@ class EmailLoginPage extends StatefulWidget {
 class _EmailLoginPageState extends State<EmailLoginPage> {
   @override
   final noFocusColor = Color(0xffCED4DA);
-  final brandPointColor = Color(0xff5BFF7F);
   final storage = FlutterSecureStorage();
 
   String _userEmail = '';
@@ -169,7 +168,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         color:
-                        _emailState && _passwordState ? brandPointColor : Colors.white,
+                        _emailState && _passwordState ? Theme.of(context).primaryColor : Colors.white,
                       ),
                     ),
                   ),

@@ -26,7 +26,6 @@ class CustomTextFormField extends StatefulWidget {
 
 final noFocusColor = Color(0xffCED4DA);
 final noFocusTextColor = Color(0xff868E96);
-final brandPointColor = Color(0xff5BFF7F);
 final errorColor = Color(0xffFA5252);
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
@@ -64,7 +63,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
-          borderSide: BorderSide(width: 1.w, color: brandPointColor),
+          borderSide: BorderSide(width: 1.w, color: Theme.of(context).primaryColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),

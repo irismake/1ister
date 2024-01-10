@@ -16,7 +16,6 @@ class SetIdNamePage extends StatefulWidget {
 
 class _SetIdNamePageState extends State<SetIdNamePage> {
   final noFocusColor = Color(0xffCED4DA);
-  final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
   final mildGrayColor = Color(0xffADB5BD);
 
@@ -283,7 +282,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         color:
-                        _userIdState && _userNameState ? brandPointColor : Colors.white,
+                        _userIdState && _userNameState ? Theme.of(context).primaryColor : Colors.white,
                       ),
                     ),
                   ),

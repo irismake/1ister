@@ -1,15 +1,24 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lister/home/home_page.dart';
-
+import 'package:flutter_svg/svg.dart';
+import 'home/home_page.dart';
 import 'login/login_page.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      home: MyApp(),
+    ScreenUtilInit(
+      builder: (BuildContext context, child) => MaterialApp(
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          primaryColor: const Color(0xff5BFF7F),
+        ),
+        home: MyApp(),
+      ),
+      designSize: const Size(390, 844),
+      minTextAdapt: true,
+      splitScreenMode: true,
     ),
   );
 }
@@ -32,8 +41,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _loadAuthToken(BuildContext context) async {
+    await Future.delayed(Duration(seconds: 2));
+
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
-    //final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
     final dio = Dio();
     print("access Token :$accessToken");
     _handleNavigation(context, accessToken);
@@ -41,13 +51,13 @@ class _MyAppState extends State<MyApp> {
 
   void _handleNavigation(BuildContext context, String? accessToken) {
     if (accessToken == null) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
       print('no access token');
     } else {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
@@ -57,6 +67,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(123.0.w, 376.0.h, 123.0.w, 428.0.h),
+        child: SvgPicture.asset(
+          'assets/images/Logo_Name.svg',
+          height: 144.0.h,
+          width: 40.0.w,
+        ),
+      ),
+    );
   }
 }

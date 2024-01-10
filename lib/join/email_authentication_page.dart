@@ -17,7 +17,7 @@ class EmailAuthenticationPage extends StatefulWidget {
 class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   @override
   final noFocusColor = Color(0xffCED4DA);
-  final brandPointColor = Color(0xff5BFF7F);
+
   final darkGrayColor = Color(0xff495057);
   final noFocusButtonColor = Color(0xffF9FAFB);
   final focusButtonColor = Color(0xffF1F3F5);
@@ -405,7 +405,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         color: _emailAddressState && _emailAuthenticationState
-                            ? brandPointColor
+                            ? Theme.of(context).primaryColor
                             : Colors.white,
                       ),
                     ),

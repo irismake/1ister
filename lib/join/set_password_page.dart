@@ -23,7 +23,6 @@ class SetPasswordPage extends StatefulWidget {
 
 class _SetPasswordPageState extends State<SetPasswordPage> {
   final noFocusColor = Color(0xffCED4DA);
-  final brandPointColor = Color(0xff5BFF7F);
   final darkGrayColor = Color(0xff495057);
   final mildGrayColor = Color(0xffADB5BD);
   final checkBoxColor = Color(0xff212529);
@@ -367,7 +366,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                               fontFamily: 'PretendardRegular',
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w700,
-                              color: brandPointColor),
+                              color: Theme.of(context).primaryColor),
                         ),
                       ),
                     ],
@@ -547,7 +546,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         color: _passwordState && _passwordCheckState
-                            ? brandPointColor
+                            ? Theme.of(context).primaryColor
                             : Colors.white,
                       ),
                     ),

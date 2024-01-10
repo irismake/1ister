@@ -9,7 +9,6 @@ import '../main.dart';
 class SignUpCongratulationPage extends StatelessWidget {
   SignUpCongratulationPage({Key? key}) : super(key: key);
 
-  final brandPointColor = Color(0xff5BFF7F);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +83,7 @@ class SignUpCongratulationPage extends StatelessWidget {
                     fontFamily: 'PretendardRegular',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w700,
-                    color: brandPointColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
