@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../login/login_page.dart';
 import '../main.dart';
+import '../model/http_request.dart';
 
 class SignUpCongratulationPage extends StatelessWidget {
   SignUpCongratulationPage({Key? key}) : super(key: key);
@@ -57,37 +58,19 @@ class SignUpCongratulationPage extends StatelessWidget {
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
+            NextPageButton(
+              firstFieldState: true,
+              secondFieldState: true,
+              text: '3초 후에 메인으로 이동해요',
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
 
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     CupertinoPageRoute(builder: (context) => MyHomePage()), (
-                  //     route) => false);
-                },
-                style: TextButton.styleFrom(
-                  minimumSize: const Size.fromHeight(0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0)),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 20.h,
-                  ),
-                  backgroundColor: Colors.black,
-                ),
-                child: Text(
-                  "3초 후에 메인으로 이동해요",
-                  style: TextStyle(
-                    fontFamily: 'PretendardRegular',
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-            ),
+                // Navigator.of(context).pushAndRemoveUntil(
+                //     CupertinoPageRoute(builder: (context) => MyHomePage()), (
+                //     route) => false);
+              },
+            )
           ],
         ),
       ),

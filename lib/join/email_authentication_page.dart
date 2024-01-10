@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lister/join/set_id_name_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 
+import '../model/http_request.dart';
+
 class EmailAuthenticationPage extends StatefulWidget {
   const EmailAuthenticationPage({Key? key}) : super(key: key);
 
@@ -53,7 +55,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
         }
       });
     });
-    //
+
     _emailAuthenticationFocus.addListener(() {
       setState(() {
         final formKeyState = _emailAuthenticationFormKey.currentState!;
@@ -68,8 +70,6 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     if (_emailAddressFocus.hasFocus) {
      //_emailExistState = false;
       return null;
-
-      // _emailAddressState = true;
     }
     if (_emailExistState) {
       _emailExistState = false;
@@ -96,7 +96,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     try {
       final existResponse = await http.get(
         Uri.parse(//172.30.1.87
-            'http://192.168.0.212:5999/user/check-email?email=$userEmailAddress'),
+            'http://172.30.1.87:5999/user/check-email?email=$userEmailAddress'),
       );
       if (existResponse.statusCode == 200) {
         final existData = json.decode(existResponse.body);
@@ -111,7 +111,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
 
       final response = await http.get(
         Uri.parse(
-            'http://192.168.0.212:5999/user/send-valid-code?email=$userEmailAddress'),
+            'http://172.30.1.87:5999/user/send-valid-code?email=$userEmailAddress'),
       );
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
@@ -130,7 +130,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.0.212:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
+            'http://172.30.1.87:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
       );
 
       if (response.statusCode == 200) {
@@ -364,54 +364,31 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: TextButton(
-                    onPressed: () async {
-                      await checkValidCode(authenticationNumber);
-                      setState(() {
-                        if (_emailAddressState && _emailAuthenticationState) {
-                          resetTimer();
-                          final formKeyState =
-                              _emailAuthenticationFormKey.currentState!;
-                          if (formKeyState.validate()) {
-                            formKeyState.save();
-                            if (!_checkAuthenticationState) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SetIdNamePage(userEmail: userEmailAddress)));
-                            }
-                          }
-
+              NextPageButton(
+                firstFieldState: _emailAddressState,
+                secondFieldState: _emailAuthenticationState,
+                text: '다음',
+                onPressed: () async {
+                  await checkValidCode(authenticationNumber);
+                  setState(() {
+                    if (_emailAddressState && _emailAuthenticationState) {
+                      resetTimer();
+                      final formKeyState = _emailAuthenticationFormKey.currentState!;
+                      if (formKeyState.validate()) {
+                        formKeyState.save();
+                        if (!_checkAuthenticationState) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SetIdNamePage(userEmail: userEmailAddress),
+                            ),
+                          );
                         }
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 158.w, vertical: 20.h),
-                      backgroundColor:
-                          _emailAddressState && _emailAuthenticationState
-                              ? Colors.black
-                              : noFocusColor,
-                    ),
-                    child: Text(
-                      "다음",
-                      style: TextStyle(
-                        fontFamily: 'PretendardRegular',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color: _emailAddressState && _emailAuthenticationState
-                            ? Theme.of(context).primaryColor
-                            : Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+                      }
+                    }
+                  });
+                },
+              )
             ],
           ),
         ),

@@ -5,6 +5,8 @@ import 'package:lister/join/set_password_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 
+import '../model/http_request.dart';
+
 class SetIdNamePage extends StatefulWidget {
   final String userEmail;
 
@@ -44,11 +46,6 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-        // if (_userIdState && _userNameState) {
-        //   _nextButtonState = true;
-        // } else {
-        //   _nextButtonState = false;
-        // }
       });
     });
 
@@ -58,11 +55,6 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-        // if (_userIdState && _userNameState) {
-        //   _nextButtonState = true;
-        // } else {
-        //   _nextButtonState = false;
-        // }
       });
     });
   }
@@ -82,7 +74,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.0.212:5999/user/check-duplicate-username?username=$userName'),
+            'http://172.30.1.87:5999/user/check-duplicate-username?username=$userName'),
       );
 
       if (response.statusCode == 200) {
@@ -245,49 +237,30 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: TextButton(
-                    onPressed: () async {
-                      if (_userIdState && _userNameState) {
-                        await checkUserName(userName);
-                        final formKeyState = _userNameFormKey.currentState!;
-                        if (formKeyState.validate()) {
-                          formKeyState.save();
-                         if (_userNameValid) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SetPasswordPage(
-                                        userEmail: widget.userEmail,
-                                        userId: userId,
-                                        userName: userName)));
-                          }
-                       }
+
+              NextPageButton(
+                firstFieldState: _userIdState,
+                secondFieldState: _userNameState,
+                text: '다음',
+                onPressed: () async {
+                  if (_userIdState && _userNameState) {
+                    await checkUserName(userName);
+                    final formKeyState = _userNameFormKey.currentState!;
+                    if (formKeyState.validate()) {
+                      formKeyState.save();
+                      if (_userNameValid) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SetPasswordPage(
+                                    userEmail: widget.userEmail,
+                                    userId: userId,
+                                    userName: userName)));
                       }
-                    },
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 158.w, vertical: 20.h),
-                      backgroundColor:
-                      _userIdState && _userNameState ? Colors.black : noFocusColor,
-                    ),
-                    child: Text(
-                      "다음",
-                      style: TextStyle(
-                        fontFamily: 'PretendardRegular',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color:
-                        _userIdState && _userNameState ? Theme.of(context).primaryColor : Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+                    }
+                  }
+                },
+              )
             ],
           ),
         ),

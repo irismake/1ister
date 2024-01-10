@@ -5,6 +5,8 @@ import 'package:lister/join/sign_up_congratulation_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 
+import '../model/http_request.dart';
+
 class SetPasswordPage extends StatefulWidget {
   final String userEmail;
   final String userId;
@@ -92,7 +94,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
   Future<void> signUp(
       String name, String email, String password, String userName) async {
     try {
-      final Uri uri = Uri.parse('http://192.168.0.212:5999/user/signup');
+      final Uri uri = Uri.parse('http://172.30.1.87:5999/user/signup');
 
       final Map<String, dynamic> requestBody = {
         "name": name,
@@ -344,7 +346,10 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                           ],
                         ),
                       ),
-                      TextButton(
+                      NextPageButton(
+                        firstFieldState: _passwordState,
+                        secondFieldState: _passwordCheckState,
+                        text: '회원가입',
                         onPressed: () {
                           setState(() {
                             if (_isChecked_A && _isChecked_B && _isChecked_C) {
@@ -354,21 +359,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                             }
                           });
                         },
-                        style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 151.w, vertical: 20.h),
-                            backgroundColor: Colors.black),
-                        child: Text(
-                          "회원가입",
-                          style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w700,
-                              color: Theme.of(context).primaryColor),
-                        ),
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -511,48 +502,26 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        if (_passwordState && _passwordCheckState) {
-                          _passwordCheckValid = true;
-                          final formKeyState =
-                              _passwordCheckFormkey.currentState!;
-                          if (formKeyState.validate()) {
-                            formKeyState.save();
-                            _agreementPopUp();
-                            // signUp(widget.userId, widget.userEmail, password,
-                            //     widget.userName);
-                          }
-                        }
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 151.w, vertical: 20.h),
-                      backgroundColor: _passwordState && _passwordCheckState
-                          ? Colors.black
-                          : noFocusColor,
-                    ),
-                    child: Text(
-                      "회원가입",
-                      style: TextStyle(
-                        fontFamily: 'PretendardRegular',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color: _passwordState && _passwordCheckState
-                            ? Theme.of(context).primaryColor
-                            : Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              NextPageButton(
+                firstFieldState: _passwordState,
+                secondFieldState: _passwordCheckState,
+                text: '회원가입',
+                onPressed: () {
+                  setState(() {
+                    if (_passwordState && _passwordCheckState) {
+                      _passwordCheckValid = true;
+                      final formKeyState =
+                      _passwordCheckFormkey.currentState!;
+                      if (formKeyState.validate()) {
+                        formKeyState.save();
+                        _agreementPopUp();
+                        // signUp(widget.userId, widget.userEmail, password,
+                        //     widget.userName);
+                      }
+                    }
+                  });
+                },
+              )
             ],
           ),
         ),
