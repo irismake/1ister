@@ -5,7 +5,9 @@ import 'package:lister/join/sign_up_congratulation_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 
-import '../model/http_request.dart';
+import '../model/join_widget.dart';
+import '../model/next_page_button.dart';
+import '../model/progress_bar.dart';
 
 class SetPasswordPage extends StatefulWidget {
   final String userEmail;
@@ -355,7 +357,12 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                             if (_isChecked_A && _isChecked_B && _isChecked_C) {
                               signUp(widget.userId, widget.userEmail, password,
                                   widget.userName);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpCongratulationPage()),);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        SignUpCongratulationPage()),
+                              );
                             }
                           });
                         },
@@ -377,152 +384,81 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 88.h),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 80.h,
-                      alignment: Alignment.centerLeft,
-                      child: FittedBox(
-                        child: Text(
-                          '마지막으로\n비밀번호를 설정해 주세요.',
-                          style: TextStyle(
-                            fontFamily: 'PretendardRegular',
-                            fontSize: 28.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '비밀번호',
-                              style: TextStyle(
-                                fontFamily: 'PretendardRegular',
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: darkGrayColor,
-                              ),
-                            ),
-                            Text(
-                              '영어, 숫자 포함 n자 이내',
-                              style: TextStyle(
-                                fontFamily: 'PretendardRegular',
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: mildGrayColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 9.h,
-                        ),
-                        Form(
-                          key: _passwordFormkey,
-                          child: CustomTextFormField(
-                            hintText: '비밀번호를 설정해 주세요.',
-                            focusNode: _passwordFocus,
-                            isObscureText: true,
-                            onChanged: (value) {
-                              setState(() {
-                                password = value!;
-                                value == ''
-                                    ? _passwordState = false
-                                    : _passwordState = true;
-                              });
-                            },
-                            validator: (value) {},
-                            keyboardType: TextInputType.text,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '비밀번호 확인',
-                            style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: darkGrayColor,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 9.h,
-                        ),
-                        Form(
-                          key: _passwordCheckFormkey,
-                          child: CustomTextFormField(
-                            hintText: '비밀번호를 다시 입력해 주세요.',
-                            focusNode: _passwordCheckFocus,
-                            isObscureText: true,
-                            onChanged: (value) {
-                              setState(() {
-                                passwordCheck = value!;
-                                value == ''
-                                    ? _passwordCheckState = false
-                                    : _passwordCheckState = true;
-                              });
-                            },
-                            validator: (value) {
-                              List<String? Function(String)> validators = [
-                                _checkPasswordCheckValid,
-                              ];
-                              for (var validator in validators) {
-                                var result = validator(value!);
-                                if (result != null) {
-                                  return result;
-                                }
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.text,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              NextPageButton(
-                firstFieldState: _passwordState,
-                secondFieldState: _passwordCheckState,
-                text: '회원가입',
-                onPressed: () {
-                  setState(() {
-                    if (_passwordState && _passwordCheckState) {
-                      _passwordCheckValid = true;
-                      final formKeyState =
-                      _passwordCheckFormkey.currentState!;
-                      if (formKeyState.validate()) {
-                        formKeyState.save();
-                        _agreementPopUp();
-                        // signUp(widget.userId, widget.userEmail, password,
-                        //     widget.userName);
-                      }
-                    }
-                  });
-                },
-              )
-            ],
+        appBar: ProgressBar(progress: 3, totalProgress: 3),
+        body: JoinWidget(
+          title: '마지막으로\n비밀번호를 설정해 주세요.',
+          firstFieldText: '비밀번호',
+          firstCustomForm: Form(
+            key: _passwordFormkey,
+            child: CustomTextFormField(
+              hintText: '비밀번호를 설정해 주세요.',
+              focusNode: _passwordFocus,
+              isObscureText: true,
+              onChanged: (value) {
+                setState(() {
+                  password = value!;
+                  value == '' ? _passwordState = false : _passwordState = true;
+                });
+              },
+              validator: (value) {},
+              keyboardType: TextInputType.text,
+            ),
+          ),
+          firstGuideState: true,
+          firstGuideText: '영어, 숫자 포함 n자 이내',
+          secondFieldText: '비밀번호 확인',
+          secondCustomForm: Form(
+            key: _passwordCheckFormkey,
+            child: CustomTextFormField(
+              hintText: '비밀번호를 다시 입력해 주세요.',
+              focusNode: _passwordCheckFocus,
+              isObscureText: true,
+              onChanged: (value) {
+                setState(() {
+                  passwordCheck = value!;
+                  value == ''
+                      ? _passwordCheckState = false
+                      : _passwordCheckState = true;
+                });
+              },
+              validator: (value) {
+                List<String? Function(String)> validators = [
+                  _checkPasswordCheckValid,
+                ];
+                for (var validator in validators) {
+                  var result = validator(value!);
+                  if (result != null) {
+                    return result;
+                  }
+                }
+                return null;
+              },
+              keyboardType: TextInputType.text,
+            ),
+          ),
+          secondGuideState: false,
+          secondGuideText: null,
+          authenticationState: false,
+          authenticationButton: null,
+          timer: null,
+          nextPageButton: NextPageButton(
+            firstFieldState: _passwordState,
+            secondFieldState: _passwordCheckState,
+            text: '회원가입',
+            onPressed: () {
+              setState(() {
+                if (_passwordState && _passwordCheckState) {
+                  _passwordCheckValid = true;
+                  final formKeyState = _passwordCheckFormkey.currentState!;
+                  if (formKeyState.validate()) {
+                    formKeyState.save();
+                    _agreementPopUp();
+                    // signUp(widget.userId, widget.userEmail, password,
+                    //     widget.userName);
+                  }
+                }
+              });
+            },
           ),
         ),
       ),

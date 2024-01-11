@@ -5,7 +5,9 @@ import 'package:lister/join/set_password_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 
-import '../model/http_request.dart';
+import '../model/join_widget.dart';
+import '../model/next_page_button.dart';
+import '../model/progress_bar.dart';
 
 class SetIdNamePage extends StatefulWidget {
   final String userEmail;
@@ -17,14 +19,12 @@ class SetIdNamePage extends StatefulWidget {
 }
 
 class _SetIdNamePageState extends State<SetIdNamePage> {
-  final noFocusColor = Color(0xffCED4DA);
-  final darkGrayColor = Color(0xff495057);
-  final mildGrayColor = Color(0xffADB5BD);
+  // final noFocusColor = Color(0xffCED4DA);
+  // final darkGrayColor = Color(0xff495057);
+  // final mildGrayColor = Color(0xffADB5BD);
 
-  //bool _nextButtonState = false;
   bool _userIdState = false;
   bool _userNameState = false;
-  bool _userIDValid = false;
   bool _userNameValid = false;
 
   FocusNode _userIdFocus = FocusNode();
@@ -100,170 +100,73 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 88.h),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 80.h,
-                      alignment: Alignment.centerLeft,
-                      child: FittedBox(
-                        child: Text(
-                          '사용자 아이디와\n이름을 정해주세요.',
-                          style: TextStyle(
-                            fontFamily: 'PretendardRegular',
-                            fontSize: 28.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '사용자 아이디',
-                              style: TextStyle(
-                                fontFamily: 'PretendardRegular',
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: darkGrayColor,
-                              ),
-                            ),
-                            Text(
-                              '영어, 숫자 포함 n자 이내',
-                              style: TextStyle(
-                                fontFamily: 'PretendardRegular',
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: mildGrayColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 9.h,
-                        ),
-                        Form(
-                          key: _userIdFormKey,
-                          child: CustomTextFormField(
-                            hintText: '사용자 아이디를 설정해 주세요.',
-                            focusNode: _userIdFocus,
-                            onChanged: (value) {
-                              setState(() {
-                                userId = value!;
-                                value == ''
-                                    ? _userIdState = false
-                                    : _userIdState = true;
-                              });
-                            },
-                            validator: (value){
-
-                            },
-                            keyboardType: TextInputType.name,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '이름',
-                              style: TextStyle(
-                                fontFamily: 'PretendardRegular',
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: darkGrayColor,
-                              ),
-                            ),
-                            Text(
-                              '한국어, 영어, 일본어 n자 이내',
-                              style: TextStyle(
-                                fontFamily: 'PretendardRegular',
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: mildGrayColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 9.h,
-                        ),
-                        Form(
-                          key: _userNameFormKey,
-                          child: CustomTextFormField(
-                            hintText: '이름을 설정해 주세요.',
-                            focusNode: _userNameFocus,
-                            onChanged: (value) {
-                              setState(() {
-                                userName = value!;
-                                value == ''
-                                    ? _userNameState = false
-                                    : _userNameState = true;
-                              });
-                            },
-                            validator: (value){
-                              // List<String? Function(String)> validators = [
-                              //   _checkUserNameValid,
-                              // ];
-                              // for (var validator in validators) {
-                              //   var result = validator(value!);
-                              //   if (result != null) {
-                              //     return result;
-                              //   }
-                              // }
-                              // return null;
-                            },
-
-                            keyboardType: TextInputType.name,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+        appBar: ProgressBar(progress: 2, totalProgress: 3),
+        body: JoinWidget(
+            title: '사용자 아이디와\n이름을 정해주세요.',
+            firstFieldText: '사용자 아이디',
+            firstCustomForm: Form(
+              key: _userIdFormKey,
+              child: CustomTextFormField(
+                hintText: '사용자 아이디를 설정해 주세요.',
+                focusNode: _userIdFocus,
+                onChanged: (value) {
+                  setState(() {
+                    userId = value!;
+                    value == '' ? _userIdState = false : _userIdState = true;
+                  });
+                },
+                validator: (value) {},
+                keyboardType: TextInputType.name,
               ),
-
-              NextPageButton(
-                firstFieldState: _userIdState,
-                secondFieldState: _userNameState,
-                text: '다음',
-                onPressed: () async {
-                  if (_userIdState && _userNameState) {
-                    await checkUserName(userName);
-                    final formKeyState = _userNameFormKey.currentState!;
-                    if (formKeyState.validate()) {
-                      formKeyState.save();
-                      if (_userNameValid) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SetPasswordPage(
-                                    userEmail: widget.userEmail,
-                                    userId: userId,
-                                    userName: userName)));
-                      }
+            ),
+            firstGuideState: true,
+            firstGuideText: '영어, 숫자 포함 n자 이내',
+            secondFieldText: '이름',
+            secondCustomForm: Form(
+              key: _userNameFormKey,
+              child: CustomTextFormField(
+                hintText: '이름을 설정해 주세요.',
+                focusNode: _userNameFocus,
+                onChanged: (value) {
+                  setState(() {
+                    userName = value!;
+                    value == ''
+                        ? _userNameState = false
+                        : _userNameState = true;
+                  });
+                },
+                validator: (value) {},
+                keyboardType: TextInputType.name,
+              ),
+            ),
+            secondGuideState: true,
+            secondGuideText: '한국어, 영어, 일본어 n자 이내',
+            authenticationState: false,
+            authenticationButton: null,
+            timer: null,
+            nextPageButton: NextPageButton(
+              firstFieldState: _userIdState,
+              secondFieldState: _userNameState,
+              text: '다음',
+              onPressed: () async {
+                if (_userIdState && _userNameState) {
+                  await checkUserName(userName);
+                  final formKeyState = _userNameFormKey.currentState!;
+                  if (formKeyState.validate()) {
+                    formKeyState.save();
+                    if (_userNameValid) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SetPasswordPage(
+                                  userEmail: widget.userEmail,
+                                  userId: userId,
+                                  userName: userName)));
                     }
                   }
-                },
-              )
-            ],
-          ),
-        ),
+                }
+              },
+            )),
       ),
     );
   }

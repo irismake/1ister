@@ -15,6 +15,7 @@ void main() {
           primaryColor: const Color(0xff5BFF7F),
         ),
         home: MyApp(),
+        debugShowCheckedModeBanner: false,
       ),
       designSize: const Size(390, 844),
       minTextAdapt: true,

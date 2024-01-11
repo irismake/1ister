@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lister/join/set_id_name_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
+import 'package:lister/model/join_widget.dart';
 
-import '../model/http_request.dart';
+import '../model/next_page_button.dart';
+import '../model/progress_bar.dart';
 
 class EmailAuthenticationPage extends StatefulWidget {
   const EmailAuthenticationPage({Key? key}) : super(key: key);
@@ -18,11 +20,10 @@ class EmailAuthenticationPage extends StatefulWidget {
 
 class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   @override
-  final noFocusColor = Color(0xffCED4DA);
 
-  final darkGrayColor = Color(0xff495057);
   final noFocusButtonColor = Color(0xffF9FAFB);
   final focusButtonColor = Color(0xffF1F3F5);
+  final darkGrayColor = Color(0xff495057);
 
   bool _emailAddressState = false;
   bool _emailExistState = false;
@@ -68,14 +69,14 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
 
   String? _checkEmailDuplicate(String? value) {
     if (_emailAddressFocus.hasFocus) {
-     //_emailExistState = false;
+      //_emailExistState = false;
       return null;
     }
     if (_emailExistState) {
       _emailExistState = false;
       return '이미 사용중인 이메일입니다.';
     }
-    if ( !_emailAddressState) {
+    if (!_emailAddressState) {
       return '이메일을 입력해주세요.';
     }
     return null;
@@ -95,7 +96,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   Future<void> sendValidCode(String userEmailAddress) async {
     try {
       final existResponse = await http.get(
-        Uri.parse(//172.30.1.87
+        Uri.parse( //172.30.1.87
             'http://172.30.1.87:5999/user/check-email?email=$userEmailAddress'),
       );
       if (existResponse.statusCode == 200) {
@@ -104,7 +105,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
           _emailExistState = true;
           print('이미 사용중인 이메일');
           return;
-        }else{
+        } else {
           _emailExistState = false;
         }
       }
@@ -168,7 +169,6 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     setState(() {
       _timerState ? timer.cancel() : null;
       _timerState = false;
-
     });
   }
 
@@ -179,220 +179,166 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 88.h),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 80.h,
-                      alignment: Alignment.centerLeft,
-                      child: FittedBox(
-                        child: Text(
-                          '회원가입을 위해\n'
-                          '이메일을 인증해주세요.',
-                          style: TextStyle(
-                            fontFamily: 'PretendardRegular',
-                            fontSize: 28.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
-                    Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '이메일 주소',
-                            style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: darkGrayColor,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 9.h,
-                        ),
-                        Form(
-                          key: _emailAddressFormKey,
-                          child: CustomTextFormField(
-                            hintText: '이메일 주소',
-                            focusNode: _emailAddressFocus,
-                            onChanged: (value) {
-                              setState(() {
-                                userEmailAddress = value!;
-                                value == ''
-                                    ? _emailAddressState = false
-                                    : _emailAddressState = true;
-                              });
-                            },
-                            validator: (value) {
-                              List<String? Function(String)> validators = [
-                                _checkEmailDuplicate,
-                              ];
-                              for (var validator in validators) {
-                                var result = validator(value!);
-                                if (result != null) {
-                                  resetTimer();
-                                  return result;
-                                }
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '이메일 인증',
-                            style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: darkGrayColor,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 9.h,
-                        ),
-                        Stack(
-                          alignment: Alignment.centerRight,
-                          children: [
-                            Form(
-                              key: _emailAuthenticationFormKey,
-                              child: CustomTextFormField(
-                                hintText: '인증 번호',
-                                focusNode: _emailAuthenticationFocus,
-                                onChanged: (value) {
-                                  setState(() {
-                                    authenticationNumber = value!;
-                                    value == ''
-                                        ? _emailAuthenticationState = false
-                                        : _emailAuthenticationState = true;
-                                  });
-                                },
-                                validator: (value) {
-                                  List<String? Function(String)> validators = [
-                                    _checkAuthenticationValid,
-                                  ];
-                                  for (var validator in validators) {
-                                    var result = validator(value!);
-                                    if (result != null) {
-                                      return result;
-                                    }
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                            Positioned(
-                              top: 21.h,
-                              right: 108.w,
-                              child: Text(
-                                '${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(2, '0')}',
-                                style: TextStyle(
-                                    fontFamily: 'PretendardRegular',
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: _timerState
-                                        ? noFocusColor
-                                        : Colors.transparent),
-                              ),
-                            ),
-
-                            Positioned(
-                              top: 12.h,
-                              right: 16.w,
-                              child: TextButton(
-                                child: Text(
-                                  _authenticationRequestButton
-                                      ? '재인증'
-                                      : '인증 요청',
-                                  style: TextStyle(
-                                      fontFamily: 'PretendardRegular',
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: _emailAddressState
-                                          ? darkGrayColor
-                                          : noFocusColor),
-                                ),
-                                onPressed: () async {
-                                  await sendValidCode(userEmailAddress);
-                                  final formKeyState = _emailAddressFormKey.currentState!;
-                                  if (formKeyState.validate()) {
-                                    formKeyState.save();
-                                    if (_emailAddressState && !_emailExistState) {
-                                      startTimer();
-                                    }
-                                  }
-
-                                  FocusScope.of(context).requestFocus(_emailAuthenticationFocus);
-                                },
-                                style: TextButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(50.0)),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.w, vertical: 9.h),
-                                    backgroundColor: _emailAddressState
-                                        ? focusButtonColor
-                                        : noFocusButtonColor),
-                              ),
-                            ),
-                            // ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              NextPageButton(
-                firstFieldState: _emailAddressState,
-                secondFieldState: _emailAuthenticationState,
-                text: '다음',
-                onPressed: () async {
-                  await checkValidCode(authenticationNumber);
-                  setState(() {
-                    if (_emailAddressState && _emailAuthenticationState) {
-                      resetTimer();
-                      final formKeyState = _emailAuthenticationFormKey.currentState!;
-                      if (formKeyState.validate()) {
-                        formKeyState.save();
-                        if (!_checkAuthenticationState) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SetIdNamePage(userEmail: userEmailAddress),
-                            ),
-                          );
-                        }
-                      }
-                    }
-                  });
-                },
-              )
-            ],
+        appBar: ProgressBar(progress: 1, totalProgress: 3),
+        body: JoinWidget(
+          title: '회원가입을 위해\n이메일을 인증해주세요.',
+          firstFieldText: '이메일 주소',
+          firstGuideState: false,
+          firstGuideText: null,
+          secondGuideState: false,
+          secondGuideText: null,
+          firstCustomForm: Form(
+            key: _emailAddressFormKey,
+            child: CustomTextFormField(
+              hintText: '이메일 주소',
+              focusNode: _emailAddressFocus,
+              onChanged: (value) {
+                setState(() {
+                  userEmailAddress = value!;
+                  value == ''
+                      ? _emailAddressState = false
+                      : _emailAddressState = true;
+                });
+              },
+              validator: (value) {
+                List<String? Function(String)> validators = [
+                  _checkEmailDuplicate,
+                ];
+                for (var validator in validators) {
+                  var result = validator(value!);
+                  if (result != null) {
+                    resetTimer();
+                    return result;
+                  }
+                }
+                return null;
+              },
+              keyboardType: TextInputType.emailAddress,
+            ),
           ),
-        ),
+          secondFieldText: '이메일 인증',
+          secondCustomForm: Form(
+            key: _emailAuthenticationFormKey,
+            child: CustomTextFormField(
+              hintText: '인증 번호',
+              focusNode: _emailAuthenticationFocus,
+              onChanged: (value) {
+                setState(() {
+                  authenticationNumber = value!;
+                  value == ''
+                      ? _emailAuthenticationState = false
+                      : _emailAuthenticationState = true;
+                });
+              },
+              validator: (value) {
+                List<String? Function(String)> validators = [
+                  _checkAuthenticationValid,
+                ];
+                for (var validator in validators) {
+                  var result = validator(value!);
+                  if (result != null) {
+                    return result;
+                  }
+                  ;
+                }
+                ;
+                return null;
+              },
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          authenticationButton: Positioned(
+            top: 21.h,
+            right: 108.w,
+            child: Text(
+              '${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(
+                  2, '0')}',
+              style: TextStyle(
+                  fontFamily: 'PretendardRegular',
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: _timerState
+                      ? noFocusColor
+                      : Colors.transparent),
+            ),
+          ),
+          authenticationState: true,
+          timer: Positioned(
+            top: 12.h,
+            right: 16.w,
+            child: TextButton(
+              child: Text(
+                _authenticationRequestButton
+                    ? '재인증'
+                    : '인증 요청',
+                style: TextStyle(
+                    fontFamily: 'PretendardRegular',
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: _emailAddressState
+                        ? darkGrayColor
+                        : noFocusColor),
+              ),
+              onPressed: () async {
+                await sendValidCode(userEmailAddress);
+                final formKeyState =
+                _emailAddressFormKey.currentState!;
+                if (formKeyState.validate()) {
+                  formKeyState.save();
+                  if (_emailAddressState &&
+                      !_emailExistState) {
+                    startTimer();
+                  }
+                }
+                FocusScope.of(context)
+                    .requestFocus(_emailAuthenticationFocus);
+              },
+              style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.circular(50.0)),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 16.w, vertical: 9.h),
+                  backgroundColor: _emailAddressState
+                      ? focusButtonColor
+                      : noFocusButtonColor),
+            ),
+          ),
+          nextPageButton: NextPageButton(
+            firstFieldState: _emailAddressState,
+            secondFieldState: _emailAuthenticationState,
+            text: '다음',
+            onPressed: () async {
+              await checkValidCode(authenticationNumber);
+              setState(
+                    () {
+                  if (_emailAddressState && _emailAuthenticationState) {
+                    resetTimer();
+                    final formKeyState =
+                    _emailAuthenticationFormKey.currentState!;
+                    if (formKeyState.validate()) {
+                      formKeyState.save();
+                      if (!_checkAuthenticationState) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                SetIdNamePage(userEmail: userEmailAddress),
+                          ),
+                        );
+                      }
+                      ;
+                    }
+                    ;
+                  }
+                  ;
+                },
+              );
+            },
+          ),
+      ),
       ),
     );
+
   }
 }

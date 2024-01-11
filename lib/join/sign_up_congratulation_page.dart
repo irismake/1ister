@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../login/login_page.dart';
 import '../main.dart';
-import '../model/http_request.dart';
+import '../model/next_page_button.dart';
 
 class SignUpCongratulationPage extends StatelessWidget {
   SignUpCongratulationPage({Key? key}) : super(key: key);

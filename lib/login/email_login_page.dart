@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import '../model/custom_text_form_field.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../model/next_page_button.dart';
+
 class EmailLoginPage extends StatefulWidget {
   const EmailLoginPage({Key? key}) : super(key: key);
 
@@ -26,7 +28,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
 
-
   Future<void> signIn(String email, String password) async {
     try {
       final Uri uri = Uri.parse('http://172.30.1.87:5999/user/signin');
@@ -41,7 +42,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
         body: json.encode(requestBody),
         headers: {'Content-Type': 'application/json'},
       );
-
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
@@ -59,7 +59,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
       print('로그인 오류: $e');
     }
   }
-
 
   @override
   void initState() {
@@ -81,7 +80,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                 child: Column(
                   children: [
                     Container(
-                      //color : Colors.green,
                       height: 80.h,
                       alignment: Alignment.centerLeft,
                       child: FittedBox(
@@ -145,32 +143,17 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: TextButton(
-                    onPressed: () {
+                  child: NextPageButton(
+                    firstFieldState: _emailState,
+                    secondFieldState: _passwordState,
+                    text: '로그인',
+                    onPressed: () async {
                       setState(() {
                         print("[final email] : $_userEmail");
                         print("[final password] : $_userPassword");
-                        signIn(_userEmail,_userPassword);
+                        signIn(_userEmail, _userPassword);
                       });
                     },
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 158.w, vertical: 20.h),
-                      backgroundColor:
-                      _emailState && _passwordState ? Colors.black : noFocusColor,
-                    ),
-                    child: Text(
-                      "로그인",
-                      style: TextStyle(
-                        fontFamily: 'PretendardRegular',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color:
-                        _emailState && _passwordState ? Theme.of(context).primaryColor : Colors.white,
-                      ),
-                    ),
                   ),
                 ),
               ),
