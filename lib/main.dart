@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
       print('have access token');
     }

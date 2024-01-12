@@ -148,6 +148,27 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     }
   }
 
+  Future<void> createAccount(String authenticationNumber) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'http://172.30.1.87:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+
+        if (responseData['is_valid']) {
+          _checkAuthenticationState = false;
+        } else {
+          _checkAuthenticationState = true;
+        }
+      }
+    } catch (e) {
+      print('이메일 인증 번호 검사 오류 발생: $e');
+    }
+  }
+
   void startTimer() {
     _timerState ? timer.cancel() : null;
     remainingTime = 180;

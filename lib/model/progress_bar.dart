@@ -28,8 +28,7 @@ class ProgressBar extends StatelessWidget implements PreferredSizeWidget {
                   height: 4.h,
                   color: Color(0xff212529),
                 ),
-                Flexible(
-                  fit: FlexFit.tight,
+                Expanded(
                   child :Container(
                   width: appWidth * 2 / 3,
                   height: 4.h,

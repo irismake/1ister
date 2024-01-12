@@ -16,8 +16,7 @@ class NextPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Align(
+    return Align(
         alignment: Alignment.bottomCenter,
         child: Container(
           width: double.infinity,
@@ -47,7 +46,7 @@ class NextPageButton extends StatelessWidget {
             ),
           ),
         ),
-      ),
+
     );
   }
 }

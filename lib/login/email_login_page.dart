@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
+import 'package:lister/home/home_page.dart';
 import '../model/custom_text_form_field.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -17,7 +19,8 @@ class EmailLoginPage extends StatefulWidget {
 class _EmailLoginPageState extends State<EmailLoginPage> {
   @override
   final noFocusColor = Color(0xffCED4DA);
-  final storage = FlutterSecureStorage();
+  static final storage = FlutterSecureStorage();
+  dynamic userInfo = '';
 
   String _userEmail = '';
   String _userPassword = '';
@@ -49,14 +52,42 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
         String accessToken = responseData['access_token'];
 
         await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
-        // await storage.write(
-        //     key: 'REFRESH_TOKEN', value: refreshToken);
-        print(accessToken);
+
+        await  _getUserInfo(userId, accessToken);
+
       } else {
         print('로그인 실패 - 상태 코드: ${response.statusCode}');
       }
     } catch (e) {
       print('로그인 오류: $e');
+    }
+  }
+
+
+  Future<void> _getUserInfo(int userId, String accessToken) async {
+    print(accessToken);
+    final Uri uri =
+        Uri.parse('http://172.30.1.87:5999/user/info?user_id=$userId');
+
+    try {
+      final response = await http.get(
+          uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': '$accessToken',
+      });
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('User Info: $responseData');
+        Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()),);
+
+      } else {
+        print('Server response error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Request error: $e');
     }
   }
 
@@ -140,8 +171,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Align(
+              Align(
                   alignment: Alignment.bottomCenter,
                   child: NextPageButton(
                     firstFieldState: _emailState,
@@ -156,7 +186,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                     },
                   ),
                 ),
-              ),
+
             ],
           ),
         ),
