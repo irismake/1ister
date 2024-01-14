@@ -24,17 +24,17 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
   // final mildGrayColor = Color(0xffADB5BD);
 
   bool _userIdState = false;
-  bool _userNameState = false;
-  bool _userNameValid = false;
+  bool _nameState = false;
+  bool _userIdValid = false;
 
   FocusNode _userIdFocus = FocusNode();
-  FocusNode _userNameFocus = FocusNode();
+  FocusNode _nameFocus = FocusNode();
 
   final _userIdFormKey = GlobalKey<FormState>();
-  final _userNameFormKey = GlobalKey<FormState>();
+  final _nameFormKey = GlobalKey<FormState>();
 
   String userId = '';
-  String userName = '';
+  String name = '';
 
   @override
   void initState() {
@@ -49,9 +49,9 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
       });
     });
 
-    _userNameFocus.addListener(() {
+    _nameFocus.addListener(() {
       setState(() {
-        final formKeyState = _userNameFormKey.currentState!;
+        final formKeyState = _nameFormKey.currentState!;
         if (formKeyState.validate()) {
           formKeyState.save();
         }
@@ -59,33 +59,36 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
     });
   }
 
-  String? _checkUserNameValid(String? value) {
-    if (_userNameFocus.hasFocus) {
+  String? _checknameValid(String? value) {
+    if (_nameFocus.hasFocus) {
       return null;
     }
-    if (!_userNameState) {
-      _userNameState = true;
-      return '이미 사용중인 이메일입니다.';
+    if (!_userIdValid ) {
+
+      //_nameState = true;
+      return '이미 사용중인 아이디 입니다.';
     }
     return null;
   }
 
-  Future<void> checkUserName(String userName) async {
+  Future<void> checkname(String userId) async {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://172.30.1.87:5999/user/check-duplicate-username?username=$userName'),
+            'http://172.30.1.87:5999/user/check-duplicate-username?username=$userId'),
       );
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         if (responseData['result']) {
-          _userNameValid = false;
+          _userIdValid = false;
           print('이미 사용중인 이름입니다');
         } else {
-          _userNameValid = true;
+          _userIdValid = true;
           print('사용 가능한 이름입니다');
         }
+      }else{
+        print('사용자 아이디 중복 확인 - 상태 코드 확인 필요');
       }
     } catch (e) {
       print('이름 중복 체크 오류: $e');
@@ -115,7 +118,9 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                     value == '' ? _userIdState = false : _userIdState = true;
                   });
                 },
-                validator: (value) {},
+                validator: (value) {
+                  _checknameValid;
+                },
                 keyboardType: TextInputType.name,
               ),
             ),
@@ -123,16 +128,16 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
             firstGuideText: '영어, 숫자 포함 n자 이내',
             secondFieldText: '이름',
             secondCustomForm: Form(
-              key: _userNameFormKey,
+              key: _nameFormKey,
               child: CustomTextFormField(
                 hintText: '이름을 설정해 주세요.',
-                focusNode: _userNameFocus,
+                focusNode: _nameFocus,
                 onChanged: (value) {
                   setState(() {
-                    userName = value!;
+                    name = value!;
                     value == ''
-                        ? _userNameState = false
-                        : _userNameState = true;
+                        ? _nameState = false
+                        : _nameState = true;
                   });
                 },
                 validator: (value) {},
@@ -146,22 +151,24 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
             timer: null,
             nextPageButton: NextPageButton(
               firstFieldState: _userIdState,
-              secondFieldState: _userNameState,
+              secondFieldState: _nameState,
               text: '다음',
               onPressed: () async {
-                if (_userIdState && _userNameState) {
-                  await checkUserName(userName);
-                  final formKeyState = _userNameFormKey.currentState!;
+                if (_userIdState && _nameState) {
+
+                  final formKeyState = _nameFormKey.currentState!;
                   if (formKeyState.validate()) {
                     formKeyState.save();
-                    if (_userNameValid) {
+
+                    await checkname(userId);
+                    if (_userIdValid) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => SetPasswordPage(
                                   userEmail: widget.userEmail,
                                   userId: userId,
-                                  userName: userName)));
+                                  name: name)));
                     }
                   }
                 }

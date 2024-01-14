@@ -13,12 +13,12 @@ import '../model/progress_bar.dart';
 class SetPasswordPage extends StatefulWidget {
   final String userEmail;
   final String userId;
-  final String userName;
+  final String name;
 
   const SetPasswordPage(
       {Key? key,
       required this.userEmail,
-      required this.userName,
+      required this.name,
       required this.userId})
       : super(key: key);
 
@@ -97,7 +97,9 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
   }
 
   Future<void> signUp(
-      String name, String email, String password, String userName) async {
+      String name, String email, String password, String username) async {
+    print(name);
+    print(username);
     try {
       final Uri uri = Uri.parse('http://172.30.1.87:5999/user/signup');
 
@@ -105,7 +107,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
         "name": name,
         "email": email,
         "password": password,
-        "username": userName,
+        //"username": username,
       };
 
       final http.Response response = await http.post(
@@ -398,8 +400,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                         onPressed: () {
                           setState(() {
                             if (_isChecked_A && _isChecked_B && _isChecked_C) {
-                              signUp(widget.userId, widget.userEmail, password,
-                                  widget.userName);
+                              signUp(widget.name, widget.userEmail, password, widget.userId);
 
                             }
                           });
