@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lister/join/sign_up_congratulation_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../model/join_widget.dart';
 import '../model/next_page_button.dart';
@@ -26,6 +27,8 @@ class SetPasswordPage extends StatefulWidget {
 }
 
 class _SetPasswordPageState extends State<SetPasswordPage> {
+  static final storage = FlutterSecureStorage();
+
   final noFocusColor = Color(0xffCED4DA);
   final darkGrayColor = Color(0xff495057);
   final mildGrayColor = Color(0xffADB5BD);
@@ -114,6 +117,8 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         print(responseData);
+        signIn(email, password);
+
       } else {
         print('회원가입 실패 - 상태 코드: ${response.statusCode}');
       }
@@ -121,6 +126,44 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
       print('회원가입 오류: $e');
     }
   }
+
+  Future<void> signIn(String email, String password) async {
+    try {
+      final Uri uri = Uri.parse('http://172.30.1.87:5999/user/signin');
+
+      final Map<String, dynamic> requestBody = {
+        "email": email,
+        "password": password,
+      };
+
+      final http.Response response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+
+        final responseData = json.decode(response.body);
+        int userId = responseData['user_id'];
+        String accessToken = responseData['access_token'];
+        await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  SignUpCongratulationPage()),
+        );
+
+      } else {
+        print('로그인 실패 - 상태 코드: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('로그인 오류: $e');
+    }
+  }
+
 
   void _agreementPopUp() {
     showModalBottomSheet(
@@ -357,12 +400,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                             if (_isChecked_A && _isChecked_B && _isChecked_C) {
                               signUp(widget.userId, widget.userEmail, password,
                                   widget.userName);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        SignUpCongratulationPage()),
-                              );
+
                             }
                           });
                         },
@@ -453,8 +491,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                   if (formKeyState.validate()) {
                     formKeyState.save();
                     _agreementPopUp();
-                    // signUp(widget.userId, widget.userEmail, password,
-                    //     widget.userName);
+
                   }
                 }
               });

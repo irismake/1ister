@@ -1,11 +1,10 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../login/login_page.dart';
-import '../main.dart';
 import '../model/next_page_button.dart';
+import '../home/home_page.dart';
 
 class SignUpCongratulationPage extends StatelessWidget {
   SignUpCongratulationPage({Key? key}) : super(key: key);
@@ -63,12 +62,9 @@ class SignUpCongratulationPage extends StatelessWidget {
               secondFieldState: true,
               text: '3초 후에 메인으로 이동해요',
               onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
-
-                // Navigator.of(context).pushAndRemoveUntil(
-                //     CupertinoPageRoute(builder: (context) => MyHomePage()), (
-                //     route) => false);
+                Navigator.of(context).pushAndRemoveUntil(
+                    CupertinoPageRoute(builder: (context) => HomePage()), (
+                    route) => false);
               },
             )
           ],
