@@ -59,22 +59,10 @@ class _CustomIconButtonState extends State<CustomIconButton> {
 
 
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: SvgPicture.asset(
+    return  SvgPicture.asset(
         'assets/icons/${widget.iconName}.svg',
         height: 32.0.h,
         width: 32.0.w,
-      ),
-      onPressed: () {
-        _nextToPage(context);
-
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //     builder: (context) => SetIdNamePage(),
-        //     )
-        // );
-      },
     );
   }
 }

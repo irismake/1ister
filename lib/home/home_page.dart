@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lister/home/bookmark_page.dart';
+import 'package:lister/home/file_add_page.dart';
+import 'package:lister/home/guide_page.dart';
+import 'package:lister/home/search_page.dart';
+import 'package:lister/home/user_page.dart';
 import '../model/icon_button.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +17,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _pages = const [
+    FileAddPage(),
+    SearchPage(),
+    GuidePage(),
     BookmarkPage(),
+    UserPage()
   ];
   final _navigatorKeyList =
       List.generate(5, (index) => GlobalKey<NavigatorState>());
@@ -31,12 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      // onWillPop: () async {
-      //   return !(await _navigatorKeyList[_currentIndex].currentState!.maybePop());
-      // },
-
-      child: DefaultTabController(
+    return  DefaultTabController(
         length: 5,
         child: Scaffold(
           appBar: AppBar(
@@ -102,7 +105,7 @@ class _HomePageState extends State<HomePage> {
               ),
           ),
         ),
-      ),
+
     );
 
     // BottomAppBar(

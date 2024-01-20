@@ -14,13 +14,10 @@ class _BookmarkPageState extends State<BookmarkPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Page 1'),
-        centerTitle: true,
-      ),
+
       body: Center(
         child: FutureBuilder(
-          future: Future.delayed(const Duration(seconds: 2)),
+          future: Future.delayed(const Duration(seconds: 1)),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return TextButton(
