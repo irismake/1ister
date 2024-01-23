@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
-import 'package:lister/home/home_page.dart';
+import 'package:lister/home/home_page_navigator.dart';
 import '../model/custom_text_form_field.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -80,7 +80,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
         final responseData = json.decode(response.body);
         print('User Info: $responseData');
         Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()),);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePageNavigator()),);
 
       } else {
         print('Server response error: ${response.statusCode}');

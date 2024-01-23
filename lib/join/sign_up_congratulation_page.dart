@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../model/next_page_button.dart';
-import '../home/home_page.dart';
+import '../home/home_page_navigator.dart';
 
 class SignUpCongratulationPage extends StatelessWidget {
   SignUpCongratulationPage({Key? key}) : super(key: key);
@@ -63,7 +63,7 @@ class SignUpCongratulationPage extends StatelessWidget {
               text: '3초 후에 메인으로 이동해요',
               onPressed: () {
                 Navigator.of(context).pushAndRemoveUntil(
-                    CupertinoPageRoute(builder: (context) => HomePage()), (
+                    CupertinoPageRoute(builder: (context) => HomePageNavigator()), (
                     route) => false);
               },
             )

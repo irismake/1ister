@@ -21,7 +21,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return TextButton(
-                child: const Text('Next page'),
+                child: const Text('Bookmark'),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
                 },

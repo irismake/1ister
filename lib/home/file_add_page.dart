@@ -10,6 +10,20 @@ class FileAddPage extends StatefulWidget {
 class _FileAddPageState extends State<FileAddPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+      child: FutureBuilder(
+        future: Future.delayed(const Duration(seconds: 1)),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return  const Text('fileAdd');
+
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+    ),
+    );
   }
 }

@@ -10,6 +10,20 @@ class GuidePage extends StatefulWidget {
 class _GuidePageState extends State<GuidePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+        child: FutureBuilder(
+          future: Future.delayed(const Duration(seconds: 1)),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return  const Text('Guide');
+
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      ),
+    );
   }
 }

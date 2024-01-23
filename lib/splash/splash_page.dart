@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
-import '../home/home_page.dart';
+import 'package:lister/home/home_page_detail.dart';
+import '../home/home_page_navigator.dart';
 import '../login/login_page.dart';
-
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -15,10 +15,8 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-
   final storage = FlutterSecureStorage();
   String? authToken;
-
 
   @override
   void initState() {
@@ -45,7 +43,7 @@ class _SplashPageState extends State<SplashPage> {
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => HomePageNavigator()),
       );
       print('have access token');
     }

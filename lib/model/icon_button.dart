@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lister/home/bookmark_page.dart';
 import 'package:lister/home/file_add_page.dart';
 import 'package:lister/home/guide_page.dart';
+import 'package:lister/home/home_page_navigator.dart';
 import 'package:lister/home/search_page.dart';
 import 'package:lister/home/user_page.dart';
 
@@ -12,7 +13,6 @@ class CustomIconButton extends StatefulWidget {
 
   CustomIconButton({
     required this.iconName,
-
   });
 
   @override
@@ -21,7 +21,6 @@ class CustomIconButton extends StatefulWidget {
 
 class _CustomIconButtonState extends State<CustomIconButton> {
   @override
-
   void _nextToPage(BuildContext context) {
     // Define a mapping from iconName to the corresponding page
     Map<String, WidgetBuilder> pageMapping = {
@@ -52,18 +51,13 @@ class _CustomIconButtonState extends State<CustomIconButton> {
         ),
       );
     }
-
-
   }
 
-
-
   Widget build(BuildContext context) {
-    return  SvgPicture.asset(
-        'assets/icons/${widget.iconName}.svg',
-        height: 32.0.h,
-        width: 32.0.w,
+    return SvgPicture.asset(
+      'assets/icons/${widget.iconName}.svg',
+      height: 32.0.h,
+      width: 32.0.w,
     );
   }
 }
-
