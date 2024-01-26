@@ -9,22 +9,24 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 64.0.h + MediaQuery.of(context).padding.top,
-        elevation: 0,
-        leadingWidth: 100,
-        leading: Padding(
-          padding: EdgeInsets.only(top: 16.0.h, left: 16.0.w),
-          child: SvgPicture.asset(
-            'assets/images/Logo_Name.svg',
-            height: 24.0.h,
-            width: 86.4.w,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(64.0.h),
+        child: AppBar(
+          elevation: 0,
+          leadingWidth: 100,
+          leading: Padding(
+            padding: EdgeInsets.only(top: 16.0.h, left: 16.0.w),
+            child: SvgPicture.asset(
+              'assets/images/Logo_Name.svg',
+              height: 24.0.h,
+              width: 86.4.w,
+            ),
           ),
-        ),
-        shape: Border(
-          bottom: BorderSide(
-            color: Color(0xffb2b2b2),
-            width: 1,
+          shape: Border(
+            bottom: BorderSide(
+              color: Color(0xffb2b2b2),
+              width: 1,
+            ),
           ),
         ),
       ),

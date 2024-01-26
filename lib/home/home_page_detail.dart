@@ -25,26 +25,42 @@ class _HomePageState extends State<HomePageDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 64.0.h + MediaQuery.of(context).padding.top,
-          elevation: 0,
-          leadingWidth: 100,
-          leading: Padding(
-            padding: EdgeInsets.only(top: 16.0.h, left: 16.0.w),
-            child: IconButton(
-                onPressed: () {
-                  Navigator.pop(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
-                },
-                color: Colors.purple,
-                icon: Icon(Icons.arrow_back)),
-          ),
-          shape: Border(
-            bottom: BorderSide(
-              color: Color(0xffb2b2b2),
-              width: 1,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(64.0.h),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            //backgroundColor: Colors.deepOrange,
+
+            elevation: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: SvgPicture.asset(
+                    'assets/icons/goBackButton.svg',
+                  ),
+                ),
+                Text(
+                  '검색하기',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18.0.sp,
+                  ),
+                ),
+                Container(
+                  child: SvgPicture.asset(
+                    'assets/icons/plusButton.svg',
+                  ),
+                ),
+              ],
+            ),
+            titleSpacing: 16.0.w,
+            shape: Border(
+              bottom: BorderSide(
+                color: Color(0xffb2b2b2),
+                width: 1,
+              ),
             ),
           ),
         ),

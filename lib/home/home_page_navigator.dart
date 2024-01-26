@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lister/home/bookmark_page.dart';
-import 'package:lister/home/file_add_page.dart';
 import 'package:lister/home/guide_page.dart';
 import 'package:lister/home/home_page.dart';
 import 'package:lister/home/search_page.dart';
