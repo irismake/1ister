@@ -6,7 +6,7 @@ import 'package:lister/home/guide_page.dart';
 import 'package:lister/home/home_page.dart';
 import 'package:lister/home/search_page.dart';
 import 'package:lister/home/user_page.dart';
-import 'package:lister/model/bottomNavigationBar.dart';
+import 'package:lister/model/bottom_navigation_bar.dart';
 
 class HomePageNavigator extends StatefulWidget {
   HomePageNavigator({Key? key}) : super(key: key);

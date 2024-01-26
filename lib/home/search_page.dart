@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lister/home/home_page_navigator.dart';
+import 'package:lister/model/custom_app_bar.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -12,9 +13,8 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Second Screen'),
-      ),
+      appBar: CustomAppbar(
+          titleText: '검색하기', titleState: false, actionButton: null),
       body: Center(
         child: FutureBuilder(
           future: Future.delayed(const Duration(seconds: 1)),
@@ -30,7 +30,6 @@ class _SearchPageState extends State<SearchPage> {
               //     );
               //   },
               // );
-
             } else {
               return const Center(child: CircularProgressIndicator());
             }
