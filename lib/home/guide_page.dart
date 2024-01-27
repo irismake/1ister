@@ -13,7 +13,10 @@ class _GuidePageState extends State<GuidePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-          titleText: '리스트 만들기', titleState: false, actionButton: null),
+          titleText: '리스트 만들기',
+          titleState: false,
+          actionButtonOnTap: () {},
+          actionButton: ''),
       body: Center(
         child: FutureBuilder(
           future: Future.delayed(const Duration(seconds: 1)),

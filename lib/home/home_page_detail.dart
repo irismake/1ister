@@ -26,8 +26,11 @@ class _HomePageState extends State<HomePageDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            CustomAppbar(titleText: '', titleState: false, actionButton: ''),
+        appBar: CustomAppbar(
+            titleText: '',
+            titleState: false,
+            actionButtonOnTap: () {},
+            actionButton: null),
         body: Container());
   }
 }

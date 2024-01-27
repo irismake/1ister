@@ -19,6 +19,7 @@ class _UserPageState extends State<UserPage> {
       appBar: CustomAppbar(
           titleText: '부지런한 아보카도',
           titleState: false,
+          actionButtonOnTap: () {},
           actionButton: 'hamBurgerButton'),
       body: Center(
         child: FutureBuilder(

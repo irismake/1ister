@@ -6,12 +6,14 @@ import 'package:lister/home/home_page.dart';
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String titleText;
   final bool titleState;
+  final VoidCallback? actionButtonOnTap;
   final String? actionButton;
 
   const CustomAppbar(
       {Key? key,
       required this.titleText,
       required this.titleState,
+      required this.actionButtonOnTap,
       required this.actionButton})
       : super(key: key);
 
@@ -23,6 +25,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     return PreferredSize(
       preferredSize: Size.fromHeight(64.0.h),
       child: AppBar(
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         elevation: 0,
         title: Row(
@@ -54,12 +57,12 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                     width: 32.0.w,
                   )
                 : InkWell(
-                    onTap: () {},
+                    onTap: actionButtonOnTap,
                     child: SvgPicture.asset(
                       'assets/icons/${actionButton}.svg',
                       fit: BoxFit.contain,
                     ),
-                  )
+                  ),
           ],
         ),
         titleSpacing: 16.0.w,

@@ -15,7 +15,10 @@ class _BookmarkPageState extends State<BookmarkPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-          titleText: '지니의 북마크', titleState: false, actionButton: 'plusButton'),
+          titleText: '지니의 북마크',
+          titleState: false,
+          actionButtonOnTap: () {},
+          actionButton: 'plusButton'),
       body: Center(
         child: FutureBuilder(
           future: Future.delayed(const Duration(seconds: 1)),

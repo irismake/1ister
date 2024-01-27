@@ -14,7 +14,11 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-          titleText: '검색하기', titleState: false, actionButton: null),
+        titleText: '검색하기',
+        titleState: false,
+        actionButtonOnTap: null,
+        actionButton: null,
+      ),
       body: Center(
         child: FutureBuilder(
           future: Future.delayed(const Duration(seconds: 1)),
