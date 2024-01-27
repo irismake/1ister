@@ -16,7 +16,7 @@ class _GuidePageState extends State<GuidePage> {
           titleText: '리스트 만들기',
           titleState: false,
           actionButtonOnTap: () {},
-          actionButton: ''),
+          actionButton: null),
       body: Center(
         child: FutureBuilder(
           future: Future.delayed(const Duration(seconds: 1)),
