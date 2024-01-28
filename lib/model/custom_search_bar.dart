@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lister/home/user_page.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final VoidCallback? onTap;
@@ -52,7 +53,8 @@ class CustomSearchBar extends StatelessWidget {
       //onTap: onTap,
       onSubmitted: (String value) {
         if (value.isNotEmpty) {
-          onTap;
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const UserPage()));
           print('next');
         }
         // Navigate to the next page using Navigator
