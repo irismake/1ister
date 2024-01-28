@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/home/home_page_detail.dart';
+import 'package:lister/home/list_detail_page.dart';
+import 'package:lister/home/search_page.dart';
+import 'package:lister/model/custom_search_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -9,6 +11,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(64.0.h),
         child: AppBar(
@@ -50,14 +53,17 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 48.0.h,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(8.0)),
-                      color: Color(0xffF5F6F7),
-                    ),
-                  ),
+                  // CustomSearchBar(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => SearchPage(),
+                  //       ),
+                  //     );
+                  //   },
+
+                  // ),
                 ],
               ),
             ),
@@ -88,7 +94,7 @@ class HomePage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomePageDetail()),
+                                      builder: (context) => ListDetailPage()),
                                 );
                                 // CustomNavigator(
                                 //   page: page,
@@ -109,10 +115,6 @@ class HomePage extends StatelessWidget {
                         Divider(
                           color: Colors.black,
                           height: 2.0.h,
-                          thickness: 2.0.h,
-
-                          // indent: 0,
-                          // endIndent: 0,
                         ),
                       ],
                     ),

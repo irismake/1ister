@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/home/home_page_detail.dart';
+import 'package:lister/home/list_detail_page.dart';
 import '../home/home_page_navigator.dart';
 import '../login/login_page.dart';
 

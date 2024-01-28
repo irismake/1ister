@@ -33,24 +33,25 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             InkWell(
               onTap: () {
-                Navigator.pop(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
+                Navigator.pop(context);
               },
               child: SvgPicture.asset(
                 'assets/icons/goBackButton.svg',
                 fit: BoxFit.contain,
               ),
             ),
-            Text(
-              titleText,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
-                fontSize: 18.0.sp,
-              ),
-            ),
+            titleState
+                ? Text(
+                    titleText,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18.0.sp,
+                    ),
+                  )
+                : Text(
+                    '',
+                  ),
             actionButton == null
                 ? SizedBox(
                     height: 32.0.h,

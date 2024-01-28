@@ -14,7 +14,7 @@ class _GuidePageState extends State<GuidePage> {
     return Scaffold(
       appBar: CustomAppbar(
           titleText: '리스트 만들기',
-          titleState: false,
+          titleState: true,
           actionButtonOnTap: () {},
           actionButton: null),
       body: Center(

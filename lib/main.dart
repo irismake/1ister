@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/home/home_page_detail.dart';
+import 'package:lister/home/list_detail_page.dart';
 import 'package:lister/splash/splash_page.dart';
 
 void main() {

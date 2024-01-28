@@ -16,7 +16,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
     return Scaffold(
       appBar: CustomAppbar(
           titleText: '지니의 북마크',
-          titleState: false,
+          titleState: true,
           actionButtonOnTap: () {},
           actionButton: 'plusButton'),
       body: Center(

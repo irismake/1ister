@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lister/home/home_page_detail.dart';
-import 'package:lister/home/home_page_navigator.dart';
 import 'package:lister/model/icon_button.dart';
-import 'package:lister/home/bookmark_page.dart';
-import 'package:lister/home/file_add_page.dart';
-import 'package:lister/home/guide_page.dart';
-import 'package:lister/home/search_page.dart';
-import 'package:lister/home/user_page.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
   bool state = false;
-  final _pages = [
-    FileAddPage(),
-    SearchPage(),
-    GuidePage(),
-    BookmarkPage(),
-    UserPage(),
-  ];
-  final _navigatorKeyList =
-      List.generate(5, (index) => GlobalKey<NavigatorState>());
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +15,7 @@ class CustomBottomAppBar extends StatelessWidget {
         indicatorColor: Colors.transparent,
         isScrollable: false,
         onTap: (index) {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => HomePageNavigator()),
-          // );
+          print(index);
         },
         tabs: <Widget>[
           CustomIconButton(
@@ -80,6 +60,7 @@ class _CustomNavigatorState extends State<CustomNavigator>
 
   @override
   Widget build(BuildContext context) {
+    print("navigatorKey:${widget.navigatorKey}");
     return Navigator(
       key: widget.navigatorKey,
       onGenerateRoute: (_) =>

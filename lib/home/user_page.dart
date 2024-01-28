@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/home/home_page_detail.dart';
+import 'package:lister/home/list_detail_page.dart';
 import 'package:lister/home/home_page_navigator.dart';
 import 'package:lister/model/custom_app_bar.dart';
 
@@ -18,7 +18,7 @@ class _UserPageState extends State<UserPage> {
     return Scaffold(
       appBar: CustomAppbar(
           titleText: '부지런한 아보카도',
-          titleState: false,
+          titleState: true,
           actionButtonOnTap: () {},
           actionButton: 'hamBurgerButton'),
       body: Center(

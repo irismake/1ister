@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/home/home_page.dart';
-import 'package:lister/model/bottom_navigation_bar.dart';
 import 'package:lister/model/custom_app_bar.dart';
 import 'package:lister/model/custom_tag.dart';
 
-class HomePageDetail extends StatefulWidget {
-  HomePageDetail({Key? key}) : super(key: key);
+class ListDetailPage extends StatefulWidget {
+  ListDetailPage({Key? key}) : super(key: key);
 
   @override
-  State<HomePageDetail> createState() => _HomePageState();
+  State<ListDetailPage> createState() => _ListDetailPage();
 }
 
-class _HomePageState extends State<HomePageDetail> {
+class _ListDetailPage extends State<ListDetailPage> {
   @override
   void initState() {
     super.initState();

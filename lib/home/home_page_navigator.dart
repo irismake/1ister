@@ -26,7 +26,6 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
   ];
   final _navigatorKeyList =
       List.generate(5, (index) => GlobalKey<NavigatorState>());
-  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -42,27 +41,24 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
-        // if (didPop) {
-        //   print('return');
-        //   return;
-        // }
-        // print('return');
-        // final navigator = Navigator.of(context);
-        // bool value = true;
-        // if (value) {
-        //   navigator.pop();
-        // }
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          // IOS 뒤로가기 버튼, ButtonWidget이건 뒤로가기 제스쳐가 감지되면 호출 된다.
+          print('didPop호출');
+          return;
+        }
+        print('뒤로가기');
       },
       child: DefaultTabController(
         initialIndex: 0,
         length: 5,
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: TabBarView(
             children: _pages.map(
               (page) {
                 int index = _pages.indexOf(page);
-                print(_currentIndex);
+                print("iiiii${index}");
                 return CustomNavigator(
                   page: page,
                   navigatorKey: _navigatorKeyList[index],
