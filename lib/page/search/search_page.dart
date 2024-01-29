@@ -6,7 +6,7 @@ import 'package:lister/model/custom_tag.dart';
 import 'package:lister/model/home_page_navigator.dart';
 import 'package:lister/model/custom_app_bar.dart';
 import 'package:lister/model/custom_search_bar.dart';
-import 'package:lister/page/search/custom_list_view.dart';
+import 'package:lister/page/home/home_list_view.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);

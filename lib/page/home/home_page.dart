@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lister/page/home/home_list_view.dart';
 import 'package:lister/page/list_detail_page.dart';
 import 'package:lister/page/search/search_page.dart';
 import 'package:lister/model/custom_search_bar.dart';
@@ -63,57 +64,53 @@ class HomePage extends StatelessWidget {
               //color: Colors.green,
               height: 352.0.h,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 42.0.h,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '지금 핫한 리스트',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18.0.sp,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                print('더보기');
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ListDetailPage()),
-                                );
-                                // CustomNavigator(
-                                //   page: page,
-                                //   navigatorKey: _navigatorKeyList[index],
-                                // );
-                              },
-                              child: Text(
-                                '더보기',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14.0.sp,
-                                  color: Color(0xff868E96),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(
-                          color: Colors.black,
-                          height: 2.0.h,
-                        ),
-                      ],
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '지금 핫한 리스트',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18.0.sp,
+                      ),
                     ),
                   ),
+
+                  // InkWell(
+                  //   onTap: () {
+                  //     print('더보기');
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => ListDetailPage()),
+                  //     );
+                  //     // CustomNavigator(
+                  //     //   page: page,
+                  //     //   navigatorKey: _navigatorKeyList[index],
+                  //     // );
+                  //   },
+                  //   child: Text(
+                  //     '더보기',
+                  //     style: TextStyle(
+                  //       fontWeight: FontWeight.w600,
+                  //       fontSize: 14.0.sp,
+                  //       color: Color(0xff868E96),
+                  //     ),
+                  //   ),
+                  //
+                  Padding(
+                    padding: EdgeInsets.only(top: 12.0.h, bottom: 24.0),
+                    child: Divider(
+                      color: Colors.black,
+                      thickness: 2.0.h,
+                      height: 0,
+                    ),
+                  ),
+
                   Container(
-                    color: Colors.pink,
                     height: 282.0.h,
+                    child: HomeListView(),
                   )
                 ],
               ),
