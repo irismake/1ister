@@ -56,7 +56,7 @@ class _SplashPageState extends State<SplashPage> {
       child: Padding(
         padding: EdgeInsets.fromLTRB(123.0.w, 376.0.h, 123.0.w, 428.0.h),
         child: SvgPicture.asset(
-          'assets/images/image_logo_name.svg',
+          'assets/images/image_logo_Name.svg',
           height: 144.0.h,
           width: 40.0.w,
         ),
