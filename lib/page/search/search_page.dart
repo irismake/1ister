@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lister/model/custom_list_widget.dart';
-import 'package:lister/model/custom_tag.dart';
-import 'package:lister/model/home_page_navigator.dart';
+import 'package:lister/model/custom_category.dart';
 import 'package:lister/model/custom_app_bar.dart';
 import 'package:lister/model/custom_search_bar.dart';
-import 'package:lister/page/home/home_list_view.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -19,6 +16,9 @@ class _SearchPageState extends State<SearchPage> {
   String? _searchQuery;
   bool _searchState = false;
   List<String> _searchResults = [];
+  bool _listState = true;
+  bool _itemState = false;
+  bool _userState = false;
 
   void updateSearchResults(String searchTerm) {
     setState(() {
@@ -32,6 +32,18 @@ class _SearchPageState extends State<SearchPage> {
       results.add('Result $i for $searchTerm');
     }
     return results;
+  }
+
+  void _onTapList() => _updateCategoryState(true, false, false);
+  void _onTapItem() => _updateCategoryState(false, true, false);
+  void _onTapUser() => _updateCategoryState(false, false, true);
+
+  void _updateCategoryState(bool list, bool item, bool user) {
+    setState(() {
+      _listState = list;
+      _itemState = item;
+      _userState = user;
+    });
   }
 
   @override
@@ -64,20 +76,32 @@ class _SearchPageState extends State<SearchPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Tag(
-                            TagName: 'List',
+                          InkWell(
+                            onTap: _onTapList,
+                            child: Category(
+                              categoryName: 'List',
+                              categoryState: _listState,
+                            ),
                           ),
                           SizedBox(
                             width: 8.0.w,
                           ),
-                          Tag(
-                            TagName: 'Item',
+                          InkWell(
+                            onTap: _onTapItem,
+                            child: Category(
+                              categoryName: 'Item',
+                              categoryState: _itemState,
+                            ),
                           ),
                           SizedBox(
                             width: 8.0.w,
                           ),
-                          Tag(
-                            TagName: 'User',
+                          InkWell(
+                            onTap: _onTapUser,
+                            child: Category(
+                              categoryName: 'User',
+                              categoryState: _userState,
+                            ),
                           ),
                         ],
                       ),
@@ -108,9 +132,6 @@ class _SearchPageState extends State<SearchPage> {
                           itemBuilder: (context, index) {
                             return ListWidget(
                                 searchWord: _searchResults[index]);
-                            // return ListTile(
-                            //   title: Text(_searchResults[index]),
-                            // );
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return Divider(
