@@ -19,19 +19,19 @@ class CustomBottomAppBar extends StatelessWidget {
         },
         tabs: <Widget>[
           CustomIconButton(
-            iconName: 'icon_file_add_light',
+            iconName: 'tab_home',
           ),
           CustomIconButton(
-            iconName: 'icon_search_light',
+            iconName: 'tab_search',
           ),
           CustomIconButton(
-            iconName: 'icon_guide_light',
+            iconName: 'tab_edit',
           ),
           CustomIconButton(
-            iconName: 'icon_bookmark_light',
+            iconName: 'tab_book_mark',
           ),
           CustomIconButton(
-            iconName: 'icon_user_light',
+            iconName: 'tab_user',
           ),
         ],
       ),

@@ -1,14 +1,12 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import '../model/next_page_button.dart';
-import '../home/home_page_navigator.dart';
+import '../../model/next_page_button.dart';
+import '../../model/home_page_navigator.dart';
 
 class SignUpCongratulationPage extends StatelessWidget {
   SignUpCongratulationPage({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +47,7 @@ class SignUpCongratulationPage extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: SvgPicture.asset(
-                      'assets/images/welcome.svg',
+                      'assets/images/image_welcome.svg',
                       width: 115.2.w,
                       height: 32.h,
                     ),
@@ -63,8 +61,9 @@ class SignUpCongratulationPage extends StatelessWidget {
               text: '3초 후에 메인으로 이동해요',
               onPressed: () {
                 Navigator.of(context).pushAndRemoveUntil(
-                    CupertinoPageRoute(builder: (context) => HomePageNavigator()), (
-                    route) => false);
+                    CupertinoPageRoute(
+                        builder: (context) => HomePageNavigator()),
+                    (route) => false);
               },
             )
           ],

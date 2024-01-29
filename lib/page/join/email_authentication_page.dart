@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/join/set_id_name_page.dart';
+import 'package:lister/page/join/set_id_name_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 import 'package:lister/model/join_widget.dart';
 
-import '../model/next_page_button.dart';
-import '../model/progress_bar.dart';
+import '../../model/next_page_button.dart';
+import '../../model/progress_bar.dart';
 
 class EmailAuthenticationPage extends StatefulWidget {
   const EmailAuthenticationPage({Key? key}) : super(key: key);
@@ -20,7 +20,6 @@ class EmailAuthenticationPage extends StatefulWidget {
 
 class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   @override
-
   final noFocusButtonColor = Color(0xffF9FAFB);
   final focusButtonColor = Color(0xffF1F3F5);
   final darkGrayColor = Color(0xff495057);
@@ -96,7 +95,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   Future<void> sendValidCode(String userEmailAddress) async {
     try {
       final existResponse = await http.get(
-        Uri.parse( //172.30.1.87
+        Uri.parse(//172.30.1.87
             'http://172.30.1.87:5999/user/check-email?email=$userEmailAddress'),
       );
       if (existResponse.statusCode == 200) {
@@ -272,15 +271,12 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
             top: 21.h,
             right: 108.w,
             child: Text(
-              '${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(
-                  2, '0')}',
+              '${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(2, '0')}',
               style: TextStyle(
                   fontFamily: 'PretendardRegular',
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
-                  color: _timerState
-                      ? noFocusColor
-                      : Colors.transparent),
+                  color: _timerState ? noFocusColor : Colors.transparent),
             ),
           ),
           authenticationState: true,
@@ -289,37 +285,29 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
             right: 16.w,
             child: TextButton(
               child: Text(
-                _authenticationRequestButton
-                    ? '재인증'
-                    : '인증 요청',
+                _authenticationRequestButton ? '재인증' : '인증 요청',
                 style: TextStyle(
                     fontFamily: 'PretendardRegular',
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    color: _emailAddressState
-                        ? darkGrayColor
-                        : noFocusColor),
+                    color: _emailAddressState ? darkGrayColor : noFocusColor),
               ),
               onPressed: () async {
                 await sendValidCode(userEmailAddress);
-                final formKeyState =
-                _emailAddressFormKey.currentState!;
+                final formKeyState = _emailAddressFormKey.currentState!;
                 if (formKeyState.validate()) {
                   formKeyState.save();
-                  if (_emailAddressState &&
-                      !_emailExistState) {
+                  if (_emailAddressState && !_emailExistState) {
                     startTimer();
                   }
                 }
-                FocusScope.of(context)
-                    .requestFocus(_emailAuthenticationFocus);
+                FocusScope.of(context).requestFocus(_emailAuthenticationFocus);
               },
               style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius.circular(50.0)),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 16.w, vertical: 9.h),
+                      borderRadius: BorderRadius.circular(50.0)),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
                   backgroundColor: _emailAddressState
                       ? focusButtonColor
                       : noFocusButtonColor),
@@ -332,11 +320,11 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
             onPressed: () async {
               await checkValidCode(authenticationNumber);
               setState(
-                    () {
+                () {
                   if (_emailAddressState && _emailAuthenticationState) {
                     resetTimer();
                     final formKeyState =
-                    _emailAuthenticationFormKey.currentState!;
+                        _emailAuthenticationFormKey.currentState!;
                     if (formKeyState.validate()) {
                       formKeyState.save();
                       if (!_checkAuthenticationState) {
@@ -357,9 +345,8 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
               );
             },
           ),
-      ),
+        ),
       ),
     );
-
   }
 }

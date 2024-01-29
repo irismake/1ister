@@ -32,7 +32,7 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SvgPicture.asset(
-                      'assets/images/Logo_Name.svg',
+                      'assets/images/image_logo_Name.svg',
                       width: 115.2.w,
                       height: 32.h,
                     ),

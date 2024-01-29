@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/home/list_detail_page.dart';
-import 'package:lister/home/search_page.dart';
+import 'package:lister/page/list_detail_page.dart';
+import 'package:lister/page/search/search_page.dart';
 import 'package:lister/model/custom_search_bar.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
           leading: Padding(
             padding: EdgeInsets.only(top: 16.0.h, left: 16.0.w),
             child: SvgPicture.asset(
-              'assets/images/Logo_Name.svg',
+              'assets/images/image_logo_Name.svg',
               height: 24.0.h,
               width: 86.4.w,
             ),
@@ -53,17 +53,9 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // CustomSearchBar(
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => SearchPage(),
-                  //       ),
-                  //     );
-                  //   },
-
-                  // ),
+                  CustomSearchBar(
+                    onSearch: (String value) {},
+                  ),
                 ],
               ),
             ),

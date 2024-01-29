@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lister/model/custom_app_bar.dart';
-import 'package:lister/model/custom_tag.dart';
+import 'package:lister/model/custom_keyword.dart';
 
 class ListDetailPage extends StatefulWidget {
   ListDetailPage({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class _ListDetailPage extends State<ListDetailPage> {
                         child: InkWell(
                           onTap: () {},
                           child: SvgPicture.asset(
-                            'assets/icons/bookmark_button.svg',
+                            'assets/icons/button_book_mark.svg',
                           ),
                         ),
                       ),
@@ -84,12 +84,12 @@ class _ListDetailPage extends State<ListDetailPage> {
                       spacing: 5, // 좌우 간격
                       runSpacing: 5, // 상하 간격
                       children: [
-                        Tag(tagName: '후쿠오카'),
-                        Tag(tagName: '쇼핑'),
-                        Tag(tagName: '백화점'),
-                        Tag(tagName: '택스프리'),
-                        Tag(tagName: '일본'),
-                        Tag(tagName: '후쿠오카'),
+                        KeyWord(keyWordName: '후쿠오카'),
+                        KeyWord(keyWordName: '쇼핑'),
+                        KeyWord(keyWordName: '백화점'),
+                        KeyWord(keyWordName: '택스프리'),
+                        KeyWord(keyWordName: '일본'),
+                        KeyWord(keyWordName: '후쿠오카'),
                       ],
                     ),
                   ),
@@ -102,7 +102,7 @@ class _ListDetailPage extends State<ListDetailPage> {
                       '후쿠오카 여행 갔을 때 가장 많이 사는 쇼핑리스트 백화점편입니다. 백화점에서는 택스프리도 받을 수 있어 할인율이 더 높아집니다.',
                       style: TextStyle(
                         color: Color(0xFF343A40),
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w500,
                         height: 1.3.h,

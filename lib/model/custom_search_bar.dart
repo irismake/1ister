@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/home/user_page.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  final VoidCallback? onTap;
+  final ValueChanged<String>? onSearch;
 
-  CustomSearchBar({super.key, required this.onTap});
+  CustomSearchBar({super.key, required this.onSearch});
 
   //final TextEditingController _textEditingController = TextEditingController();
 
@@ -53,14 +52,13 @@ class CustomSearchBar extends StatelessWidget {
       //onTap: onTap,
       onSubmitted: (String value) {
         if (value.isNotEmpty) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const UserPage()));
+          onSearch?.call(value);
           print('next');
         }
         // Navigate to the next page using Navigator
       },
       leading: SvgPicture.asset(
-        'assets/icons/search_icon_grey.svg',
+        'assets/icons/icon_search_grey.svg',
         height: 24.0.h,
         width: 24.0.w,
       ),

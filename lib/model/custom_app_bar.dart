@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/home/home_page.dart';
+import 'package:lister/page/home/home_page.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String titleText;
@@ -36,7 +36,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                 Navigator.pop(context);
               },
               child: SvgPicture.asset(
-                'assets/icons/goBackButton.svg',
+                'assets/icons/button_go_back.svg',
                 fit: BoxFit.contain,
               ),
             ),

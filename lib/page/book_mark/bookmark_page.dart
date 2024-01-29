@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/home/search_page.dart';
+import 'package:lister/page/search/search_page.dart';
 import 'package:lister/model/custom_app_bar.dart';
 
 class BookmarkPage extends StatefulWidget {

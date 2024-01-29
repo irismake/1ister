@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
-import 'package:lister/home/home_page_navigator.dart';
-import '../model/custom_text_form_field.dart';
+import 'package:lister/model/home_page_navigator.dart';
+import '../../model/custom_text_form_field.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../model/next_page_button.dart';
+import '../../model/next_page_button.dart';
 
 class EmailLoginPage extends StatefulWidget {
   const EmailLoginPage({Key? key}) : super(key: key);
@@ -52,8 +52,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
 
         await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
 
-        await  _getUserInfo(userId, accessToken);
-
+        await _getUserInfo(userId, accessToken);
       } else {
         print('로그인 실패 - 상태 코드: ${response.statusCode}');
       }
@@ -62,15 +61,13 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
     }
   }
 
-
   Future<void> _getUserInfo(int userId, String accessToken) async {
     print(accessToken);
     final Uri uri =
         Uri.parse('http://172.30.1.87:5999/user/info?user_id=$userId');
 
     try {
-      final response = await http.get(
-          uri, headers: {
+      final response = await http.get(uri, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': '$accessToken',
@@ -80,8 +77,10 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
         final responseData = json.decode(response.body);
         print('User Info: $responseData');
         Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePageNavigator()),);
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePageNavigator()),
+        );
       } else {
         print('Server response error: ${response.statusCode}');
       }
@@ -171,21 +170,20 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                 ),
               ),
               Align(
-                  alignment: Alignment.bottomCenter,
-                  child: NextPageButton(
-                    firstFieldState: _emailState,
-                    secondFieldState: _passwordState,
-                    text: '로그인',
-                    onPressed: () async {
-                      setState(() {
-                        print("[final email] : $_userEmail");
-                        print("[final password] : $_userPassword");
-                        signIn(_userEmail, _userPassword);
-                      });
-                    },
-                  ),
+                alignment: Alignment.bottomCenter,
+                child: NextPageButton(
+                  firstFieldState: _emailState,
+                  secondFieldState: _passwordState,
+                  text: '로그인',
+                  onPressed: () async {
+                    setState(() {
+                      print("[final email] : $_userEmail");
+                      print("[final password] : $_userPassword");
+                      signIn(_userEmail, _userPassword);
+                    });
+                  },
                 ),
-
+              ),
             ],
           ),
         ),

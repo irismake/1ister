@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/home/list_detail_page.dart';
-import 'package:lister/home/home_page_navigator.dart';
+import 'package:lister/page/list_detail_page.dart';
+import 'package:lister/model/home_page_navigator.dart';
 import 'package:lister/model/custom_app_bar.dart';
 
 class UserPage extends StatefulWidget {

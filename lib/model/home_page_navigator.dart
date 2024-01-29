@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/home/bookmark_page.dart';
-import 'package:lister/home/guide_page.dart';
-import 'package:lister/home/home_page.dart';
-import 'package:lister/home/search_page.dart';
-import 'package:lister/home/user_page.dart';
+import 'package:lister/page/book_mark/bookmark_page.dart';
+import 'package:lister/page/edit/guide_page.dart';
+import 'package:lister/page/home/home_page.dart';
+import 'package:lister/page/search/search_page.dart';
+import 'package:lister/page/user/user_page.dart';
 import 'package:lister/model/bottom_navigation_bar.dart';
 
 class HomePageNavigator extends StatefulWidget {

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/home/list_detail_page.dart';
-import '../home/home_page_navigator.dart';
+import 'package:lister/page/list_detail_page.dart';
+import '../../model/home_page_navigator.dart';
 import '../login/login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -56,7 +56,7 @@ class _SplashPageState extends State<SplashPage> {
       child: Padding(
         padding: EdgeInsets.fromLTRB(123.0.w, 376.0.h, 123.0.w, 428.0.h),
         child: SvgPicture.asset(
-          'assets/images/Logo_Name.svg',
+          'assets/images/image_logo_name.svg',
           height: 144.0.h,
           width: 40.0.w,
         ),

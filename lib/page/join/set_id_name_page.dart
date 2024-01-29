@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/join/set_password_page.dart';
+import 'package:lister/page/join/set_password_page.dart';
 import 'package:lister/model/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 
-import '../model/join_widget.dart';
-import '../model/next_page_button.dart';
-import '../model/progress_bar.dart';
+import '../../model/join_widget.dart';
+import '../../model/next_page_button.dart';
+import '../../model/progress_bar.dart';
 
 class SetIdNamePage extends StatefulWidget {
   final String userEmail;
@@ -63,8 +63,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
     if (_nameFocus.hasFocus) {
       return null;
     }
-    if (!_userIdValid ) {
-
+    if (!_userIdValid) {
       //_nameState = true;
       return '이미 사용중인 아이디 입니다.';
     }
@@ -87,7 +86,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
           _userIdValid = true;
           print('사용 가능한 이름입니다');
         }
-      }else{
+      } else {
         print('사용자 아이디 중복 확인 - 상태 코드 확인 필요');
       }
     } catch (e) {
@@ -135,9 +134,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                 onChanged: (value) {
                   setState(() {
                     name = value!;
-                    value == ''
-                        ? _nameState = false
-                        : _nameState = true;
+                    value == '' ? _nameState = false : _nameState = true;
                   });
                 },
                 validator: (value) {},
@@ -155,7 +152,6 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
               text: '다음',
               onPressed: () async {
                 if (_userIdState && _nameState) {
-
                   final formKeyState = _nameFormKey.currentState!;
                   if (formKeyState.validate()) {
                     formKeyState.save();
