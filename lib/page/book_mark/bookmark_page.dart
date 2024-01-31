@@ -18,7 +18,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
           titleText: '지니의 북마크',
           titleState: true,
           actionButtonOnTap: () {},
-          actionButton: 'plusButton'),
+          actionButton: 'button_plus'),
       body: Center(
         child: FutureBuilder(
           future: Future.delayed(const Duration(seconds: 1)),

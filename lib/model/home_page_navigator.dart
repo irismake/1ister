@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lister/page/book_mark/bookmark_page.dart';
-import 'package:lister/page/edit/guide_page.dart';
+import 'package:lister/page/edit/edit_page.dart';
 import 'package:lister/page/home/home_page.dart';
 import 'package:lister/page/search/search_page.dart';
 import 'package:lister/page/user/user_page.dart';
@@ -18,7 +18,7 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
   final _pages = [
     HomePage(),
     SearchPage(),
-    GuidePage(),
+    EditPage(),
     BookmarkPage(),
     UserPage(),
   ];

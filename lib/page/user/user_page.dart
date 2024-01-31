@@ -20,7 +20,7 @@ class _UserPageState extends State<UserPage> {
           titleText: '부지런한 아보카도',
           titleState: true,
           actionButtonOnTap: () {},
-          actionButton: 'hamBurgerButton'),
+          actionButton: 'button_hamburger'),
       body: Center(
         child: FutureBuilder(
           future: Future.delayed(const Duration(seconds: 1)),
