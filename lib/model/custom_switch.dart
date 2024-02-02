@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomRankingSwitch extends StatefulWidget {
   final bool value;
@@ -68,8 +69,8 @@ class _CustomRankingSwitchState extends State<CustomRankingSwitch>
                   : widget.enableColor,
             ),
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 2.0, bottom: 2.0, right: 2.0, left: 2.0),
+              padding: EdgeInsets.only(
+                  top: 2.0.h, bottom: 2.0.h, right: 2.0.w, left: 2.0.w),
               child: Container(
                 alignment:
                     widget.value ? Alignment.centerLeft : Alignment.centerRight,
@@ -172,8 +173,8 @@ class _CustomPrivateSwitchState extends State<CustomPrivateSwitch>
                   ),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.only(top: 6, left: 17.5, bottom: 6, right: 11),
+                  padding: EdgeInsets.only(
+                      top: 6.0.h, left: 17.5.w, bottom: 6.0.h, right: 11.0.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -185,9 +186,10 @@ class _CustomPrivateSwitchState extends State<CustomPrivateSwitch>
                           color: _circleAnimation.value == Alignment.centerLeft
                               ? widget.enableColor
                               : widget.disableColor,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontFamily: 'Pretendard',
                           fontWeight: FontWeight.w600,
+                          height: 1.4.h,
                         ),
                       ),
                       Text(
@@ -197,11 +199,12 @@ class _CustomPrivateSwitchState extends State<CustomPrivateSwitch>
                           color: _circleAnimation.value == Alignment.centerRight
                               ? widget.enableColor
                               : widget.disableColor,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontFamily: 'Pretendard',
                           fontWeight: FontWeight.w500,
+                          height: 1.4.h,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
