@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lister/model/bottom_navigation_bar.dart';
+import 'package:lister/page/user/book_mark_list.dart';
 import 'package:lister/page/user/book_mark_list_page.dart';
 import 'package:lister/model/custom_app_bar.dart';
+import 'package:lister/page/user/my_list_page.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -13,6 +16,13 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   bool _myListState = true;
+  bool homePageState = false;
+  final _pages = [
+    MyListPage(),
+    BookMarkList(),
+  ];
+  final _navigatorKeyList =
+      List.generate(2, (index) => GlobalKey<NavigatorState>());
 
   // void _onTap() {
   //   setState(() {
@@ -276,10 +286,12 @@ class _UserPageState extends State<UserPage> {
             ),
           ),
           Expanded(
-            // height: 327.0.h,
-            // width: double.infinity,
-            child: UsersListNavigator(),
+            child: UsersListNavigator(
+              myListState: _myListState,
+            ),
           ),
+          // height: 327.0.h,
+          // width: double.infinity,
         ],
       ),
     );

@@ -3,12 +3,16 @@ import 'package:lister/page/book_mark/bookmark_page.dart';
 import 'package:lister/page/edit/edit_page.dart';
 import 'package:lister/page/home/home_page.dart';
 import 'package:lister/page/search/search_page.dart';
+import 'package:lister/page/user/book_mark_list.dart';
 import 'package:lister/page/user/my_list_page.dart';
 import 'package:lister/page/user/user_page.dart';
 import 'package:lister/model/bottom_navigation_bar.dart';
 
 class UsersListNavigator extends StatefulWidget {
-  UsersListNavigator({Key? key}) : super(key: key);
+  final bool myListState;
+
+  const UsersListNavigator({Key? key, required this.myListState})
+      : super(key: key);
 
   @override
   State<UsersListNavigator> createState() => _UsersListNavigatorState();
@@ -18,7 +22,7 @@ class _UsersListNavigatorState extends State<UsersListNavigator> {
   bool homePageState = false;
   final _pages = [
     MyListPage(),
-    Container(height: 20, width: 20, color: Colors.purple)
+    BookMarkList(),
   ];
   final _navigatorKeyList =
       List.generate(2, (index) => GlobalKey<NavigatorState>());
@@ -51,10 +55,16 @@ class _UsersListNavigatorState extends State<UsersListNavigator> {
         child: TabBarView(
           children: _pages.map(
             (page) {
+              //int index = 0;
+              // if (widget.myListState) {
+              //   index = 0;
+              // } else {
+              //   index = 1;
+              // }
               int index = _pages.indexOf(page);
               print("user_list_${index}");
               return CustomNavigator(
-                page: page,
+                page: widget.myListState ? _pages[0] : _pages[1],
                 navigatorKey: _navigatorKeyList[index],
               );
             },
