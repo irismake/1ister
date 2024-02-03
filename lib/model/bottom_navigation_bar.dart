@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lister/model/icon_button.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
-  final Function onPress;
-  CustomBottomAppBar({Key? key, required this.onPress}) : super(key: key);
+  final VoidCallback? onTap;
+  CustomBottomAppBar({Key? key, required this.onTap}) : super(key: key);
   bool state = false;
 
   @override
@@ -18,7 +18,7 @@ class CustomBottomAppBar extends StatelessWidget {
         isScrollable: false,
         onTap: (index) {
           print(index);
-          onPress;
+          onTap;
         },
         tabs: <Widget>[
           CustomIconButton(

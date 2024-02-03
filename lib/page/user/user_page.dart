@@ -17,19 +17,6 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   bool _myListState = true;
   bool homePageState = false;
-  final _pages = [
-    MyListPage(),
-    BookMarkList(),
-  ];
-  final _navigatorKeyList =
-      List.generate(2, (index) => GlobalKey<NavigatorState>());
-
-  // void _onTap() {
-  //   setState(() {
-  //     _myListState = true;
-  //     print('ontap');
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

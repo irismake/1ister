@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lister/model/icon_button.dart';
 import 'package:lister/page/book_mark/bookmark_page.dart';
 import 'package:lister/page/edit/edit_page.dart';
 import 'package:lister/page/home/home_page.dart';
 import 'package:lister/page/search/search_page.dart';
 import 'package:lister/page/user/user_page.dart';
 import 'package:lister/model/bottom_navigation_bar.dart';
-
-const routeA = "/";
-const routeB = "/B";
-const routeC = "/C";
-const routeD = "/D";
-const routeE = "/E";
 
 class HomePageNavigator extends StatefulWidget {
   HomePageNavigator({Key? key}) : super(key: key);
@@ -20,6 +15,8 @@ class HomePageNavigator extends StatefulWidget {
 }
 
 class _HomePageNavigatorState extends State<HomePageNavigator> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
   int currentIndex = 0;
   bool homePageState = false;
 
@@ -34,10 +31,18 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
       List.generate(5, (index) => GlobalKey<NavigatorState>());
 
   void _pushRoute() {
-    _navigatorKeyList[currentIndex].currentState?.pushNamed(routeB);
-    final route = _navigatorKeyList[currentIndex].currentState;
+    _navigatorKey.currentState?.pushNamed(routeC);
+    final route = _navigatorKey.currentState;
     print('네이게이터 루트 : $route');
   }
+
+  static const routeA = "/";
+  static const routeB = "/B";
+  static const routeC = "/C";
+  static const routeD = "/D";
+  static const routeE = "/E";
+
+  late List<String> route;
 
   MaterialPageRoute _onGenerateRoute(RouteSettings setting) {
     if (setting.name == routeA) {
@@ -45,15 +50,19 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[0], settings: setting);
     } else if (setting.name == routeB) {
+      print('page2');
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[1], settings: setting);
     } else if (setting.name == routeC) {
+      print('page3');
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[2], settings: setting);
     } else if (setting.name == routeD) {
+      print('page4');
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[3], settings: setting);
     } else if (setting.name == routeE) {
+      print('page5');
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[4], settings: setting);
     } else {
@@ -64,6 +73,7 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
   @override
   void initState() {
     super.initState();
+    route = [routeA, routeB, routeC, routeD, routeE];
   }
 
   @override
@@ -88,22 +98,63 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
         length: 5,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: TabBarView(
-            children: _pages.map(
-              (page) {
-                int index = _pages.indexOf(page);
-                currentIndex = index;
-                print("iiiii${currentIndex}");
-                return Navigator(
-                  key: _navigatorKeyList[index],
-                  initialRoute: routeA,
-                  onGenerateRoute: _onGenerateRoute,
-                );
-              },
-            ).toList(),
+          body: Navigator(
+            key: _navigatorKeyList[currentIndex],
+            initialRoute: route[currentIndex],
+            onGenerateRoute: _onGenerateRoute,
           ),
-          bottomNavigationBar: CustomBottomAppBar(
-            onPress: _pushRoute,
+          bottomNavigationBar: BottomAppBar(
+            padding: EdgeInsets.only(top: 12.0),
+            height: 60.0,
+            color: Colors.black,
+            child: TabBar(
+              dividerHeight: 0,
+              indicatorColor: Colors.transparent,
+              isScrollable: false,
+              onTap: (index) {
+                print(index);
+                if (index == 0) {
+                  _navigatorKeyList[currentIndex]
+                      .currentState
+                      ?.pushNamed(routeA);
+                } else if (index == 1) {
+                  _navigatorKeyList[currentIndex]
+                      .currentState
+                      ?.pushNamed(routeB);
+                } else if (index == 2) {
+                  _navigatorKeyList[currentIndex]
+                      .currentState
+                      ?.pushNamed(routeC);
+                } else if (index == 3) {
+                  _navigatorKeyList[currentIndex]
+                      .currentState
+                      ?.pushNamed(routeD);
+                } else if (index == 4) {
+                  _navigatorKeyList[currentIndex]
+                      .currentState
+                      ?.pushNamed(routeE);
+                }
+                final route = _navigatorKeyList[currentIndex].currentState;
+                print('네이게이터 루트 : $route');
+              },
+              tabs: <Widget>[
+                CustomIconButton(
+                  iconName: 'tab_home',
+                ),
+                CustomIconButton(
+                  iconName: 'tab_search',
+                ),
+                CustomIconButton(
+                  iconName: 'tab_edit',
+                ),
+                CustomIconButton(
+                  iconName: 'tab_book_mark',
+                ),
+                CustomIconButton(
+                  iconName: 'tab_user',
+                ),
+              ],
+            ),
           ),
         ),
       ),
