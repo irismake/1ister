@@ -16,24 +16,10 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String? _searchQuery;
   bool _searchState = false;
-  List<String> _searchResults = [];
+
   bool _listState = true;
   bool _itemState = false;
   bool _userState = false;
-
-  void updateSearchResults(String searchTerm) {
-    setState(() {
-      _searchResults = _generateSearchResults(searchTerm);
-    });
-  }
-
-  List<String> _generateSearchResults(String searchTerm) {
-    List<String> results = [];
-    for (int i = 0; i < 10; i++) {
-      results.add('Result $i for $searchTerm');
-    }
-    return results;
-  }
 
   void _onTapList() => _updateCategoryState(true, false, false);
   void _onTapItem() => _updateCategoryState(false, true, false);
@@ -66,44 +52,70 @@ class _SearchPageState extends State<SearchPage> {
                 onSearch: (String value) {
                   setState(() {
                     _searchQuery = value;
-                    updateSearchResults(_searchQuery!);
+
                     _searchState = true;
                   });
                 },
               ),
               _searchState
-                  ? Padding(
-                      padding: EdgeInsets.only(top: 20.0.h, bottom: 16.0.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                  ? Expanded(
+                      child: Column(
                         children: [
-                          InkWell(
-                            onTap: _onTapList,
-                            child: Category(
-                              categoryName: 'List',
-                              categoryState: _listState,
+                          Padding(
+                            padding:
+                                EdgeInsets.only(top: 20.0.h, bottom: 16.0.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: _onTapList,
+                                  child: Category(
+                                    categoryName: 'List',
+                                    categoryState: _listState,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8.0.w,
+                                ),
+                                InkWell(
+                                  onTap: _onTapItem,
+                                  child: Category(
+                                    categoryName: 'Item',
+                                    categoryState: _itemState,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8.0.w,
+                                ),
+                                InkWell(
+                                  onTap: _onTapUser,
+                                  child: Category(
+                                    categoryName: 'User',
+                                    categoryState: _userState,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(
-                            width: 8.0.w,
-                          ),
-                          InkWell(
-                            onTap: _onTapItem,
-                            child: Category(
-                              categoryName: 'Item',
-                              categoryState: _itemState,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8.0.w,
-                          ),
-                          InkWell(
-                            onTap: _onTapUser,
-                            child: Category(
-                              categoryName: 'User',
-                              categoryState: _userState,
-                            ),
-                          ),
+                          FutureBuilder(
+                            future: Future.delayed(const Duration(seconds: 1)),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                return Expanded(
+                                  child: ListViewWidget(
+                                    searchText: _searchQuery,
+                                    listState: _listState,
+                                    itemState: _itemState,
+                                    userState: _userState,
+                                  ),
+                                );
+                              } else {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                            },
+                          )
                         ],
                       ),
                     )
@@ -123,29 +135,6 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ),
                     ),
-              FutureBuilder(
-                  future: Future.delayed(const Duration(seconds: 1)),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return Expanded(
-                        child: ListView.separated(
-                          itemCount: _searchResults.length,
-                          itemBuilder: (context, index) {
-                            return SearchListWidget(
-                                searchWord: _searchResults[index]);
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return Divider(
-                              thickness: 1,
-                              height: 16.0.h,
-                            );
-                          },
-                        ),
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  })
             ],
           ),
         ),
