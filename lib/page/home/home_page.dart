@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
           leading: Padding(
             padding: EdgeInsets.only(top: 16.0.h, left: 16.0.w),
             child: SvgPicture.asset(
-              'assets/images/image_logo_Name.svg',
+              'assets/images/image_logo_name.svg',
               height: 24.0.h,
               width: 86.4.w,
             ),
