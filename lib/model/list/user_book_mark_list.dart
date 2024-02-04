@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class BookMarkList extends StatelessWidget {
-  const BookMarkList({super.key});
+class UserBookMarkList extends StatelessWidget {
+  const UserBookMarkList({super.key});
 
   @override
   Widget build(BuildContext context) {

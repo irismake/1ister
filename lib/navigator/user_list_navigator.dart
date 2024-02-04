@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lister/page/book_mark/bookmark_page.dart';
-import 'package:lister/page/edit/edit_page.dart';
-import 'package:lister/page/home/home_page.dart';
-import 'package:lister/page/search/search_page.dart';
-import 'package:lister/page/user/book_mark_list.dart';
-import 'package:lister/page/user/my_list_page.dart';
-import 'package:lister/page/user/user_page.dart';
-import 'package:lister/model/bottom_navigation_bar.dart';
+
+import '../model/bottom_navigation_bar.dart';
+import '../model/list/user_book_mark_list.dart';
+import '../model/list/user_my_list.dart';
 
 class UsersListNavigator extends StatefulWidget {
   final bool myListState;
@@ -21,8 +17,8 @@ class UsersListNavigator extends StatefulWidget {
 class _UsersListNavigatorState extends State<UsersListNavigator> {
   bool homePageState = false;
   final _pages = [
-    MyListPage(),
-    BookMarkList(),
+    UserMyList(),
+    UserBookMarkList(),
   ];
   final _navigatorKeyList =
       List.generate(2, (index) => GlobalKey<NavigatorState>());

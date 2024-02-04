@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/model/bottom_navigation_bar.dart';
-import 'package:lister/page/user/book_mark_list.dart';
-import 'package:lister/page/user/book_mark_list_page.dart';
-import 'package:lister/model/custom_app_bar.dart';
-import 'package:lister/page/user/my_list_page.dart';
+
+import '../../model/custom_app_bar.dart';
+import '../../navigator/user_list_navigator.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);

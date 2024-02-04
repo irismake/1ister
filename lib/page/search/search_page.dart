@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/model/custom_list_widget.dart';
-import 'package:lister/model/custom_category.dart';
-import 'package:lister/model/custom_app_bar.dart';
-import 'package:lister/model/custom_search_bar.dart';
+
+import '../../model/custom/custom_category.dart';
+import '../../model/custom/custom_search_bar.dart';
+import '../../model/custom_app_bar.dart';
+import '../../model/widget/search_list_widget.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -130,7 +131,7 @@ class _SearchPageState extends State<SearchPage> {
                         child: ListView.separated(
                           itemCount: _searchResults.length,
                           itemBuilder: (context, index) {
-                            return ListWidget(
+                            return SearchListWidget(
                                 searchWord: _searchResults[index]);
                           },
                           separatorBuilder: (BuildContext context, int index) {

@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/page/join/set_id_name_page.dart';
-import 'package:lister/model/custom_text_form_field.dart';
-import 'package:lister/model/join_widget.dart';
 
-import '../../model/next_page_button.dart';
-import '../../model/progress_bar.dart';
+import '../../model/custom/custom_next_page_button.dart';
+import '../../model/custom/custom_progress_bar.dart';
+import '../../model/custom/custom_text_form_field.dart';
+import '../../model/widget/join_widget.dart';
+import 'set_id_name_page.dart';
 
 class EmailAuthenticationPage extends StatefulWidget {
   const EmailAuthenticationPage({Key? key}) : super(key: key);

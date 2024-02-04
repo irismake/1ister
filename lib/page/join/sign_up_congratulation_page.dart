@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../model/next_page_button.dart';
-import '../../model/home_page_navigator.dart';
+
+import '../../model/custom/custom_next_page_button.dart';
+import '../../navigator/home_page_navigator.dart';
 
 class SignUpCongratulationPage extends StatelessWidget {
   SignUpCongratulationPage({Key? key}) : super(key: key);

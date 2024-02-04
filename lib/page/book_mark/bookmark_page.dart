@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/model/custom_list_bookMark.dart';
-import 'package:lister/model/custom_search_bar.dart';
-import 'package:lister/page/search/search_page.dart';
-import 'package:lister/model/custom_app_bar.dart';
 
-class BookmarkPage extends StatefulWidget {
-  const BookmarkPage({Key? key}) : super(key: key);
+import '../../model/custom/custom_search_bar.dart';
+import '../../model/custom_app_bar.dart';
+import '../../model/widget/book_mark_list_widget.dart';
+
+class BookMarkPage extends StatefulWidget {
+  const BookMarkPage({Key? key}) : super(key: key);
 
   @override
-  State<BookmarkPage> createState() => _BookmarkPageState();
+  State<BookMarkPage> createState() => _BookMarkPageState();
 }
 
-class _BookmarkPageState extends State<BookmarkPage> {
+class _BookMarkPageState extends State<BookMarkPage> {
   final _pages = [
     '1',
     '1',
@@ -59,7 +59,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
               children: _pages.map(
                 (page) {
                   int index = _pages.indexOf(page);
-                  return CustomBookMarkList(index: index);
+                  return BookMarkListWidget(index: index);
                 },
               ).toList(),
             )),

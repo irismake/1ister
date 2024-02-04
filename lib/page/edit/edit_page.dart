@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/model/custom_app_bar.dart';
-import 'package:lister/model/custom_switch.dart';
+
+import '../../model/custom/custom_switch.dart';
+import '../../model/custom_app_bar.dart';
 
 class EditPage extends StatefulWidget {
   const EditPage({Key? key}) : super(key: key);

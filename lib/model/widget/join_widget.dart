@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/model/custom_text_form_field.dart';
-import 'package:lister/model/next_page_button.dart';
+
+import '../custom/custom_next_page_button.dart';
 
 class JoinWidget extends StatelessWidget {
   final String title;
@@ -14,7 +14,7 @@ class JoinWidget extends StatelessWidget {
   final String? secondGuideText;
   final Form firstCustomForm;
   final Form secondCustomForm;
-  final bool authenticationState ;
+  final bool authenticationState;
   final Widget? authenticationButton;
   final Widget? timer;
 
@@ -141,9 +141,10 @@ class JoinWidget extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       children: [
                         secondCustomForm,
-                        if(authenticationState)
-                          authenticationButton ?? SizedBox(), // Use SizedBox() or another default widget if null
-                          timer ?? SizedBox(),
+                        if (authenticationState)
+                          authenticationButton ??
+                              SizedBox(), // Use SizedBox() or another default widget if null
+                        timer ?? SizedBox(),
                       ],
                     ),
                   ],

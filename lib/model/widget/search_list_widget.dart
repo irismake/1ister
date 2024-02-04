@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/model/custom_keyword.dart';
 
-class ListWidget extends StatelessWidget {
+import '../custom/custom_keyword.dart';
+
+class SearchListWidget extends StatelessWidget {
   final String searchWord;
 
-  const ListWidget({super.key, required this.searchWord});
+  const SearchListWidget({super.key, required this.searchWord});
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/page/home/home_list_view.dart';
-import 'package:lister/page/list_detail_page.dart';
-import 'package:lister/page/search/search_page.dart';
-import 'package:lister/model/custom_search_bar.dart';
+
+import '../../model/custom/custom_search_bar.dart';
+import '../../model/list/home_list_view.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

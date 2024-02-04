@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/model/custom_app_bar.dart';
-import 'package:lister/model/custom_keyword.dart';
+
+import '../model/custom/custom_keyword.dart';
+import '../model/custom_app_bar.dart';
 
 class ListDetailPage extends StatefulWidget {
   ListDetailPage({Key? key}) : super(key: key);

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lister/model/icon_button.dart';
 
-class CustomBottomAppBar extends StatelessWidget {
+import 'custom/custom_icon_button.dart';
+
+class BottomNavigationBar extends StatelessWidget {
   final VoidCallback? onTap;
-  CustomBottomAppBar({Key? key, required this.onTap}) : super(key: key);
+  BottomNavigationBar({Key? key, required this.onTap}) : super(key: key);
   bool state = false;
 
   @override

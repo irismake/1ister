@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyListPage extends StatelessWidget {
-  const MyListPage({super.key});
+class UserMyList extends StatelessWidget {
+  const UserMyList({super.key});
 
   @override
   Widget build(BuildContext context) {

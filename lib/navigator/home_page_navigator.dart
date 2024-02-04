@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lister/model/icon_button.dart';
-import 'package:lister/page/book_mark/bookmark_page.dart';
-import 'package:lister/page/edit/edit_page.dart';
-import 'package:lister/page/home/home_page.dart';
-import 'package:lister/page/search/search_page.dart';
-import 'package:lister/page/user/user_page.dart';
-import 'package:lister/model/bottom_navigation_bar.dart';
+
+import '../page/book_mark/bookmark_page.dart';
+import '../page/edit/edit_page.dart';
+import '../page/home/home_page.dart';
+import '../page/search/search_page.dart';
+import '../page/user/user_page.dart';
+import '../model/custom/custom_icon_button.dart';
 
 class HomePageNavigator extends StatefulWidget {
   HomePageNavigator({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
     HomePage(),
     SearchPage(),
     EditPage(),
-    BookmarkPage(),
+    BookMarkPage(),
     UserPage(),
   ];
   final _navigatorKeyList =

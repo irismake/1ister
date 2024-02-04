@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomBookMarkList extends StatelessWidget {
+class BookMarkListWidget extends StatelessWidget {
   //final Widget page;
   final int index;
 
-  const CustomBookMarkList({Key? key, required this.index}) : super(key: key);
+  const BookMarkListWidget({Key? key, required this.index}) : super(key: key);
 
   @override
   @override
