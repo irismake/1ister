@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lister/model/widget/edit_enter%20item_widget.dart';
 
 import '../../model/custom/custom_switch.dart';
 import '../../model/custom_app_bar.dart';
@@ -278,6 +279,7 @@ class _EditPageState extends State<EditPage> {
                   SizedBox(
                     height: 20.0.h,
                   ),
+                  EditEnterItem(),
                   Container(
                     decoration: ShapeDecoration(
                       color: Color(0xFFF8F9FA),
