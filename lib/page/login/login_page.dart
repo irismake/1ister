@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Image.asset(
-                          'assets/images/Google_Icon.png',
+                          'assets/images/image_google.png',
                           width: 18.w,
                           height: 18.33.h,
                         ),

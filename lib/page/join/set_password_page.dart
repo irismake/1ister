@@ -8,7 +8,7 @@ import '../../model/custom/custom_text_form_field.dart';
 import '../../model/widget/join_widget.dart';
 import '../../model/custom/custom_next_page_button.dart';
 import '../../model/custom/custom_progress_bar.dart';
-import 'sign_up_congratulation_page.dart';
+import '../user/sign_up_congratulation_page.dart';
 
 class SetPasswordPage extends StatefulWidget {
   final String userEmail;
