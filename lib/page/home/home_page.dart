@@ -59,60 +59,56 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              //color: Colors.green,
-              height: 352.0.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '지금 핫한 리스트',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18.0.sp,
-                      ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '지금 핫한 리스트',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18.0.sp,
                     ),
                   ),
+                ),
 
-                  // InkWell(
-                  //   onTap: () {
-                  //     print('더보기');
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) => ListDetailPage()),
-                  //     );
-                  //     // CustomNavigator(
-                  //     //   page: page,
-                  //     //   navigatorKey: _navigatorKeyList[index],
-                  //     // );
-                  //   },
-                  //   child: Text(
-                  //     '더보기',
-                  //     style: TextStyle(
-                  //       fontWeight: FontWeight.w600,
-                  //       fontSize: 14.0.sp,
-                  //       color: Color(0xff868E96),
-                  //     ),
-                  //   ),
-                  //
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0.h, bottom: 24.0),
-                    child: Divider(
-                      color: Colors.black,
-                      thickness: 2.0.h,
-                      height: 0,
-                    ),
+                // InkWell(
+                //   onTap: () {
+                //     print('더보기');
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => ListDetailPage()),
+                //     );
+                //     // CustomNavigator(
+                //     //   page: page,
+                //     //   navigatorKey: _navigatorKeyList[index],
+                //     // );
+                //   },
+                //   child: Text(
+                //     '더보기',
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.w600,
+                //       fontSize: 14.0.sp,
+                //       color: Color(0xff868E96),
+                //     ),
+                //   ),
+                //
+                Padding(
+                  padding: EdgeInsets.only(top: 12.0.h, bottom: 24.0),
+                  child: Divider(
+                    color: Colors.black,
+                    thickness: 2.0.h,
+                    height: 0,
                   ),
+                ),
 
-                  Container(
-                    height: 282.0.h,
-                    child: HomeListView(),
-                  )
-                ],
-              ),
+                SizedBox(
+                  height: 282,
+                  child: HomeListView(),
+                )
+              ],
             ),
           ],
         ),
