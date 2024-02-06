@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/model/widget/edit_enter%20item_widget.dart';
 
 import '../../model/custom/custom_switch.dart';
 import '../../model/custom_app_bar.dart';
+import '../../model/widget/edit_enter item_widget.dart';
 
 class EditPage extends StatefulWidget {
   const EditPage({Key? key}) : super(key: key);
@@ -17,13 +17,19 @@ class _EditPageState extends State<EditPage> {
   final _cities = ['서울', '대전', '대구', '부산', '인천', '울산', '광주'];
   String? _selectedCity;
   bool _switchState = false;
+  bool _itemState = false;
+  int _itemNum = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+    //_controller.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      //_selectedCity = _cities[0];
-    });
+    // _controller = TextfieldTagsController();
   }
 
   @override
@@ -276,17 +282,41 @@ class _EditPageState extends State<EditPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20.0.h,
-                  ),
-                  EditEnterItem(),
-                  Container(
-                    decoration: ShapeDecoration(
-                      color: Color(0xFFF8F9FA),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
+                  _itemState
+                      ? Column(
+                          children: [
+                            SizedBox(height: 20.0.h),
+                            EditEnterItem(
+                              itemNum: _itemNum,
+                            ),
+                          ],
+                        )
+                      : SizedBox(height: 20.0.h),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _itemState = true;
+                        _itemNum++;
+                      });
+                    },
+                    child: Container(
+                      decoration: ShapeDecoration(
+                        color: Color(0xFFF8F9FA),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                      height: 64.0.h,
+                      width: double.infinity,
+                      child: Center(
+                        child: SizedBox(
+                          height: 32.0.h,
+                          child: SvgPicture.asset(
+                            'assets/icons/icon_circle_plus.svg',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
                     ),
-                    height: 64.0.h,
                   ),
                 ],
               ),
