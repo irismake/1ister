@@ -17,6 +17,9 @@ class HomePage extends StatelessWidget {
         child: AppBar(
           elevation: 0,
           leadingWidth: 100,
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
           leading: Padding(
             padding: EdgeInsets.only(top: 16.0.h, left: 16.0.w),
             child: SvgPicture.asset(
