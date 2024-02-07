@@ -76,11 +76,11 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         print('User Info: $responseData');
-        Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePageNavigator()),
-        );
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => HomePageNavigator()),
+            (route) => false);
       } else {
         print('Server response error: ${response.statusCode}');
       }
