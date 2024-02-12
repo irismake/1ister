@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lister/services/api_service.dart';
 
 import '../../model/custom/custom_text_form_field.dart';
 import '../../model/custom/custom_next_page_button.dart';
@@ -29,65 +30,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
 
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
-
-  Future<void> signIn(String email, String password) async {
-    try {
-      final Uri uri = Uri.parse('http://172.30.1.87:5999/user/signin');
-
-      final Map<String, dynamic> requestBody = {
-        "email": email,
-        "password": password,
-      };
-
-      final http.Response response = await http.post(
-        uri,
-        body: json.encode(requestBody),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        int userId = responseData['user_id'];
-        String accessToken = responseData['access_token'];
-
-        await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
-
-        await _getUserInfo(userId, accessToken);
-      } else {
-        print('로그인 실패 - 상태 코드: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('로그인 오류: $e');
-    }
-  }
-
-  Future<void> _getUserInfo(int userId, String accessToken) async {
-    print(accessToken);
-    final Uri uri =
-        Uri.parse('http://172.30.1.87:5999/user/info?user_id=$userId');
-
-    try {
-      final response = await http.get(uri, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': '$accessToken',
-      });
-
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        print('User Info: $responseData');
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => HomePageNavigator()),
-            (route) => false);
-      } else {
-        print('Server response error: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Request error: $e');
-    }
-  }
 
   @override
   void initState() {
@@ -176,11 +118,18 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                   secondFieldState: _passwordState,
                   text: '로그인',
                   onPressed: () async {
-                    setState(() {
-                      print("[final email] : $_userEmail");
-                      print("[final password] : $_userPassword");
-                      signIn(_userEmail, _userPassword);
-                    });
+                    print("[final email] : $_userEmail");
+                    print("[final password] : $_userPassword");
+                    bool signInState =
+                        await ApiService.signIn(_userEmail, _userPassword);
+                    if (signInState) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  HomePageNavigator()),
+                          (route) => false);
+                    }
                   },
                 ),
               ),

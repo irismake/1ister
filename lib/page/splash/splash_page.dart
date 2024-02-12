@@ -42,7 +42,7 @@ class _SplashPageState extends State<SplashPage> {
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePageNavigator()),
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
       print('have access token');
     }

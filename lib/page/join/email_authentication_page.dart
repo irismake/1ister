@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,6 +6,7 @@ import '../../model/custom/custom_next_page_button.dart';
 import '../../model/custom/custom_progress_bar.dart';
 import '../../model/custom/custom_text_form_field.dart';
 import '../../model/widget/join_widget.dart';
+import '../../services/api_service.dart';
 import 'set_id_name_page.dart';
 
 class EmailAuthenticationPage extends StatefulWidget {
@@ -90,82 +89,6 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
       return '잘못된 인증번호에요.';
     }
     return null;
-  }
-
-  Future<void> sendValidCode(String userEmailAddress) async {
-    try {
-      final existResponse = await http.get(
-        Uri.parse(//172.30.1.87
-            'http://172.30.1.87:5999/user/check-email?email=$userEmailAddress'),
-      );
-      if (existResponse.statusCode == 200) {
-        final existData = json.decode(existResponse.body);
-        if (existData['result']) {
-          _emailExistState = true;
-          print('이미 사용중인 이메일');
-          return;
-        } else {
-          _emailExistState = false;
-        }
-      }
-
-      final response = await http.get(
-        Uri.parse(
-            'http://172.30.1.87:5999/user/send-valid-code?email=$userEmailAddress'),
-      );
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        if (responseData['ok']) {
-          print('Valid 코드 전송 성공!');
-        } else {
-          print('Valid 코드 전송 실패!->잘못된 이메일 형식');
-        }
-      }
-    } catch (e) {
-      print('이메일 인증 번호 전송 오류 발생: $e');
-    }
-  }
-
-  Future<void> checkValidCode(String authenticationNumber) async {
-    try {
-      final response = await http.get(
-        Uri.parse(
-            'http://172.30.1.87:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-
-        if (responseData['is_valid']) {
-          _checkAuthenticationState = false;
-        } else {
-          _checkAuthenticationState = true;
-        }
-      }
-    } catch (e) {
-      print('이메일 인증 번호 검사 오류 발생: $e');
-    }
-  }
-
-  Future<void> createAccount(String authenticationNumber) async {
-    try {
-      final response = await http.get(
-        Uri.parse(
-            'http://172.30.1.87:5999/user/check-valid-code?email=$userEmailAddress&code=$authenticationNumber'),
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-
-        if (responseData['is_valid']) {
-          _checkAuthenticationState = false;
-        } else {
-          _checkAuthenticationState = true;
-        }
-      }
-    } catch (e) {
-      print('이메일 인증 번호 검사 오류 발생: $e');
-    }
   }
 
   void startTimer() {
@@ -259,9 +182,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                   if (result != null) {
                     return result;
                   }
-                  ;
                 }
-                ;
                 return null;
               },
               keyboardType: TextInputType.number,
@@ -293,7 +214,8 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                     color: _emailAddressState ? darkGrayColor : noFocusColor),
               ),
               onPressed: () async {
-                await sendValidCode(userEmailAddress);
+                _emailExistState =
+                    await ApiService.sendValidCode(userEmailAddress);
                 final formKeyState = _emailAddressFormKey.currentState!;
                 if (formKeyState.validate()) {
                   formKeyState.save();
@@ -318,7 +240,8 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
             secondFieldState: _emailAuthenticationState,
             text: '다음',
             onPressed: () async {
-              await checkValidCode(authenticationNumber);
+              _checkAuthenticationState = await ApiService.checkValidCode(
+                  userEmailAddress, authenticationNumber);
               setState(
                 () {
                   if (_emailAddressState && _emailAuthenticationState) {
@@ -336,11 +259,8 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                           ),
                         );
                       }
-                      ;
                     }
-                    ;
                   }
-                  ;
                 },
               );
             },
