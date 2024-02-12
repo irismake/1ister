@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:lister/services/api_service.dart';
 
 import '../../model/custom/custom_text_form_field.dart';
 import '../../model/widget/join_widget.dart';
@@ -64,32 +63,8 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
     }
     if (!_userIdValid) {
       //_nameState = true;
+      print('valid 출력');
       return '이미 사용중인 아이디 입니다.';
-    }
-    return null;
-  }
-
-  Future<void> checkname(String userId) async {
-    try {
-      final response = await http.get(
-        Uri.parse(
-            'http://172.30.1.87:5999/user/check-duplicate-username?username=$userId'),
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        if (responseData['result']) {
-          _userIdValid = false;
-          print('이미 사용중인 이름입니다');
-        } else {
-          _userIdValid = true;
-          print('사용 가능한 이름입니다');
-        }
-      } else {
-        print('사용자 아이디 중복 확인 - 상태 코드 확인 필요');
-      }
-    } catch (e) {
-      print('이름 중복 체크 오류: $e');
     }
   }
 
@@ -117,7 +92,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                   });
                 },
                 validator: (value) {
-                  _checknameValid;
+                  _checknameValid(value!);
                 },
                 keyboardType: TextInputType.name,
               ),
@@ -154,8 +129,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                   final formKeyState = _nameFormKey.currentState!;
                   if (formKeyState.validate()) {
                     formKeyState.save();
-
-                    await checkname(userId);
+                    _userIdValid = await ApiService.checkname(userId);
                     if (_userIdValid) {
                       Navigator.push(
                           context,
