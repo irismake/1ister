@@ -1,8 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+
 import '../../navigator/home_page_navigator.dart';
 import '../login/login_page.dart';
 
@@ -15,7 +16,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   final storage = FlutterSecureStorage();
-  String? authToken;
+  String? accessToken;
 
   @override
   void initState() {
@@ -25,27 +26,31 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _getAccessToken(BuildContext context) async {
     await Future.delayed(Duration(seconds: 2));
-
-    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
-    final dio = Dio();
-    print("access Token :$accessToken");
-    _handleNavigation(context, accessToken);
-  }
-
-  void _handleNavigation(BuildContext context, String? accessToken) {
-    if (accessToken == null) {
+    accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    if (_isTokenValid(accessToken)) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => HomePageNavigator()),
       );
-      print('no access token');
     } else {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
-      print('have access token');
     }
+  }
+
+  bool _isTokenValid(String? accessToken) {
+    if (accessToken == null) {
+      return false;
+    }
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken);
+    if (decodedToken == null) {
+      return false;
+    }
+    DateTime expiry =
+        DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
+    return expiry.isAfter(DateTime.now());
   }
 
   @override
