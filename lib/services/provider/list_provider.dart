@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -6,9 +5,9 @@ import '../../services/api_service.dart';
 import '../../model/lists.dart';
 
 class MainListsProvider with ChangeNotifier {
-  final List<MainListsModel> _mainLists = List.empty(growable: true);
+  final List<MainListData> _mainLists = List.empty(growable: true);
 
-  List<MainListsModel> mainLists() {
+  List<MainListData> mainLists() {
     _fetchMainLists();
 
     return _mainLists;
@@ -17,11 +16,14 @@ class MainListsProvider with ChangeNotifier {
   void _fetchMainLists() async {
     final userId = await _getUserId();
     print('유저 아이디 :$userId');
-    final result = await ApiService.getMainLists(userId!);
-    _mainLists.clear();
 
-    //_mainLists.addAll(result as Iterable<MainLists>);
-    print('메인 리스트 결과 : $_mainLists');
+    final results = await ApiService.getMainLists(userId!);
+    _mainLists.clear();
+    print(results);
+    for (var result in results) {
+      _mainLists.add(result);
+      print('메인 리스트 결과 : ${result.id}');
+    }
     notifyListeners();
   }
 

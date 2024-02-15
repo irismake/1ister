@@ -182,29 +182,22 @@ class ApiService {
     }
   }
 
-  static Future<List?> getMainLists(String userId) async {
+  static Future<List<MainListData>> getMainLists(String userId) async {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/$listsPrefix/main?user_id=$userId'),
       );
       if (response.statusCode == 200) {
-        // final responseData = json.decode(response.body);
+        final mainListsData = json.decode(response.body);
 
-        Map<String, dynamic> mainListsData = json.decode(response.body);
-        //List<dynamic> results = mainListsData['lists'];
         MainListsModel mainListsModel = MainListsModel.fromJson(mainListsData);
 
-//final schedules = cafeDataModel.openingHours?.weekdayOperatingTime;
-
-        print('결과: ${mainListsModel.lists[0].id}');
-        return null;
+        return Future.value(mainListsModel.lists);
       } else {
-        print('Server response error: ${response.statusCode}');
-        return null;
+        throw Exception('Server response error: ${response.statusCode}');
       }
     } catch (e) {
-      print('Request error: $e');
-      return null;
+      throw Exception('Request error: $e');
     }
   }
 }
