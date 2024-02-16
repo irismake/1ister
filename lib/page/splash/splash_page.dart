@@ -28,6 +28,7 @@ class _SplashPageState extends State<SplashPage> {
     await Future.delayed(Duration(seconds: 2));
     accessToken = await storage.read(key: 'ACCESS_TOKEN');
     if (_isTokenValid(accessToken)) {
+      print(accessToken);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePageNavigator()),

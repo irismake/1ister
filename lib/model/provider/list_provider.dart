@@ -2,18 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../services/api_service.dart';
-import '../../model/lists.dart';
+import '../lists.dart';
 
 class MainListsProvider with ChangeNotifier {
-  final List<MainListData> _mainLists = List.empty(growable: true);
+  final List<MainListData> _mainLists = [];
+  bool _isInitialized = false;
+
+  MainListsProvider() {
+    _initialize();
+  }
+
+  void _initialize() async {
+    if (!_isInitialized) {
+      await _fetchMainLists();
+      _isInitialized = true;
+    }
+  }
 
   List<MainListData> mainLists() {
-    _fetchMainLists();
-
     return _mainLists;
   }
 
-  void _fetchMainLists() async {
+  Future<void> _fetchMainLists() async {
     final userId = await _getUserId();
     print('유저 아이디 :$userId');
 
@@ -29,7 +39,6 @@ class MainListsProvider with ChangeNotifier {
 
   Future<String?> _getUserId() async {
     final storage = FlutterSecureStorage();
-    await Future.delayed(Duration(seconds: 2));
     final userId = await storage.read(key: 'USER_ID');
     return userId;
   }
