@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import "package:provider/provider.dart";
 import 'package:intl/intl.dart';
 
 import '../../model/provider/list_provider.dart';
+import '../custom/custom_book_mark_button.dart';
 
 class HomeListView extends StatelessWidget {
   HomeListView({Key? key});
@@ -61,25 +61,9 @@ class HomeListView extends StatelessWidget {
                     )
                   ],
                 ),
-                mainLists[index].isBookmarked
-                    ? Positioned(
-                        top: 4.0.h,
-                        right: 0.0,
-                        child: SvgPicture.asset(
-                          'assets/icons/button_book_mark.svg',
-                          width: 32.0.w,
-                          height: 32.0.h,
-                        ),
-                      )
-                    : Positioned(
-                        top: 4.0.h,
-                        right: 0.0,
-                        child: SvgPicture.asset(
-                          'assets/icons/tab_book_mark.svg',
-                          width: 32.0.w,
-                          height: 32.0.h,
-                        ),
-                      ),
+                CustomBookMarkButton(
+                  isBookMarked: mainLists[index].isBookmarked,
+                ),
               ],
             ),
           ),
