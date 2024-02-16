@@ -1,17 +1,22 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
+import "package:provider/provider.dart";
+import 'package:intl/intl.dart';
+
+import '../../model/provider/list_provider.dart';
 
 class HomeListView extends StatelessWidget {
-  HomeListView({super.key});
-
-  final List<String> entries = <String>['A', 'B', 'C'];
+  HomeListView({Key? key});
 
   @override
   Widget build(BuildContext context) {
+    final mainLists = Provider.of<MainListsProvider>(context).mainLists();
+    print(mainLists);
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemCount: entries.length,
+      itemCount: mainLists.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.only(right: 12.0.w),
@@ -33,7 +38,7 @@ class HomeListView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '리뷰 4.5점 이상 서울 돈카츠 맛집 리스트',
+                      '${utf8.decode(mainLists[index].title.runes.toList())}',
                       style: TextStyle(
                         color: Color(0xFF343A40),
                         fontSize: 16.sp,
@@ -45,7 +50,7 @@ class HomeListView extends StatelessWidget {
                       maxLines: 2,
                     ),
                     Text(
-                      '23.09.13',
+                      '${DateFormat('yy.MM.dd').format(DateTime.parse(mainLists[index].updatedAt))}',
                       style: TextStyle(
                         color: Color(0xFF868E96),
                         fontSize: 12.sp,
@@ -56,15 +61,25 @@ class HomeListView extends StatelessWidget {
                     )
                   ],
                 ),
-                Positioned(
-                  top: 4.0.h,
-                  right: 0.0,
-                  child: SvgPicture.asset(
-                    'assets/icons/button_book_mark.svg',
-                    width: 32.0.w,
-                    height: 32.0.h,
-                  ),
-                ),
+                mainLists[index].isBookmarked
+                    ? Positioned(
+                        top: 4.0.h,
+                        right: 0.0,
+                        child: SvgPicture.asset(
+                          'assets/icons/button_book_mark.svg',
+                          width: 32.0.w,
+                          height: 32.0.h,
+                        ),
+                      )
+                    : Positioned(
+                        top: 4.0.h,
+                        right: 0.0,
+                        child: SvgPicture.asset(
+                          'assets/icons/tab_book_mark.svg',
+                          width: 32.0.w,
+                          height: 32.0.h,
+                        ),
+                      ),
               ],
             ),
           ),

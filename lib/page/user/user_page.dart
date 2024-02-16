@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../model/custom_app_bar.dart';
-import '../../navigator/user_list_navigator.dart';
+import '../../widget/custom_app_bar.dart';
+import '../../widget/navigator/user_list_navigator.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);

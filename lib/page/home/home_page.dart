@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
-import '../../model/custom/custom_search_bar.dart';
-import '../../model/list/home_list_view.dart';
+import '../../model/provider/list_provider.dart';
+import '../../widget/custom/custom_search_bar.dart';
+import '../../widget/list/home_list_view.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -109,7 +111,10 @@ class HomePage extends StatelessWidget {
 
                 SizedBox(
                   height: 282,
-                  child: HomeListView(),
+                  child: ChangeNotifierProvider<MainListsProvider>(
+                    create: (context) => MainListsProvider(),
+                    child: HomeListView(),
+                  ),
                 )
               ],
             ),

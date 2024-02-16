@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lister/services/api_service.dart';
 
-import '../../model/custom/custom_text_form_field.dart';
-import '../../model/widget/join_widget.dart';
-import '../../model/custom/custom_next_page_button.dart';
-import '../../model/custom/custom_progress_bar.dart';
+import '../../widget/custom/custom_text_form_field.dart';
+import '../../widget/join_widget.dart';
+import '../../widget/custom/custom_next_page_button.dart';
+import '../../widget/custom/custom_progress_bar.dart';
 import 'sign_up_congratulation_page.dart';
 
 class SetPasswordPage extends StatefulWidget {

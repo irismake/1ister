@@ -1,13 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lister/services/api_service.dart';
 
-import '../../model/custom/custom_text_form_field.dart';
-import '../../model/custom/custom_next_page_button.dart';
-import '../../navigator/home_page_navigator.dart';
+import '../../services/api_service.dart';
+import '../../widget/custom/custom_text_form_field.dart';
+import '../../widget/custom/custom_next_page_button.dart';
+import '../../widget/navigator/home_page_navigator.dart';
 
 class EmailLoginPage extends StatefulWidget {
   const EmailLoginPage({Key? key}) : super(key: key);

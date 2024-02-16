@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../model/custom/custom_category.dart';
-import '../../model/custom/custom_search_bar.dart';
-import '../../model/custom_app_bar.dart';
-import '../../model/widget/search_list_widget.dart';
+import '../../widget/custom/custom_category.dart';
+import '../../widget/custom/custom_search_bar.dart';
+import '../../widget/custom_app_bar.dart';
+import '../../widget/search_list_widget.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);

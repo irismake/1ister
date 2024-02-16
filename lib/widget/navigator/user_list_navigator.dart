@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../model/bottom_navigation_bar.dart';
-import '../model/list/user_book_mark_list.dart';
-import '../model/list/user_my_list.dart';
+import '../bottom_navigation_bar.dart';
+import '../list/user_book_mark_list.dart';
+import '../list/user_my_list.dart';
 
 class UsersListNavigator extends StatefulWidget {
   final bool myListState;

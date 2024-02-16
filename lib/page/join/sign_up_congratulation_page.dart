@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../model/custom/custom_next_page_button.dart';
+import '../../widget/custom/custom_next_page_button.dart';
 import '../login/login_page.dart';
 
 class SignUpCongratulationPage extends StatelessWidget {

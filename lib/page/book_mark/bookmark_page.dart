@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../model/custom/custom_search_bar.dart';
-import '../../model/custom_app_bar.dart';
-import '../../model/widget/book_mark_list_widget.dart';
+import '../../widget/custom/custom_search_bar.dart';
+import '../../widget/custom_app_bar.dart';
+import '../../widget/book_mark_list_widget.dart';
 
 class BookMarkPage extends StatefulWidget {
   const BookMarkPage({Key? key}) : super(key: key);

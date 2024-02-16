@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../model/lists.dart';
+
 class ApiService {
   static final storage = FlutterSecureStorage();
   static const String baseUrl = 'http://172.30.1.87:5999';
   static const String userPrefix = 'user';
+  static const String listsPrefix = 'lists';
 
   static Future<bool> sendValidCode(String userEmailAddress) async {
     try {
@@ -142,6 +145,7 @@ class ApiService {
         int userId = responseData['user_id'];
         String accessToken = responseData['access_token'];
         await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+        await storage.write(key: 'USER_ID', value: userId.toString());
         return true;
       } else {
         print('로그인 실패 - 상태 코드: ${response.statusCode}');
@@ -175,6 +179,25 @@ class ApiService {
     } catch (e) {
       print('Request error: $e');
       return false;
+    }
+  }
+
+  static Future<List<MainListData>> getMainLists(String userId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/$listsPrefix/main?user_id=$userId'),
+      );
+      if (response.statusCode == 200) {
+        final mainListsData = json.decode(response.body);
+
+        MainListsModel mainListsModel = MainListsModel.fromJson(mainListsData);
+
+        return Future.value(mainListsModel.lists);
+      } else {
+        throw Exception('Server response error: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error: $e');
     }
   }
 }
