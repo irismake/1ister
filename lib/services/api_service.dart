@@ -12,15 +12,16 @@ class ApiService {
 
   static Future<bool> sendValidCode(String userEmailAddress) async {
     try {
-      final existResponse = await http.get(
+      final checkEmailResponse = await http.get(
         Uri.parse('$baseUrl/$userPrefix/check-email?email=$userEmailAddress'),
       );
-      if (existResponse.statusCode == 200) {
-        final existData = json.decode(existResponse.body);
-        if (existData['result']) {
-          print('이미 사용중인 이메일');
-          return true;
-        } else {
+      if (checkEmailResponse.statusCode == 200) {
+        final checkEmailResponseData = json.decode(checkEmailResponse.body);
+        if (checkEmailResponseData['result']) {
+          throw Exception(
+              'Response data error <checkEmail> : ${checkEmailResponseData['result']}');
+        }
+        try {
           final response = await http.get(
             Uri.parse(
                 '$baseUrl/$userPrefix/send-valid-code?email=$userEmailAddress'),
@@ -28,19 +29,24 @@ class ApiService {
           if (response.statusCode == 200) {
             final responseData = json.decode(response.body);
             if (responseData['ok']) {
-              print('Valid 코드 전송 성공!');
+              return false;
             } else {
-              print('Valid 코드 전송 실패!->잘못된 이메일 형식');
+              throw Exception(
+                  'Response data error <sendValidCode> : ${responseData['ok']}');
             }
+          } else {
+            throw Exception(
+                'Response code error <sendValidCode> : ${response.statusCode}');
           }
-          return false;
+        } catch (e) {
+          throw Exception('Request error <sendValidCode> : $e');
         }
       } else {
-        return true;
+        throw Exception(
+            'Response code error <checkEmail> : ${checkEmailResponse.statusCode}');
       }
     } catch (e) {
-      print('이메일 인증 번호 전송 오류 발생: $e');
-      return true;
+      throw Exception('Request error <checkEmail> : $e');
     }
   }
 
@@ -56,18 +62,19 @@ class ApiService {
         if (responseData['is_valid']) {
           return false;
         } else {
-          return true;
+          throw Exception(
+              'Response data error <checkValidCode> : ${responseData['is_valid']}');
         }
       } else {
-        return true;
+        throw Exception(
+            'Response code error <checkValidCode> : ${response.statusCode}');
       }
     } catch (e) {
-      print('이메일 인증 번호 검사 오류 발생: $e');
-      return true;
+      throw Exception('Request error <checkValidCode> : $e');
     }
   }
 
-  static Future<bool> checkname(String userId) async {
+  static Future<bool> checkDuplicateUserName(String userId) async {
     try {
       final response = await http.get(
         Uri.parse(
@@ -76,19 +83,16 @@ class ApiService {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         if (responseData['result']) {
-          print('이미 사용중인 이름입니다');
-          return false;
+          throw Exception('이미 사용중인 이름입니다');
         } else {
-          print('사용 가능한 이름입니다');
           return true;
         }
       } else {
-        print('사용자 아이디 중복 확인 - 상태 코드 확인 필요');
-        return false;
+        throw Exception(
+            'Response code error <checkDuplicateUserName> : ${response.statusCode}');
       }
     } catch (e) {
-      print('이름 중복 체크 오류: $e');
-      return false;
+      throw Exception('Request error <checkDuplicateUserName> : $e');
     }
   }
 
@@ -116,12 +120,11 @@ class ApiService {
         bool signInState = await signIn(email, password);
         return signInState;
       } else {
-        print('회원가입 실패 - 상태 코드: ${response.statusCode}');
-        return false;
+        throw Exception(
+            'Response code error <signUp> : ${response.statusCode}');
       }
     } catch (e) {
-      print('회원가입 오류: $e');
-      return false;
+      throw Exception('Request error <signUp> : $e');
     }
   }
 
@@ -148,12 +151,11 @@ class ApiService {
         await storage.write(key: 'USER_ID', value: userId.toString());
         return true;
       } else {
-        print('로그인 실패 - 상태 코드: ${response.statusCode}');
-        return false;
+        throw Exception(
+            'Response code error <signIn> : ${response.statusCode}');
       }
     } catch (e) {
-      print('로그인 오류: $e');
-      return false;
+      throw Exception('Request error <signIn> : $e');
     }
   }
 
@@ -173,12 +175,11 @@ class ApiService {
         print('User Info: $responseData');
         return true;
       } else {
-        print('Server response error: ${response.statusCode}');
-        return false;
+        throw Exception(
+            'Response code error <getUserInfo> : ${response.statusCode}');
       }
     } catch (e) {
-      print('Request error: $e');
-      return false;
+      throw Exception('Request error <getUserInfo> : $e');
     }
   }
 
@@ -194,10 +195,11 @@ class ApiService {
 
         return Future.value(mainListsModel.lists);
       } else {
-        throw Exception('Server response error: ${response.statusCode}');
+        throw Exception(
+            'Response code error <getMainLists> : ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Request error: $e');
+      throw Exception('Request error <getMainLists> : $e');
     }
   }
 }

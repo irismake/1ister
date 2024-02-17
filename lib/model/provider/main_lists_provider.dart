@@ -29,10 +29,9 @@ class MainListsProvider with ChangeNotifier {
 
     final results = await ApiService.getMainLists(userId!);
     _mainLists.clear();
-    print(results);
     for (var result in results) {
       _mainLists.add(result);
-      print('메인 리스트 결과 : ${result.id}');
+      print('메인 리스트 결과 : ${result.isBookmarked}');
     }
     notifyListeners();
   }
