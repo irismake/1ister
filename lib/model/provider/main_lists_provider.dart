@@ -5,11 +5,13 @@ import '../../services/api_service.dart';
 import '../lists.dart';
 
 class MainListsProvider with ChangeNotifier {
+  final storage = FlutterSecureStorage();
   final List<MainListData> _mainLists = [];
   bool _isInitialized = false;
 
-  MainListsProvider() {
+  List<MainListData> mainLists() {
     _initialize();
+    return _mainLists;
   }
 
   void _initialize() async {
@@ -19,26 +21,13 @@ class MainListsProvider with ChangeNotifier {
     }
   }
 
-  List<MainListData> mainLists() {
-    return _mainLists;
-  }
-
   Future<void> _fetchMainLists() async {
-    final userId = await _getUserId();
-    print('유저 아이디 :$userId');
-
-    final results = await ApiService.getMainLists(userId!);
+    String userId = await storage.read(key: 'USER_ID') ?? '';
+    final results = await ApiService.getMainLists(userId);
     _mainLists.clear();
     for (var result in results) {
       _mainLists.add(result);
-      print('메인 리스트 결과 : ${result.isBookmarked}');
     }
     notifyListeners();
-  }
-
-  Future<String?> _getUserId() async {
-    final storage = FlutterSecureStorage();
-    final userId = await storage.read(key: 'USER_ID');
-    return userId;
   }
 }

@@ -159,7 +159,7 @@ class ApiService {
     }
   }
 
-  static Future<bool> getUserInfo(int userId, String accessToken) async {
+  static Future<bool> getUserInfo(String userId, String accessToken) async {
     print(accessToken);
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/info?user_id=$userId');
 
