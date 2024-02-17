@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:provider/provider.dart";
 import 'package:intl/intl.dart';
 
-import '../../model/provider/list_provider.dart';
+import '../../model/provider/main_lists_provider.dart';
 import '../custom/custom_book_mark_button.dart';
 
 class HomeListView extends StatelessWidget {

@@ -129,7 +129,8 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                   final formKeyState = _nameFormKey.currentState!;
                   if (formKeyState.validate()) {
                     formKeyState.save();
-                    _userIdValid = await ApiService.checkname(userId);
+                    _userIdValid =
+                        await ApiService.checkDuplicateUserName(userId);
                     if (_userIdValid) {
                       Navigator.push(
                           context,
