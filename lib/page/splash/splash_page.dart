@@ -51,6 +51,7 @@ class _SplashPageState extends State<SplashPage> {
     }
     DateTime expiry =
         DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
+    print(expiry.isAfter(DateTime.now()));
     return expiry.isAfter(DateTime.now());
   }
 

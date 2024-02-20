@@ -9,6 +9,7 @@ class ApiService {
   static const String baseUrl = 'http://172.30.1.87:5999';
   static const String userPrefix = 'user';
   static const String listsPrefix = 'lists';
+  static const String actionsPrefix = 'actions';
 
   static Future<bool> sendValidCode(String userEmailAddress) async {
     try {
@@ -200,6 +201,68 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Request error <getMainLists> : $e');
+    }
+  }
+
+  static Future<bool> actionLike(int listId) async {
+    try {
+      final Uri uri = Uri.parse('$baseUrl/$actionsPrefix/like');
+      final Map<String, dynamic> requestBody = {
+        "user_id": 13,
+        "list_id": listId
+      };
+
+      final http.Response response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': await storage.read(key: 'ACCESS_TOKEN') ?? '',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('User Info: $responseData');
+        return true;
+      } else {
+        throw Exception(
+            'Response code error <actionLike> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <actionLike> : $e');
+    }
+  }
+
+  static Future<bool> actionUnLike(int listId) async {
+    try {
+      final Uri uri = Uri.parse('$baseUrl/$actionsPrefix/unlike');
+      final Map<String, dynamic> requestBody = {
+        "user_id": 13,
+        "list_id": listId
+      };
+
+      final http.Response response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': await storage.read(key: 'ACCESS_TOKEN') ?? '',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('User Info: $responseData');
+        return true;
+      } else {
+        throw Exception(
+            'Response code error <actionUnLike> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <actionUnLike> : $e');
     }
   }
 }

@@ -19,7 +19,7 @@ class MainListData {
   final String keyword2;
   final bool isPrivate;
   final int likeCount;
-  final bool isBookmarked;
+  bool _isBookmarked; // 변경 가능한 속성으로 변경
   final String updatedAt;
 
   MainListData({
@@ -30,9 +30,17 @@ class MainListData {
     required this.keyword2,
     required this.isPrivate,
     required this.likeCount,
-    required this.isBookmarked,
+    required bool isBookmarked, // 변경 가능한 속성으로 변경
     required this.updatedAt,
-  });
+  }) : _isBookmarked = isBookmarked;
+
+  // isBookmarked 속성의 getter 메서드
+  bool get isBookmarked => _isBookmarked;
+
+  // isBookmarked 속성의 setter 메서드
+  set isBookmarked(bool value) {
+    _isBookmarked = value;
+  }
 
   MainListData.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -42,6 +50,6 @@ class MainListData {
         keyword2 = json['keyword_2'] as String,
         isPrivate = json['is_private'] as bool,
         likeCount = json['like_count'] as int,
-        isBookmarked = json['is_bookmarked'] as bool,
+        _isBookmarked = json['is_bookmarked'] as bool, // 변경 가능한 속성으로 변경
         updatedAt = json['updated_at'] as String;
 }
