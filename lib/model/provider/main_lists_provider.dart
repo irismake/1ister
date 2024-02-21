@@ -35,13 +35,9 @@ class MainListsProvider with ChangeNotifier {
     if (isBookMarked) {
       await ApiService.actionUnLike(listId);
       _mainLists[index].isBookmarked = false;
-      print(!_mainLists[index].isBookmarked);
-      print('싫어요!');
     } else {
       await ApiService.actionLike(listId);
       _mainLists[index].isBookmarked = true;
-      print(!_mainLists[index].isBookmarked);
-      print('좋아요');
     }
     notifyListeners();
   }

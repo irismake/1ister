@@ -56,6 +56,7 @@ class _SearchPageState extends State<SearchPage> {
                     _searchState = true;
                   });
                 },
+                isInHomePage: false,
               ),
               _searchState
                   ? Expanded(

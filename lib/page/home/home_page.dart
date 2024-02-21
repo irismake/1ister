@@ -60,6 +60,7 @@ class HomePage extends StatelessWidget {
                   ),
                   CustomSearchBar(
                     onSearch: (String value) {},
+                    isInHomePage: true,
                   ),
                 ],
               ),

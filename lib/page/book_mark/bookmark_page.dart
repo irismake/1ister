@@ -46,6 +46,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
           children: [
             CustomSearchBar(
               onSearch: (String value) {},
+              isInHomePage: false,
             ),
             SizedBox(
               height: 24.0.h,

@@ -6,7 +6,7 @@ import '../model/lists.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
-  static const String baseUrl = 'http://172.30.1.87:5999';
+  static const String baseUrl = 'http://172.30.33.50:5999';
   static const String userPrefix = 'user';
   static const String listsPrefix = 'lists';
   static const String actionsPrefix = 'actions';
@@ -201,6 +201,23 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Request error <getMainLists> : $e');
+    }
+  }
+
+  static Future<Map<String, dynamic>> getListDetail(int listId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/$listsPrefix/$listId'),
+      );
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        throw Exception(
+            'Response code error <getListDetail> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <getListDetail> : $e');
     }
   }
 
