@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,7 +33,7 @@ class _UserPageState extends State<UserPage> {
     final userInfo = await ApiService.getUserInfo();
     final userFollows = await ApiService.getFollows();
     setState(() {
-      name = userInfo['name'];
+      name = utf8.decode(userInfo['name'].toString().codeUnits);
       bio = userInfo['bio'];
       _isLoading = false;
       following = userFollows['following_count'];
