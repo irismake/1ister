@@ -21,6 +21,7 @@ class _UserPageState extends State<UserPage> {
   late String bio = '';
   late int following = 0;
   late int follower = 0;
+  late String profileImage = '';
   bool _isLoading = true;
 
   @override
@@ -34,7 +35,8 @@ class _UserPageState extends State<UserPage> {
     final userFollows = await ApiService.getFollows();
     setState(() {
       name = utf8.decode(userInfo['name'].toString().codeUnits);
-      bio = userInfo['bio'];
+      bio = utf8.decode(userInfo['bio'].toString().codeUnits);
+      profileImage = utf8.decode(userInfo['picture'].toString().codeUnits);
       _isLoading = false;
       following = userFollows['following_count'];
       follower = userFollows['follower_count'];
@@ -68,11 +70,17 @@ class _UserPageState extends State<UserPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SvgPicture.asset(
-                                'assets/images/image_user_profile.svg',
-                                height: 64.0.h,
-                                width: 64.0.w,
-                              ),
+                              profileImage == ''
+                                  ? SvgPicture.asset(
+                                      'assets/images/image_user_profile.svg',
+                                      height: 64.0.h,
+                                      width: 64.0.w,
+                                    )
+                                  : Container(
+                                      color: Colors.red,
+                                      height: 64.0.h,
+                                      width: 64.0.w,
+                                    ),
                               SizedBox(
                                 width: 16.0.w,
                               ),
