@@ -18,6 +18,8 @@ class _UserPageState extends State<UserPage> {
   bool homePageState = false;
   late String name = '';
   late String bio = '';
+  late int following = 0;
+  late int follower = 0;
   bool _isLoading = true;
 
   @override
@@ -28,10 +30,13 @@ class _UserPageState extends State<UserPage> {
 
   Future<void> getUserInfo() async {
     final userInfo = await ApiService.getUserInfo();
+    final userFollows = await ApiService.getFollows();
     setState(() {
       name = userInfo['name'];
       bio = userInfo['bio'];
       _isLoading = false;
+      following = userFollows['following_count'];
+      follower = userFollows['follower_count'];
     });
   }
 
@@ -112,7 +117,7 @@ class _UserPageState extends State<UserPage> {
                                             onTap: () {},
                                             child: Text(
                                               textAlign: TextAlign.center,
-                                              '32',
+                                              '$follower',
                                               style: TextStyle(
                                                 color: Color(0xFF868E96),
                                                 fontSize: 14.sp,
@@ -149,7 +154,7 @@ class _UserPageState extends State<UserPage> {
                                           child: InkWell(
                                             onTap: () {},
                                             child: Text(
-                                              '12',
+                                              '$following',
                                               style: TextStyle(
                                                 color: Color(0xFF868E96),
                                                 fontSize: 14.sp,

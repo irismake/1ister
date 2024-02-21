@@ -184,6 +184,29 @@ class ApiService {
     }
   }
 
+  static Future<Map<String, dynamic>> getFollows() async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    final Uri uri = Uri.parse('$baseUrl/$userPrefix/follows');
+
+    try {
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': '$accessToken',
+      });
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        throw Exception(
+            'Response code error <getUserInfo> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <getUserInfo> : $e');
+    }
+  }
+
   static Future<List<MainListData>> getMainLists(String userId) async {
     try {
       final response = await http.get(
