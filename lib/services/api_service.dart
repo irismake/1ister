@@ -160,8 +160,9 @@ class ApiService {
     }
   }
 
-  static Future<bool> getUserInfo(String userId, String accessToken) async {
-    print(accessToken);
+  static Future<Map<String, dynamic>> getUserInfo() async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    final userId = await storage.read(key: 'USER_ID');
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/info?user_id=$userId');
 
     try {
@@ -173,8 +174,30 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        print('User Info: $responseData');
-        return true;
+        return responseData;
+      } else {
+        throw Exception(
+            'Response code error <getUserInfo> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <getUserInfo> : $e');
+    }
+  }
+
+  static Future<Map<String, dynamic>> getFollows() async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    final Uri uri = Uri.parse('$baseUrl/$userPrefix/follows');
+
+    try {
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': '$accessToken',
+      });
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        return responseData;
       } else {
         throw Exception(
             'Response code error <getUserInfo> : ${response.statusCode}');
