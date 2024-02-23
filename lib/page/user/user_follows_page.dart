@@ -7,8 +7,12 @@ import '../../widget/search_list_widget.dart';
 class UserFollowsPage extends StatefulWidget {
   final String name;
   final bool followState;
+  final List<dynamic> followsInfo;
   const UserFollowsPage(
-      {super.key, required this.name, required this.followState});
+      {super.key,
+      required this.name,
+      required this.followState,
+      required this.followsInfo});
 
   @override
   State<UserFollowsPage> createState() => _UserFollowsPageState();
@@ -21,6 +25,7 @@ class _UserFollowsPageState extends State<UserFollowsPage> {
   @override
   void initState() {
     super.initState();
+    print(widget.followsInfo);
     if (widget.followState) {
       _followerState = true;
       _followingState = false;
@@ -134,10 +139,11 @@ class _UserFollowsPageState extends State<UserFollowsPage> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Expanded(
                     child: ListViewWidget(
-                      searchText: "o",
+                      searchText: '',
                       listState: false,
                       itemState: false,
                       userState: true,
+                      userInfo: widget.followsInfo,
                     ),
                   );
                 } else {

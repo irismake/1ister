@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 //import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,6 +8,7 @@ import 'custom/custom_follow_button.dart';
 import 'custom/custom_keyword.dart';
 
 class ListViewWidget extends StatefulWidget {
+  final List<dynamic> userInfo;
   final String? searchText;
   final bool listState;
   final bool itemState;
@@ -13,6 +16,7 @@ class ListViewWidget extends StatefulWidget {
 
   const ListViewWidget(
       {super.key,
+      required this.userInfo,
       required this.searchText,
       required this.listState,
       required this.itemState,
@@ -59,11 +63,11 @@ class _ListViewWidgetState extends State<ListViewWidget> {
     'P'
   ];
 
-  Widget buildListWidget() {
+  Widget buildListWidget(int index) {
     final Map<bool, Widget> widgetMap = {
       widget.listState: SearchListWidget(searchText: widget.searchText),
       widget.itemState: SearchItemWidget(searchText: widget.searchText),
-      widget.userState: SearchUserWidget(searchText: widget.searchText),
+      widget.userState: SearchUserWidget(userInfo: widget.userInfo[index]),
     };
 
     return widgetMap.entries.firstWhere((entry) => entry.key).value;
@@ -73,9 +77,9 @@ class _ListViewWidgetState extends State<ListViewWidget> {
   Widget build(BuildContext context) {
     return ListView.separated(
       scrollDirection: Axis.vertical,
-      itemCount: list.length,
+      itemCount: widget.userInfo.length,
       itemBuilder: (context, index) {
-        return buildListWidget();
+        return buildListWidget(index);
       },
       separatorBuilder: (BuildContext context, int index) {
         return Divider(
@@ -255,9 +259,9 @@ class SearchItemWidget extends StatelessWidget {
 }
 
 class SearchUserWidget extends StatelessWidget {
-  final String? searchText;
+  final Map<String, dynamic> userInfo;
 
-  const SearchUserWidget({required this.searchText});
+  const SearchUserWidget({required this.userInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -284,7 +288,7 @@ class SearchUserWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '$searchText',
+                      '${utf8.decode(userInfo['name'].toString().codeUnits)}',
                       style: TextStyle(
                         color: Color(0xFF343A40),
                         fontSize: 14,
@@ -296,7 +300,7 @@ class SearchUserWidget extends StatelessWidget {
                       maxLines: 2,
                     ),
                     Text(
-                      '저는 부지런한 아보카도에요.',
+                      '${utf8.decode(userInfo['bio'].toString().codeUnits)}',
                       style: TextStyle(
                         color: Color(0xFF868E96),
                         fontSize: 12,

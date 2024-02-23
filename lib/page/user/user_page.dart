@@ -20,8 +20,10 @@ class _UserPageState extends State<UserPage> {
   bool homePageState = false;
   late String name = '';
   late String bio = '';
-  late int following = 0;
-  late int follower = 0;
+  late int followingNum = 0;
+  late int followerNum = 0;
+  late List<dynamic> userFollowersInfo;
+  late List<dynamic> userFollowingsInfo;
   late String profileImage = '';
   bool _isLoading = true;
 
@@ -39,8 +41,12 @@ class _UserPageState extends State<UserPage> {
       bio = utf8.decode(userInfo['bio'].toString().codeUnits);
       profileImage = utf8.decode(userInfo['picture'].toString().codeUnits);
       _isLoading = false;
-      following = userFollows['following_count'];
-      follower = userFollows['follower_count'];
+      followingNum = userFollows['following_count'];
+      followerNum = userFollows['follower_count'];
+      userFollowersInfo = userFollows['followers'];
+      userFollowingsInfo = userFollows['followings'];
+      print(userFollowersInfo);
+      print(userFollowingsInfo);
     });
   }
 
@@ -131,13 +137,15 @@ class _UserPageState extends State<UserPage> {
                                                       UserFollowsPage(
                                                     name: name,
                                                     followState: true,
+                                                    followsInfo:
+                                                        userFollowersInfo,
                                                   ),
                                                 ),
                                               );
                                             },
                                             child: Text(
                                               textAlign: TextAlign.center,
-                                              '$follower',
+                                              '$followerNum',
                                               style: TextStyle(
                                                 color: Color(0xFF868E96),
                                                 fontSize: 14.sp,
@@ -179,12 +187,14 @@ class _UserPageState extends State<UserPage> {
                                                       UserFollowsPage(
                                                     name: name,
                                                     followState: false,
+                                                    followsInfo:
+                                                        userFollowingsInfo,
                                                   ),
                                                 ),
                                               );
                                             },
                                             child: Text(
-                                              '$following',
+                                              '$followingNum',
                                               style: TextStyle(
                                                 color: Color(0xFF868E96),
                                                 fontSize: 14.sp,
@@ -206,17 +216,20 @@ class _UserPageState extends State<UserPage> {
                       SizedBox(
                         height: 8.0.h,
                       ),
-                      Text(
-                        bio,
-                        style: TextStyle(
-                          color: Color(0xFF868E96),
-                          fontSize: 14.sp,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.4.h,
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          bio,
+                          style: TextStyle(
+                            color: Color(0xFF868E96),
+                            fontSize: 14.sp,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            height: 1.4.h,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
                       ),
                       SizedBox(
                         height: 24.0.h,
