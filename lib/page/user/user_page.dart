@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/services/api_service.dart';
 
+import '../../services/api_service.dart';
 import '../../widget/custom_app_bar.dart';
 import '../../widget/navigator/user_list_navigator.dart';
+import 'user_follows_page.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _UserPageState extends State<UserPage> {
 
   Future<void> getUserInfo() async {
     final userInfo = await ApiService.getUserInfo();
-    final userFollows = await ApiService.getFollows();
+    final userFollows = await ApiService.getUserFollows();
     setState(() {
       name = utf8.decode(userInfo['name'].toString().codeUnits);
       bio = utf8.decode(userInfo['bio'].toString().codeUnits);
@@ -123,7 +124,17 @@ class _UserPageState extends State<UserPage> {
                                         SizedBox(
                                           height: 20.0.h,
                                           child: InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UserFollowsPage(
+                                                    name: name,
+                                                    followState: true,
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                             child: Text(
                                               textAlign: TextAlign.center,
                                               '$follower',
@@ -161,7 +172,17 @@ class _UserPageState extends State<UserPage> {
                                         SizedBox(
                                           height: 20.0.h,
                                           child: InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UserFollowsPage(
+                                                    name: name,
+                                                    followState: false,
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                             child: Text(
                                               '$following',
                                               style: TextStyle(

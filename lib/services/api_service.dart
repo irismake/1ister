@@ -184,7 +184,7 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getFollows() async {
+  static Future<Map<String, dynamic>> getUserFollows() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/follows');
 
