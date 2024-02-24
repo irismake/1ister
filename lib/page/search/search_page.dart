@@ -105,6 +105,7 @@ class _SearchPageState extends State<SearchPage> {
                                   ConnectionState.done) {
                                 return Expanded(
                                   child: ListViewWidget(
+                                    userInfo: [],
                                     searchText: _searchQuery,
                                     listState: _listState,
                                     itemState: _itemState,

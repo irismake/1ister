@@ -6,7 +6,7 @@ import '../model/lists.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
-  static const String baseUrl = 'http://172.30.33.50:5999';
+  static const String baseUrl = 'http://172.30.1.87:5999';
   static const String userPrefix = 'user';
   static const String listsPrefix = 'lists';
   static const String actionsPrefix = 'actions';
@@ -184,7 +184,7 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getFollows() async {
+  static Future<Map<String, dynamic>> getUserFollows() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/follows');
 

@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/services/api_service.dart';
 
+import '../../services/api_service.dart';
 import '../../widget/custom_app_bar.dart';
 import '../../widget/navigator/user_list_navigator.dart';
+import 'user_follows_page.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -19,8 +20,10 @@ class _UserPageState extends State<UserPage> {
   bool homePageState = false;
   late String name = '';
   late String bio = '';
-  late int following = 0;
-  late int follower = 0;
+  late int followingNum = 0;
+  late int followerNum = 0;
+  late List<dynamic> userFollowersInfo;
+  late List<dynamic> userFollowingsInfo;
   late String profileImage = '';
   bool _isLoading = true;
 
@@ -32,14 +35,18 @@ class _UserPageState extends State<UserPage> {
 
   Future<void> getUserInfo() async {
     final userInfo = await ApiService.getUserInfo();
-    final userFollows = await ApiService.getFollows();
+    final userFollows = await ApiService.getUserFollows();
     setState(() {
       name = utf8.decode(userInfo['name'].toString().codeUnits);
       bio = utf8.decode(userInfo['bio'].toString().codeUnits);
       profileImage = utf8.decode(userInfo['picture'].toString().codeUnits);
       _isLoading = false;
-      following = userFollows['following_count'];
-      follower = userFollows['follower_count'];
+      followingNum = userFollows['following_count'];
+      followerNum = userFollows['follower_count'];
+      userFollowersInfo = userFollows['followers'];
+      userFollowingsInfo = userFollows['followings'];
+      print(userFollowersInfo);
+      print(userFollowingsInfo);
     });
   }
 
@@ -123,10 +130,22 @@ class _UserPageState extends State<UserPage> {
                                         SizedBox(
                                           height: 20.0.h,
                                           child: InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UserFollowsPage(
+                                                    name: name,
+                                                    followState: true,
+                                                    followsInfo:
+                                                        userFollowersInfo,
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                             child: Text(
                                               textAlign: TextAlign.center,
-                                              '$follower',
+                                              '$followerNum',
                                               style: TextStyle(
                                                 color: Color(0xFF868E96),
                                                 fontSize: 14.sp,
@@ -161,9 +180,21 @@ class _UserPageState extends State<UserPage> {
                                         SizedBox(
                                           height: 20.0.h,
                                           child: InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UserFollowsPage(
+                                                    name: name,
+                                                    followState: false,
+                                                    followsInfo:
+                                                        userFollowingsInfo,
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                             child: Text(
-                                              '$following',
+                                              '$followingNum',
                                               style: TextStyle(
                                                 color: Color(0xFF868E96),
                                                 fontSize: 14.sp,
@@ -185,17 +216,20 @@ class _UserPageState extends State<UserPage> {
                       SizedBox(
                         height: 8.0.h,
                       ),
-                      Text(
-                        bio,
-                        style: TextStyle(
-                          color: Color(0xFF868E96),
-                          fontSize: 14.sp,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.4.h,
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          bio,
+                          style: TextStyle(
+                            color: Color(0xFF868E96),
+                            fontSize: 14.sp,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            height: 1.4.h,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
                       ),
                       SizedBox(
                         height: 24.0.h,
