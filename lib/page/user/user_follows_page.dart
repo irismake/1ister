@@ -138,12 +138,15 @@ class _UserFollowsPageState extends State<UserFollowsPage> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Expanded(
-                    child: ListViewWidget(
-                      searchText: '',
-                      listState: false,
-                      itemState: false,
-                      userState: true,
-                      userInfo: widget.followsInfo,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24.0.h),
+                      child: ListViewWidget(
+                        searchText: '',
+                        listState: false,
+                        itemState: false,
+                        userState: true,
+                        userInfo: widget.followsInfo,
+                      ),
                     ),
                   );
                 } else {
