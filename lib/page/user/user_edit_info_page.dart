@@ -66,6 +66,7 @@ class UserEditInfoPage extends StatelessWidget {
                     ),
                   ),
                   CustomTextField(
+                    editState: false,
                     labelState: true,
                     labelText: '사용자 아이디',
                     height: 88.0.h,
@@ -79,6 +80,7 @@ class UserEditInfoPage extends StatelessWidget {
                     initText: '@$userName',
                   ),
                   CustomTextField(
+                    editState: true,
                     labelState: true,
                     labelText: '이름',
                     height: 88.0.h,
@@ -92,6 +94,7 @@ class UserEditInfoPage extends StatelessWidget {
                     initText: name,
                   ),
                   CustomTextField(
+                    editState: true,
                     labelState: true,
                     labelText: '사용자 소개',
                     height: 127.0.h,

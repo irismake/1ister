@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatelessWidget {
+  final bool editState;
   final bool labelState;
   final String? labelText;
   final double height;
@@ -11,6 +12,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
 
   const CustomTextField({
+    required this.editState,
     required this.labelState,
     required this.labelText,
     required this.height,
@@ -45,6 +47,7 @@ class CustomTextField extends StatelessWidget {
           SizedBox(
             height: fieldHeight,
             child: TextFormField(
+              enabled: editState,
               style: textStyle,
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
@@ -64,6 +67,13 @@ class CustomTextField extends StatelessWidget {
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide(
+                    width: 1.w,
+                    color: Color(0xffDEE2E6),
+                  ),
+                ),
+                disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                   borderSide: BorderSide(
                     width: 1.w,
