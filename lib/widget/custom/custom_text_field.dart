@@ -47,6 +47,9 @@ class CustomTextField extends StatelessWidget {
           SizedBox(
             height: fieldHeight,
             child: TextFormField(
+              onSaved: (value) {
+                print(value);
+              },
               enabled: editState,
               style: textStyle,
               maxLines: null,
