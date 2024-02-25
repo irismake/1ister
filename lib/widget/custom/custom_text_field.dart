@@ -2,24 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatelessWidget {
-  final bool editState;
   final bool labelState;
   final String? labelText;
   final double height;
   final double fieldHeight;
   final TextStyle textStyle;
-  final String? initText;
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   CustomTextField({
-    required this.editState,
     required this.labelState,
     required this.labelText,
     required this.height,
     required this.fieldHeight,
     required this.textStyle,
-    required this.initText,
-    this.controller,
+    required this.controller,
   });
 
   @override
@@ -48,16 +44,15 @@ class CustomTextField extends StatelessWidget {
           SizedBox(
             height: fieldHeight,
             child: TextFormField(
+              controller: controller,
               keyboardType: TextInputType.text,
-              onSaved: (value) {
-                print(value);
-              },
-              enabled: editState,
+              // onSaved: (value) {
+              //   print(value);
+              // },
               style: textStyle,
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
               expands: true,
-              initialValue: initText,
               decoration: InputDecoration(
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 16.0.h, horizontal: 12.0.w),

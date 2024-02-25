@@ -25,7 +25,26 @@ class UserEditInfoPage extends StatefulWidget {
 }
 
 class _UserEditInfoPageState extends State<UserEditInfoPage> {
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController bioController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  void initState() {
+    super.initState();
+    userNameController.text = '@${widget.userName}';
+    nameController.text = widget.name;
+    bioController.text = widget.bio!;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    userNameController.dispose();
+    nameController.dispose();
+    bioController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,46 +101,43 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         ),
                       ),
                       CustomTextField(
-                        editState: false,
                         labelState: true,
                         labelText: '사용자 아이디',
                         height: 88.0.h,
                         fieldHeight: 56.0.h,
                         textStyle: TextStyle(
                             fontFamily: 'PretendardRegular',
-                            fontSize: 16.sp,
+                            fontSize: 16,
                             color: Color(0xff868E96),
                             fontWeight: FontWeight.w700,
                             height: 1.5.h),
-                        initText: '@${widget.userName}',
+                        controller: userNameController,
                       ),
                       CustomTextField(
-                        editState: true,
                         labelState: true,
                         labelText: '이름',
                         height: 88.0.h,
                         fieldHeight: 56.0.h,
                         textStyle: TextStyle(
                             fontFamily: 'PretendardRegular',
-                            fontSize: 16.sp,
+                            fontSize: 16,
                             color: Color(0xff343A40),
                             fontWeight: FontWeight.w700,
-                            height: 1.5.h),
-                        initText: widget.name,
+                            height: 1.5),
+                        controller: nameController,
                       ),
                       CustomTextField(
-                        editState: true,
                         labelState: true,
                         labelText: '사용자 소개',
                         height: 127.0.h,
                         fieldHeight: 95.0.h,
                         textStyle: TextStyle(
                             fontFamily: 'PretendardRegular',
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             color: Color(0xff343A40),
                             fontWeight: FontWeight.w500,
                             height: 1.4.h),
-                        initText: widget.bio,
+                        controller: bioController,
                       )
                     ],
                   ),
@@ -133,6 +149,14 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                   onPressed: () {
                     final formKeyState = formKey.currentState!;
                     formKeyState.save();
+                    String changedUserName = userNameController.text;
+                    String changedName = nameController.text;
+                    String changedBio = bioController.text;
+
+                    // 가져온 데이터 출력 또는 사용
+                    print('username: $changedUserName');
+                    print('name: $changedName');
+                    print('bio: $changedBio');
                   },
                 ),
               ],
