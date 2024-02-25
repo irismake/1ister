@@ -35,6 +35,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
+          popState: true,
           titleText: '지니의 북마크',
           titleState: true,
           actionButtonOnTap: () {},

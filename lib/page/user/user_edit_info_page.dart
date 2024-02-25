@@ -56,6 +56,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: CustomAppbar(
+          popState: false,
           titleText: '계정 편집',
           titleState: true,
           actionButtonOnTap: () {},

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
+  final bool popState;
   final String titleText;
   final bool titleState;
   final VoidCallback? actionButtonOnTap;
@@ -10,6 +11,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   const CustomAppbar(
       {Key? key,
+      required this.popState,
       required this.titleText,
       required this.titleState,
       required this.actionButtonOnTap,
@@ -31,15 +33,17 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: SvgPicture.asset(
-                'assets/icons/button_go_back.svg',
-                fit: BoxFit.contain,
-              ),
-            ),
+            popState
+                ? InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: SvgPicture.asset(
+                      'assets/icons/button_go_back.svg',
+                      fit: BoxFit.contain,
+                    ),
+                  )
+                : SizedBox(),
             titleState
                 ? Text(
                     titleText,
@@ -53,10 +57,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                     '',
                   ),
             actionButton == null
-                ? SizedBox(
-                    height: 32.0.h,
-                    width: 32.0.w,
-                  )
+                ? SizedBox()
                 : InkWell(
                     onTap: actionButtonOnTap,
                     child: SvgPicture.asset(

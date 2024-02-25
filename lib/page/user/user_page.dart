@@ -58,6 +58,7 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
+          popState: true,
           titleText: name,
           titleState: true,
           actionButtonOnTap: () {},
