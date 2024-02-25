@@ -207,6 +207,40 @@ class ApiService {
     }
   }
 
+  static Future<bool> updateUserInfo(
+      String userName, String name, String picture, String bio) async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+
+    final Uri uri = Uri.parse('$baseUrl/$userPrefix/update');
+    try {
+      final Map<String, dynamic> requestBody = {
+        "username": userName,
+        "name": name,
+        "picture": picture,
+        "bio": bio,
+      };
+
+      final http.Response response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': '$accessToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('response : $responseData');
+        return true;
+      } else {
+        throw Exception(
+            'Response code error <userUpdate> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <userUpdate> : $e');
+    }
+  }
+
   static Future<List<MainListData>> getMainLists(String userId) async {
     try {
       final response = await http.get(

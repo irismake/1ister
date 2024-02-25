@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lister/services/api_service.dart';
 
 import '../../widget/custom/custom_next_page_button.dart';
 import '../../widget/custom/custom_text_field.dart';
@@ -107,7 +108,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         fieldHeight: 56.0.h,
                         textStyle: TextStyle(
                             fontFamily: 'PretendardRegular',
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             color: Color(0xff868E96),
                             fontWeight: FontWeight.w700,
                             height: 1.5.h),
@@ -120,10 +121,10 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         fieldHeight: 56.0.h,
                         textStyle: TextStyle(
                             fontFamily: 'PretendardRegular',
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             color: Color(0xff343A40),
                             fontWeight: FontWeight.w700,
-                            height: 1.5),
+                            height: 1.5.h),
                         controller: nameController,
                       ),
                       CustomTextField(
@@ -133,7 +134,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         fieldHeight: 95.0.h,
                         textStyle: TextStyle(
                             fontFamily: 'PretendardRegular',
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             color: Color(0xff343A40),
                             fontWeight: FontWeight.w500,
                             height: 1.4.h),
@@ -146,17 +147,18 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                   firstFieldState: true,
                   secondFieldState: true,
                   text: '편집 완료',
-                  onPressed: () {
+                  onPressed: () async {
                     final formKeyState = formKey.currentState!;
                     formKeyState.save();
-                    String changedUserName = userNameController.text;
+                    String changedUserName =
+                        userNameController.text.substring(1);
                     String changedName = nameController.text;
                     String changedBio = bioController.text;
 
-                    // 가져온 데이터 출력 또는 사용
-                    print('username: $changedUserName');
-                    print('name: $changedName');
-                    print('bio: $changedBio');
+                    if (await ApiService.updateUserInfo(
+                        changedUserName, changedName, '', changedBio)) {
+                      Navigator.pop(context, true);
+                    }
                   },
                 ),
               ],

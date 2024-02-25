@@ -242,16 +242,20 @@ class _UserPageState extends State<UserPage> {
                         width: double.infinity,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => UserEditInfoPage(
-                                  userName: userName,
-                                  name: name,
-                                  bio: bio,
-                                  picture: profileImage,
-                                ),
-                              ),
-                            );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UserEditInfoPage(
+                                    userName: userName,
+                                    name: name,
+                                    bio: bio,
+                                    picture: profileImage,
+                                  ),
+                                )).then((value) {
+                              if (value) {
+                                getUserInfo();
+                              }
+                            });
                           },
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
