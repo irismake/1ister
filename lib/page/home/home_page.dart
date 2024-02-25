@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/page/search/search_page.dart';
 import 'package:provider/provider.dart';
 
+import 'package:lister/page/search/search_page.dart';
 import '../../model/provider/main_lists_provider.dart';
 import '../../widget/custom/custom_search_bar.dart';
 import '../../widget/list/home_list_view.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/page/search/search_page.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final ValueChanged<String>? onSearch;
@@ -51,15 +50,11 @@ class CustomSearchBar extends StatelessWidget {
         fontWeight: FontWeight.w600,
       ),
       //focusNode: focusNode,
-      onChanged: (String value) {
-        print('value: $value');
-      },
       onFieldSubmitted: (String value) {
         if (value.isNotEmpty) {
           onSearch?.call(value);
           print('next');
         }
-        // Navigate to the next page using Navigator
       },
     );
   }

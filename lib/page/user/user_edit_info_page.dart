@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/services/api_service.dart';
 
+import 'package:lister/services/api_service.dart';
 import '../../widget/custom/custom_next_page_button.dart';
 import '../../widget/custom/custom_text_field.dart';
 import '../../widget/custom_app_bar.dart';
