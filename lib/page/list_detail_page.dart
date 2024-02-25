@@ -25,6 +25,7 @@ class ListDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppbar(
+            popState: true,
             titleText: '',
             titleState: false,
             actionButtonOnTap: () {},

@@ -36,6 +36,7 @@ class _EditPageState extends State<EditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
+          popState: true,
           titleText: '리스트 만들기',
           titleState: true,
           actionButtonOnTap: () {},

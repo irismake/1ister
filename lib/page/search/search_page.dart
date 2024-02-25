@@ -37,6 +37,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppbar(
+        popState: true,
         titleText: '검색하기',
         titleState: true,
         actionButtonOnTap: null,

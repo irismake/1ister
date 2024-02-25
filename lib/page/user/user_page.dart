@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../services/api_service.dart';
 import '../../widget/custom_app_bar.dart';
 import '../../widget/navigator/user_list_navigator.dart';
+import 'user_edit_info_page.dart';
 import 'user_follows_page.dart';
 
 class UserPage extends StatefulWidget {
@@ -18,14 +19,16 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   bool _myListState = true;
   bool homePageState = false;
+  bool _isLoading = true;
+
+  late String userName = '';
   late String name = '';
   late String bio = '';
+  late String profileImage = '';
   late int followingNum = 0;
   late int followerNum = 0;
   late List<dynamic> userFollowersInfo;
   late List<dynamic> userFollowingsInfo;
-  late String profileImage = '';
-  bool _isLoading = true;
 
   @override
   initState() {
@@ -37,6 +40,7 @@ class _UserPageState extends State<UserPage> {
     final userInfo = await ApiService.getUserInfo();
     final userFollows = await ApiService.getUserFollows();
     setState(() {
+      userName = utf8.decode(userInfo['username'].toString().codeUnits);
       name = utf8.decode(userInfo['name'].toString().codeUnits);
       bio = utf8.decode(userInfo['bio'].toString().codeUnits);
       profileImage = utf8.decode(userInfo['picture'].toString().codeUnits);
@@ -54,6 +58,7 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
+          popState: true,
           titleText: name,
           titleState: true,
           actionButtonOnTap: () {},
@@ -237,7 +242,22 @@ class _UserPageState extends State<UserPage> {
                       Container(
                         width: double.infinity,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UserEditInfoPage(
+                                    userName: userName,
+                                    name: name,
+                                    bio: bio,
+                                    picture: profileImage,
+                                  ),
+                                )).then((value) {
+                              if (value) {
+                                getUserInfo();
+                              }
+                            });
+                          },
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),

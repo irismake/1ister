@@ -39,6 +39,7 @@ class _UserFollowsPageState extends State<UserFollowsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
+          popState: true,
           titleText: widget.name,
           titleState: true,
           actionButtonOnTap: () {},

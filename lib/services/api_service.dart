@@ -75,11 +75,11 @@ class ApiService {
     }
   }
 
-  static Future<bool> checkDuplicateUserName(String userId) async {
+  static Future<bool> checkDuplicateUserName(String userName) async {
     try {
       final response = await http.get(
         Uri.parse(
-            '$baseUrl/$userPrefix/check-duplicate-username?username=$userId'),
+            '$baseUrl/$userPrefix/check-duplicate-username?username=$userName'),
       );
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
@@ -207,6 +207,40 @@ class ApiService {
     }
   }
 
+  static Future<bool> updateUserInfo(
+      String userName, String name, String picture, String bio) async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+
+    final Uri uri = Uri.parse('$baseUrl/$userPrefix/update');
+    try {
+      final Map<String, dynamic> requestBody = {
+        "username": userName,
+        "name": name,
+        "picture": picture,
+        "bio": bio,
+      };
+
+      final http.Response response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': '$accessToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('response : $responseData');
+        return true;
+      } else {
+        throw Exception(
+            'Response code error <userUpdate> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <userUpdate> : $e');
+    }
+  }
+
   static Future<List<MainListData>> getMainLists(String userId) async {
     try {
       final response = await http.get(
@@ -246,9 +280,11 @@ class ApiService {
 
   static Future<bool> actionLike(int listId) async {
     try {
+      final userId = await storage.read(key: 'USER_ID');
+      final accessToken = await storage.read(key: 'ACCESS_TOKEN');
       final Uri uri = Uri.parse('$baseUrl/$actionsPrefix/like');
       final Map<String, dynamic> requestBody = {
-        "user_id": 13,
+        "user_id": userId,
         "list_id": listId
       };
 
@@ -258,7 +294,7 @@ class ApiService {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': await storage.read(key: 'ACCESS_TOKEN') ?? '',
+          'Authorization': '$accessToken',
         },
       );
 
