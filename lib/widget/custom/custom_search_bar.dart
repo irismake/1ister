@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/page/search/search_page.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final ValueChanged<String>? onSearch;
-  final bool isInHomePage;
+  final bool autoFocus;
+  final bool enabled;
 
   CustomSearchBar(
-      {Key? key, required this.onSearch, required this.isInHomePage});
+      {Key? key,
+      required this.onSearch,
+      required this.autoFocus,
+      required this.enabled});
 
   @override
   Widget build(BuildContext context) {
-    FocusNode focusNode = FocusNode();
+    //FocusNode focusNode = FocusNode();
     return TextFormField(
+      enabled: enabled,
+      autofocus: autoFocus,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 12.0.w),
         border: OutlineInputBorder(
@@ -44,27 +49,12 @@ class CustomSearchBar extends StatelessWidget {
         fontFamily: 'Pretendard',
         fontWeight: FontWeight.w600,
       ),
-      focusNode: focusNode,
-      onChanged: (String value) {
-        print('value: $value');
-      },
-      onTap: () {
-        if (isInHomePage) {
-          print('000000000');
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(),
-            ),
-          );
-        }
-      },
+      //focusNode: focusNode,
       onFieldSubmitted: (String value) {
         if (value.isNotEmpty) {
           onSearch?.call(value);
           print('next');
         }
-        // Navigate to the next page using Navigator
       },
     );
   }

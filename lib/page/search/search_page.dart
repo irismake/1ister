@@ -50,6 +50,8 @@ class _SearchPageState extends State<SearchPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CustomSearchBar(
+                autoFocus: true,
+                enabled: true,
                 onSearch: (String value) {
                   setState(() {
                     _searchQuery = value;
@@ -57,7 +59,6 @@ class _SearchPageState extends State<SearchPage> {
                     _searchState = true;
                   });
                 },
-                isInHomePage: false,
               ),
               _searchState
                   ? Expanded(
