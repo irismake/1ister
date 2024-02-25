@@ -75,11 +75,11 @@ class ApiService {
     }
   }
 
-  static Future<bool> checkDuplicateUserName(String userId) async {
+  static Future<bool> checkDuplicateUserName(String userName) async {
     try {
       final response = await http.get(
         Uri.parse(
-            '$baseUrl/$userPrefix/check-duplicate-username?username=$userId'),
+            '$baseUrl/$userPrefix/check-duplicate-username?username=$userName'),
       );
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);

@@ -148,15 +148,21 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                   secondFieldState: true,
                   text: '편집 완료',
                   onPressed: () async {
+                    bool userNameValidState = true;
                     final formKeyState = formKey.currentState!;
                     formKeyState.save();
                     String changedUserName =
                         userNameController.text.substring(1);
                     String changedName = nameController.text;
                     String changedBio = bioController.text;
-
+                    if (widget.userName != changedUserName) {
+                      userNameValidState =
+                          await ApiService.checkDuplicateUserName(
+                              changedUserName);
+                    }
                     if (await ApiService.updateUserInfo(
-                        changedUserName, changedName, '', changedBio)) {
+                            changedUserName, changedName, '', changedBio) &&
+                        userNameValidState == true) {
                       Navigator.pop(context, true);
                     }
                   },
