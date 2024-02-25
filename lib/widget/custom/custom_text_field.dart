@@ -11,7 +11,7 @@ class CustomTextField extends StatelessWidget {
   final String? initText;
   final TextEditingController? controller;
 
-  const CustomTextField({
+  CustomTextField({
     required this.editState,
     required this.labelState,
     required this.labelText,
@@ -34,11 +34,12 @@ class CustomTextField extends StatelessWidget {
               ? Text(
                   labelText!,
                   style: TextStyle(
-                      fontFamily: 'PretendardRegular',
-                      color: Color(0xff343A40),
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      height: 1.5.h),
+                    fontFamily: 'PretendardRegular',
+                    color: Color(0xff343A40),
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    height: 1.5.h,
+                  ),
                 )
               : Container(
                   color: Colors.deepOrange,
@@ -47,6 +48,7 @@ class CustomTextField extends StatelessWidget {
           SizedBox(
             height: fieldHeight,
             child: TextFormField(
+              keyboardType: TextInputType.text,
               onSaved: (value) {
                 print(value);
               },
@@ -55,11 +57,10 @@ class CustomTextField extends StatelessWidget {
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
               expands: true,
-              controller: controller,
               initialValue: initText,
               decoration: InputDecoration(
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 15.0.h, horizontal: 12.0.w),
+                    EdgeInsets.symmetric(vertical: 16.0.h, horizontal: 12.0.w),
                 filled: false,
                 isDense: true,
                 enabledBorder: OutlineInputBorder(
