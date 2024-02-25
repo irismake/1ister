@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatelessWidget {
+  final bool prefixState;
   final bool labelState;
   final String? labelText;
   final double height;
@@ -10,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
 
   CustomTextField({
+    required this.prefixState,
     required this.labelState,
     required this.labelText,
     required this.height,
@@ -46,14 +48,13 @@ class CustomTextField extends StatelessWidget {
             child: TextFormField(
               controller: controller,
               keyboardType: TextInputType.text,
-              // onSaved: (value) {
-              //   print(value);
-              // },
               style: textStyle,
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
               expands: true,
               decoration: InputDecoration(
+                prefixText: prefixState ? '@' : null,
+                prefixStyle: textStyle,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 16.0.h, horizontal: 12.0.w),
                 filled: false,

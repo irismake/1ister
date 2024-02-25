@@ -33,7 +33,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
 
   void initState() {
     super.initState();
-    userNameController.text = '@${widget.userName}';
+    userNameController.text = widget.userName;
     nameController.text = widget.name;
     bioController.text = widget.bio!;
   }
@@ -102,6 +102,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         ),
                       ),
                       CustomTextField(
+                        prefixState: true,
                         labelState: true,
                         labelText: '사용자 아이디',
                         height: 88.0.h,
@@ -115,6 +116,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         controller: userNameController,
                       ),
                       CustomTextField(
+                        prefixState: false,
                         labelState: true,
                         labelText: '이름',
                         height: 88.0.h,
@@ -128,6 +130,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         controller: nameController,
                       ),
                       CustomTextField(
+                        prefixState: false,
                         labelState: true,
                         labelText: '사용자 소개',
                         height: 127.0.h,
@@ -151,8 +154,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                     bool userNameValidState = true;
                     final formKeyState = formKey.currentState!;
                     formKeyState.save();
-                    String changedUserName =
-                        userNameController.text.substring(1);
+                    String changedUserName = userNameController.text;
                     String changedName = nameController.text;
                     String changedBio = bioController.text;
                     if (widget.userName != changedUserName) {
