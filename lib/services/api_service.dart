@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lister/model/groups.dart';
 
 import '../model/lists.dart';
 
@@ -10,6 +11,7 @@ class ApiService {
   static const String userPrefix = 'user';
   static const String listsPrefix = 'lists';
   static const String actionsPrefix = 'actions';
+  static const String groupPrefix = 'groups';
 
   static Future<bool> sendValidCode(String userEmailAddress) async {
     try {
@@ -339,6 +341,31 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Request error <actionUnLike> : $e');
+    }
+  }
+
+  static Future<List<MyGroupData>> getMyGroups() async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    final Uri uri = Uri.parse('$baseUrl/$groupPrefix/mylist?is_bucket=false');
+    try {
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': '$accessToken',
+      });
+
+      if (response.statusCode == 200) {
+        final myGroupData = json.decode(response.body);
+        print('My Group Data: $myGroupData');
+
+        MyGroupsModel myGroupsModel = MyGroupsModel.fromJson(myGroupData);
+        return Future.value(myGroupsModel.groups);
+      } else {
+        throw Exception(
+            'Response code error <getMyGroups> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <getMyGroups> : $e');
     }
   }
 }
