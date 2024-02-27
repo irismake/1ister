@@ -109,6 +109,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         height: 88.0.h,
                         fieldHeight: 56.0.h,
                         textStyle: TextStyle(
+                            decorationThickness: 0,
                             fontFamily: 'PretendardRegular',
                             fontSize: 16.sp,
                             color: Color(0xff868E96),
@@ -123,6 +124,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         height: 88.0.h,
                         fieldHeight: 56.0.h,
                         textStyle: TextStyle(
+                            decorationThickness: 0,
                             fontFamily: 'PretendardRegular',
                             fontSize: 16.sp,
                             color: Color(0xff343A40),
@@ -137,6 +139,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                         height: 127.0.h,
                         fieldHeight: 95.0.h,
                         textStyle: TextStyle(
+                            decorationThickness: 0,
                             fontFamily: 'PretendardRegular',
                             fontSize: 14.sp,
                             color: Color(0xff343A40),
