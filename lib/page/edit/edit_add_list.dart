@@ -10,13 +10,22 @@ import 'package:provider/provider.dart';
 import '../../widget/custom/custom_switch.dart';
 import '../../widget/edit_enter item_widget.dart';
 
-class EditAddList extends StatelessWidget {
+class EditAddList extends StatefulWidget {
   EditAddList({super.key});
 
+  @override
+  State<EditAddList> createState() => _EditAddListState();
+}
+
+class _EditAddListState extends State<EditAddList> {
   final _cities = ['서울', '대전', '대구', '부산', '인천', '울산', '광주'];
-  String? _myGroup;
+
+  int? _myGroupsindex;
+
   bool _switchState = false;
+
   bool _itemState = false;
+
   int _itemNum = 0;
 
   @override
@@ -62,17 +71,30 @@ class EditAddList extends StatelessWidget {
                               child: DropdownButton(
                                 isDense: false, // Dropdown의 높이를 조절
                                 itemHeight: 60,
-                                value: _myGroup,
+                                value: _myGroupsindex == null
+                                    ? null
+                                    : myGroups[_myGroupsindex!].name,
+
                                 items: myGroups
                                     .map((item) => DropdownMenuItem(
-                                          value:
-                                              item, // 선택 시 onChanged 를 통해 반환할 value
-                                          child: Text(utf8.decode(
-                                              item.name.toString().codeUnits)),
+                                          value: item
+                                              .name, // 선택 시 onChanged 를 통해 반환할 value
+                                          child: Text(item.name),
                                         ))
                                     .toList(),
                                 onChanged: (value) {
-                                  // _myGroup = value!;
+                                  setState(() {
+                                    print(value); // value = utf8.decode(
+                                    //     myGroups[0].name.toString().codeUnits);
+                                    //      _user = users.indexOf(value);
+                                    _myGroupsindex = myGroups.indexWhere(
+                                        (group) => group.name == value);
+                                    print(_myGroupsindex);
+
+                                    // _myGroupsindex =
+                                    //     myGroups.indexOf(value as MyGroupData);
+                                    // print(value);
+                                  });
                                 },
                                 icon: Padding(
                                   padding: EdgeInsets.only(right: 8.0.w),
@@ -117,7 +139,11 @@ class EditAddList extends StatelessWidget {
                                     true, //make true to take width of parent widget
                                 underline: Container(), //empty line
                                 style: TextStyle(
-                                    fontSize: 15.sp, color: Colors.black),
+                                    color: Color(0xFFADB5BD),
+                                    fontSize: 15.sp,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.3.h),
                               ),
                             ),
                           )
@@ -343,7 +369,7 @@ class EditAddList extends StatelessWidget {
                                     child: DropdownButton(
                                       isDense: false, // Dropdown의 높이를 조절
                                       itemHeight: 60,
-                                      value: _myGroup,
+                                      // value: _myGroup,
                                       items: _cities
                                           .map((e) => DropdownMenuItem(
                                                 value:
@@ -352,7 +378,7 @@ class EditAddList extends StatelessWidget {
                                               ))
                                           .toList(),
                                       onChanged: (value) {
-                                        _myGroup = value!;
+                                        // _myGroup = value!;
                                       },
                                       icon: Padding(
                                         padding: EdgeInsets.only(right: 8.0.w),
