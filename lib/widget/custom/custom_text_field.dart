@@ -32,16 +32,15 @@ class CustomTextField extends StatelessWidget {
               ? Text(
                   labelText!,
                   style: TextStyle(
-                    fontFamily: 'PretendardRegular',
+                    fontFamily: 'Pretendard',
                     color: Color(0xff343A40),
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     height: 1.5.h,
                   ),
                 )
-              : Container(
-                  color: Colors.deepOrange,
-                  height: 10,
+              : SizedBox(
+                  height: 0,
                 ),
           SizedBox(
             height: fieldHeight,

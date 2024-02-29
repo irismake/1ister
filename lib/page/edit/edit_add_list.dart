@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../model/groups.dart';
 import '../../model/provider/my_groups_provider.dart';
 import '../../widget/custom/custom_switch.dart';
+import '../../widget/custom/custom_text_field.dart';
 import '../../widget/edit_enter item_widget.dart';
 
 class EditAddList extends StatefulWidget {
@@ -20,6 +21,8 @@ class EditAddList extends StatefulWidget {
 }
 
 class _EditAddListState extends State<EditAddList> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   final _cities = ['서울', '대전', '대구', '부산', '인천', '울산', '광주'];
 
   int? _myGroupsindex;
@@ -42,6 +45,17 @@ class _EditAddListState extends State<EditAddList> {
         _image = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
       });
     }
+  }
+
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    titleController.dispose();
+    descriptionController.dispose();
   }
 
   @override
@@ -266,44 +280,41 @@ class _EditAddListState extends State<EditAddList> {
                     SizedBox(
                       height: 24.0.h,
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '내용 입력',
-                        style: TextStyle(
-                          color: Color(0xFF212529),
-                          fontSize: 16.sp,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w600,
-                          height: 1.5.h,
-                        ),
-                      ),
-                    ),
                     SizedBox(
                       height: 16.0.h,
                     ),
-                    Container(
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 1, color: Color(0xFFDEE2E6)),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      height: 80.0.h,
+                    CustomTextField(
+                      prefixState: false,
+                      labelState: true,
+                      labelText: '내용 입력',
+                      height: 120.0.h,
+                      fieldHeight: 80.0.h,
+                      textStyle: TextStyle(
+                          decorationThickness: 0,
+                          fontFamily: 'PretendardRegular',
+                          fontSize: 16.sp,
+                          color: Color(0xff343A40),
+                          fontWeight: FontWeight.w700,
+                          height: 1.5.h),
+                      controller: titleController,
                     ),
                     SizedBox(
                       height: 12.0.h,
                     ),
-                    Container(
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 1, color: Color(0xFFDEE2E6)),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
+                    CustomTextField(
+                      prefixState: false,
+                      labelState: false,
+                      labelText: '',
                       height: 95.0.h,
+                      fieldHeight: 95.0.h,
+                      textStyle: TextStyle(
+                          decorationThickness: 0,
+                          fontFamily: 'PretendardRegular',
+                          fontSize: 14.sp,
+                          color: Color(0xff343A40),
+                          fontWeight: FontWeight.w500,
+                          height: 1.5.h),
+                      controller: descriptionController,
                     ),
                     Divider(
                       color: Color(0xFFDEE2E6),
