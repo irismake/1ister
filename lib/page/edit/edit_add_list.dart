@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../model/groups.dart';
 import '../../model/provider/my_groups_provider.dart';
@@ -26,6 +29,20 @@ class _EditAddListState extends State<EditAddList> {
   bool _itemState = false;
 
   int _itemNum = 0;
+
+  XFile? _image; //이미지를 담을 변수 선언
+  final ImagePicker picker = ImagePicker(); //ImagePicker 초기화
+
+  //이미지를 가져오는 함수
+  Future getImage(ImageSource imageSource) async {
+    //pickedFile에 ImagePicker로 가져온 이미지가 담긴다.
+    final XFile? pickedFile = await picker.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      setState(() {
+        _image = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -217,15 +234,30 @@ class _EditAddListState extends State<EditAddList> {
                                   height: 1.5.h,
                                 ),
                               ),
-                              Container(
-                                width: 80.0.w,
-                                height: 100.0.h,
-                                decoration: ShapeDecoration(
-                                  color: Color(0xFFF8F9FA),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4)),
-                                ),
-                              )
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    getImage(ImageSource.gallery);
+                                  });
+                                },
+                                child: _image != null
+                                    ? Container(
+                                        width: 80.0.w,
+                                        height: 100.0.h,
+                                        child: Image.file(File(_image!
+                                            .path)), //가져온 이미지를 화면에 띄워주는 코드
+                                      )
+                                    : SizedBox(
+                                        width: 80.0.w,
+                                        height: 100.0.h,
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: SvgPicture.asset(
+                                            'assets/icons/icon_plus_image.svg',
+                                          ),
+                                        ),
+                                      ),
+                              ),
                             ],
                           ),
                         ),
@@ -385,8 +417,8 @@ class _EditAddListState extends State<EditAddList> {
                                       icon: Padding(
                                         padding: EdgeInsets.only(right: 8.0.w),
                                         child: SizedBox(
-                                          height: 32.0.h,
-                                          width: 32.0.w,
+                                          height: 20.0.h,
+                                          width: 20.0.w,
                                           child: SvgPicture.asset(
                                             'assets/icons/icon_arrow_bottom.svg',
                                           ),
