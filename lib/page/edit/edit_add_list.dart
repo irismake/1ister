@@ -1,12 +1,11 @@
-import 'dart:convert';
-
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lister/model/groups.dart';
-import 'package:lister/model/provider/my_groups_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/groups.dart';
+import '../../model/provider/my_groups_provider.dart';
 import '../../widget/custom/custom_switch.dart';
 import '../../widget/edit_enter item_widget.dart';
 
@@ -56,94 +55,95 @@ class _EditAddListState extends State<EditAddList> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Container(
-                            height: 48.0.h,
-                            width: 200.0.w,
-                            child: DecoratedBox(
-                              decoration: ShapeDecoration(
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                      width: 1, color: Color(0xFFDEE2E6)),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: DropdownButton(
-                                isDense: false, // Dropdown의 높이를 조절
-                                itemHeight: 60,
-                                value: _myGroupsindex == null
-                                    ? null
-                                    : myGroups[_myGroupsindex!].name,
-
-                                items: myGroups
-                                    .map((item) => DropdownMenuItem(
-                                          value: item
-                                              .name, // 선택 시 onChanged 를 통해 반환할 value
-                                          child: Text(item.name),
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    print(value); // value = utf8.decode(
-                                    //     myGroups[0].name.toString().codeUnits);
-                                    //      _user = users.indexOf(value);
-                                    _myGroupsindex = myGroups.indexWhere(
-                                        (group) => group.name == value);
-                                    print(_myGroupsindex);
-
-                                    // _myGroupsindex =
-                                    //     myGroups.indexOf(value as MyGroupData);
-                                    // print(value);
-                                  });
-                                },
-                                icon: Padding(
-                                  padding: EdgeInsets.only(right: 8.0.w),
-                                  child: SizedBox(
-                                    height: 32.0.h,
-                                    width: 32.0.w,
-                                    child: SvgPicture.asset(
-                                      'assets/icons/icon_arrow_bottom.svg',
-                                    ),
-                                  ),
-                                ),
-                                disabledHint: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0.w, vertical: 14.0.h),
-                                  child: Text(
-                                    '선택하세요',
-                                    style: TextStyle(
-                                      color: Color(0xFFADB5BD),
-                                      fontSize: 15.sp,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                alignment: Alignment.centerLeft,
-                                hint: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0.w, vertical: 14.0.h),
-                                  child: Text(
-                                    '선택하세요',
-                                    style: TextStyle(
-                                        color: Color(0xFFADB5BD),
-                                        fontSize: 15.sp,
-                                        fontFamily: 'Pretendard',
-                                        fontWeight: FontWeight.w500,
-                                        height: 1.3.h),
-                                  ),
-                                ),
-                                elevation: 0,
-                                dropdownColor: Colors.white,
-                                isExpanded:
-                                    true, //make true to take width of parent widget
-                                underline: Container(), //empty line
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              isExpanded: true,
+                              hint: Text(
+                                '선택하세요',
                                 style: TextStyle(
                                     color: Color(0xFFADB5BD),
                                     fontSize: 15.sp,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w500,
-                                    height: 1.3.h),
+                                    height: 1),
+                              ),
+                              items: myGroups
+                                  .map(
+                                    (item) => DropdownMenuItem<String>(
+                                      value: item.name,
+                                      child: Text(
+                                        item.name,
+                                        style: TextStyle(
+                                            color: Color(0xFFADB5BD),
+                                            fontSize: 15.sp,
+                                            fontFamily: 'Pretendard',
+                                            fontWeight: FontWeight.w500,
+                                            height: 1),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              value: _myGroupsindex == null
+                                  ? null
+                                  : myGroups[_myGroupsindex!].name,
+                              onChanged: (value) {
+                                setState(() {
+                                  print(value);
+                                  _myGroupsindex = myGroups.indexWhere(
+                                      (group) => group.name == value);
+                                  print(_myGroupsindex);
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: 48.0.h,
+                                width: 200.0.w,
+                                padding: EdgeInsets.only(
+                                    left: 12.0.w,
+                                    top: 14.0.h,
+                                    bottom: 14.0.h,
+                                    right: 8.0.h),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Color(0xFFDEE2E6),
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                elevation: 0,
+                              ),
+                              iconStyleData: IconStyleData(
+                                icon: SizedBox(
+                                  height: 20.0.h,
+                                  width: 20.0.w,
+                                  child: SvgPicture.asset(
+                                    'assets/icons/icon_arrow_bottom.svg',
+                                  ),
+                                ),
+
+                                // iconSize: 32,
+                                // iconEnabledColor: Colors.yellow,
+                                // iconDisabledColor: Colors.grey,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                elevation: 1,
+                                maxHeight: 150.0.h,
+                                width: 200.0.w,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.white),
+                                offset: const Offset(0, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                      MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
                               ),
                             ),
                           )
@@ -178,7 +178,9 @@ class _EditAddListState extends State<EditAddList> {
                             switchHeight: 16.0.h,
                             switchWidth: 16.0.w,
                             onChanged: (bool value) {
-                              _switchState = value;
+                              setState(() {
+                                _switchState = value;
+                              });
                             },
                           )
                         ],
@@ -493,7 +495,9 @@ class _EditAddListState extends State<EditAddList> {
                               switchHeight: 32.0.h,
                               switchWidth: 60.0.w,
                               onChanged: (bool value) {
-                                _switchState = value;
+                                setState(() {
+                                  _switchState = value;
+                                });
                               },
                             )
                           ],
