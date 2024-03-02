@@ -53,6 +53,7 @@ class _EditAddListState extends State<EditAddList> {
     // TODO: implement dispose
     titleController.dispose();
     descriptionController.dispose();
+    super.dispose();
   }
 
   @override
