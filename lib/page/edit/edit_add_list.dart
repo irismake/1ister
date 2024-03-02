@@ -23,7 +23,8 @@ class _EditAddListState extends State<EditAddList> {
   TextEditingController descriptionController = TextEditingController();
   final _cities = ['서울', '대전', '대구', '부산', '인천', '울산', '광주'];
 
-  bool _switchState = false;
+  bool _rankingState = false;
+  bool _privateState = false;
 
   bool _itemState = false;
 
@@ -105,7 +106,7 @@ class _EditAddListState extends State<EditAddList> {
                         ),
                       ),
                       CustomRankingSwitch(
-                        value: _switchState,
+                        value: _rankingState,
                         enableColor: Theme.of(context).primaryColor,
                         disableColor: Color(0xFFE9ECEF),
                         width: 40.0.w,
@@ -114,7 +115,7 @@ class _EditAddListState extends State<EditAddList> {
                         switchWidth: 16.0.w,
                         onChanged: (bool value) {
                           setState(() {
-                            _switchState = value;
+                            _rankingState = value;
                           });
                         },
                       )
@@ -433,7 +434,7 @@ class _EditAddListState extends State<EditAddList> {
                           ),
                         ),
                         CustomPrivateSwitch(
-                          value: _switchState,
+                          value: _privateState,
                           enableColor: Theme.of(context).primaryColor,
                           disableColor: Color(0xFFADB5BD),
                           width: 122.0.w,
@@ -442,7 +443,7 @@ class _EditAddListState extends State<EditAddList> {
                           switchWidth: 60.0.w,
                           onChanged: (bool value) {
                             setState(() {
-                              _switchState = value;
+                              _privateState = value;
                             });
                           },
                         )
