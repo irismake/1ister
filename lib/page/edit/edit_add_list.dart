@@ -245,6 +245,11 @@ class _EditAddListState extends State<EditAddList> {
                           SizedBox(height: 20.0.h),
                           EditEnterItem(
                             itemNum: _itemNum,
+                            onItemNumChanged: (newItemNum) {
+                              setState(() {
+                                _itemNum = newItemNum;
+                              });
+                            },
                           ),
                         ],
                       )
@@ -254,6 +259,7 @@ class _EditAddListState extends State<EditAddList> {
                     setState(() {
                       _itemState = true;
                       _itemNum++;
+                      print("item number : $_itemNum");
                     });
                   },
                   child: Container(
