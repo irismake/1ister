@@ -59,6 +59,7 @@ class _EditAddListState extends State<EditAddList> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      //physics: const AlwaysScrollableScrollPhysics(),
       child: Column(
         children: [
           Padding(
@@ -245,11 +246,9 @@ class _EditAddListState extends State<EditAddList> {
                           SizedBox(height: 20.0.h),
                           EditEnterItem(
                             itemNum: _itemNum,
-                            onItemNumChanged: (newItemNum) {
-                              setState(() {
-                                _itemNum = newItemNum;
-                              });
-                            },
+                            // onItemNumChanged: (newItem) {
+                            //   newItem = _itemNum;
+                            // },
                           ),
                         ],
                       )
