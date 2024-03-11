@@ -34,10 +34,7 @@ class _EditPageState extends State<EditPage> {
           titleState: true,
           actionButtonOnTap: () {},
           actionButton: null),
-      body: ChangeNotifierProvider<MyGroupsProvider>(
-        create: (context) => MyGroupsProvider(),
-        child: EditAddList(),
-      ),
+      body: EditAddList(),
     );
   }
 }

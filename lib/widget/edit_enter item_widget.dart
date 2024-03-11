@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class EditEnterItem extends StatefulWidget {
-  final int itemNum;
+  final String itemNum;
   // final Function(int) onItemNumChanged;
 
   const EditEnterItem({Key? key, required this.itemNum}) : super(key: key);
@@ -14,65 +14,78 @@ class EditEnterItem extends StatefulWidget {
 }
 
 class _EditEnterItemState extends State<EditEnterItem> {
+  List<String> _items = [];
   @override
   void initState() {
     super.initState();
+
+    //_items = List<int>.generate(widget.itemNum, (int index) => index);
+    print('$_items');
+  }
+
+  @override
+  void didUpdateWidget(EditEnterItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.itemNum != oldWidget.itemNum) {
+      setState(() {
+        print('this');
+        print('${widget.itemNum}');
+        _items.add("${widget.itemNum}");
+        print(_items);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<int> _items =
-        List<int>.generate(widget.itemNum, (int index) => index);
-
     return ReorderableListView.builder(
+      buildDefaultDragHandles: true,
       physics: ClampingScrollPhysics(),
       shrinkWrap: true,
       itemCount: _items.length,
       itemBuilder: (context, index) {
-        return CustomReorderableDelayedDragStartListener(
-          key: Key('$index'),
-          delay: const Duration(
-              milliseconds: 100), // or any other duration that fits you
-          index: _items[index], // passed from parent
-          child: ItemWidget(
-            key: ValueKey(_items[index]),
+        //     return CustomReorderableDelayedDragStartListener(
+        //       key: Key('$index'),
+        //       delay: const Duration(
+        //         milliseconds: 100,
+        //       ), // or any other duration that fits you
+        //       index: index, // passed from parent
+        //       child: ItemWidget(
+        //         key: ValueKey(index),
+        //       ),
+        //     );
+        //   },
+        //   onReorder: (oldIndex, newIndex) {
+        //     print('old1 : ${oldIndex}');
+        //     print('new1 : ${newIndex}');
+        //     if (oldIndex < newIndex) {
+        //       newIndex -= 1;
+        //       print('old2 : ${oldIndex}');
+        //       print('new2 : ${newIndex}');
+        //     }
+        //     final String item = _items.removeAt(oldIndex);
+        //     _items.insert(newIndex, item);
+        //     print('${_items}');
+        //   },
+        // );
+        return ListTile(
+          trailing: ReorderableDragStartListener(
+            index: index,
+            child: const Icon(Icons.drag_indicator),
           ),
+          key: Key('$index'),
+          title: Text('${_items[index]}'),
         );
       },
       onReorder: (oldIndex, newIndex) {
-        setState(() {
-          print('old1 : ${oldIndex}');
-          print('new1 : ${newIndex}');
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-            print('old2 : ${oldIndex}');
-            print('new2 : ${newIndex}');
-          }
-          final int item = _items.removeAt(oldIndex);
-          _items.insert(newIndex, item);
-        });
+        if (oldIndex < newIndex) {
+          newIndex -= 1;
+        }
+        final String item = _items.removeAt(oldIndex);
+        _items.insert(newIndex, item);
+        print(_items);
       },
     );
-    //     return ReorderableDelayedDragStartListener(
-    //       enabled: false,
-    //       index: index,
-    //       key: Key('$index'),
-    //       child: ItemWidget(
-    //         key: ValueKey(_items[index]),
-    //         index: index,
-    //       ),
-    //     );
-    //   },
-    //   onReorder: (oldIndex, newIndex) {
-    //     setState(() {
-    //       if (oldIndex < newIndex) {
-    //         newIndex -= 1;
-    //       }
-    //       final int item = _items.removeAt(oldIndex);
-    //       _items.insert(newIndex, item);
-    //     });
-    //   },
-    // );
   }
 }
 
@@ -111,6 +124,7 @@ class _ItemWidgetState extends State<ItemWidget> {
   @override
   void initState() {
     super.initState();
+    print(widget.key);
     _titleController = TextEditingController();
     _descriptionController = TextEditingController();
     _tagController = TextEditingController();
@@ -145,6 +159,11 @@ class _ItemWidgetState extends State<ItemWidget> {
             children: [
               Expanded(
                 child: TextFormField(
+                  onFieldSubmitted: (value) {
+                    setState(() {
+                      print(value);
+                    });
+                  },
                   controller: _titleController,
                   expands: false,
                   style: TextStyle(
@@ -157,7 +176,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                   ),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: '합정 최강금돈까스',
+                    hintText: '합정 최강금돈까스+${widget.key}',
                     hintStyle: TextStyle(
                       color: Color(0xffADB5BD),
                       fontSize: 16,

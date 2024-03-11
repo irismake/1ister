@@ -245,9 +245,13 @@ class _EditAddListState extends State<EditAddList> {
                         children: [
                           SizedBox(height: 20.0.h),
                           EditEnterItem(
-                            itemNum: _itemNum,
-                            // onItemNumChanged: (newItem) {
-                            //   newItem = _itemNum;
+                            itemNum: _itemNum.toString(),
+                            // items: _items,
+                            // onItemNumChanged: (newItemNum) {
+                            //   setState(() {
+                            //     _itemNum = newItemNum;
+                            //     print("ㄹㄹㄹㄹㄹ:${_itemNum}");
+                            //   });
                             // },
                           ),
                         ],
