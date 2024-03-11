@@ -4,8 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class EditEnterItem extends StatefulWidget {
-  final String itemNum;
-  // final Function(int) onItemNumChanged;
+  final int itemNum;
 
   const EditEnterItem({Key? key, required this.itemNum}) : super(key: key);
 
@@ -14,7 +13,7 @@ class EditEnterItem extends StatefulWidget {
 }
 
 class _EditEnterItemState extends State<EditEnterItem> {
-  List<String> _items = [];
+  List<int> _items = [];
   @override
   void initState() {
     super.initState();
@@ -30,7 +29,7 @@ class _EditEnterItemState extends State<EditEnterItem> {
       setState(() {
         print('this');
         print('${widget.itemNum}');
-        _items.add("${widget.itemNum}");
+        _items.add(widget.itemNum);
         print(_items);
       });
     }
@@ -40,50 +39,32 @@ class _EditEnterItemState extends State<EditEnterItem> {
   Widget build(BuildContext context) {
     return ReorderableListView.builder(
       buildDefaultDragHandles: true,
-      physics: ClampingScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: _items.length,
       itemBuilder: (context, index) {
-        //     return CustomReorderableDelayedDragStartListener(
-        //       key: Key('$index'),
-        //       delay: const Duration(
-        //         milliseconds: 100,
-        //       ), // or any other duration that fits you
-        //       index: index, // passed from parent
-        //       child: ItemWidget(
-        //         key: ValueKey(index),
-        //       ),
-        //     );
-        //   },
-        //   onReorder: (oldIndex, newIndex) {
-        //     print('old1 : ${oldIndex}');
-        //     print('new1 : ${newIndex}');
-        //     if (oldIndex < newIndex) {
-        //       newIndex -= 1;
-        //       print('old2 : ${oldIndex}');
-        //       print('new2 : ${newIndex}');
-        //     }
-        //     final String item = _items.removeAt(oldIndex);
-        //     _items.insert(newIndex, item);
-        //     print('${_items}');
-        //   },
-        // );
-        return ListTile(
-          trailing: ReorderableDragStartListener(
-            index: index,
-            child: const Icon(Icons.drag_indicator),
-          ),
+        return CustomReorderableDelayedDragStartListener(
           key: Key('$index'),
-          title: Text('${_items[index]}'),
+          delay: const Duration(
+            milliseconds: 1,
+          ),
+          index: index,
+          child: ItemWidget(
+            key: ValueKey(_items[index]),
+          ),
         );
       },
       onReorder: (oldIndex, newIndex) {
+        print('old1 : ${oldIndex}');
+        print('new1 : ${newIndex}');
         if (oldIndex < newIndex) {
           newIndex -= 1;
+          print('old2 : ${oldIndex}');
+          print('new2 : ${newIndex}');
         }
-        final String item = _items.removeAt(oldIndex);
+        final int item = _items.removeAt(oldIndex);
         _items.insert(newIndex, item);
-        print(_items);
+        print('${_items}');
       },
     );
   }
