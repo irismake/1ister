@@ -20,7 +20,7 @@ class EditAddList extends StatefulWidget {
 
 class _EditAddListState extends State<EditAddList> {
   TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  TextEditingController bioController = TextEditingController();
   final _cities = ['서울', '대전', '대구', '부산', '인천', '울산', '광주'];
 
   bool _rankingState = false;
@@ -30,36 +30,28 @@ class _EditAddListState extends State<EditAddList> {
 
   int _itemNum = 0;
 
-  XFile? _image; //이미지를 담을 변수 선언
-  final ImagePicker picker = ImagePicker(); //ImagePicker 초기화
+  XFile? _image;
+  final ImagePicker picker = ImagePicker();
 
-  //이미지를 가져오는 함수
   Future getImage(ImageSource imageSource) async {
-    //pickedFile에 ImagePicker로 가져온 이미지가 담긴다.
     final XFile? pickedFile = await picker.pickImage(source: imageSource);
     if (pickedFile != null) {
       setState(() {
-        _image = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
+        _image = XFile(pickedFile.path);
       });
     }
   }
 
-  void initState() {
-    super.initState();
-  }
-
   @override
   void dispose() {
-    // TODO: implement dispose
     titleController.dispose();
-    descriptionController.dispose();
+    bioController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      //physics: const AlwaysScrollableScrollPhysics(),
       child: Column(
         children: [
           Padding(
@@ -220,7 +212,7 @@ class _EditAddListState extends State<EditAddList> {
                       color: Color(0xff343A40),
                       fontWeight: FontWeight.w500,
                       height: 1.5.h),
-                  controller: descriptionController,
+                  controller: bioController,
                 ),
                 Divider(
                   color: Color(0xFFDEE2E6),
@@ -255,6 +247,7 @@ class _EditAddListState extends State<EditAddList> {
                     setState(() {
                       _itemState = true;
                       _itemNum++;
+
                       print("item number : $_itemNum");
                     });
                   },

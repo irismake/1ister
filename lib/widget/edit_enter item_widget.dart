@@ -14,12 +14,37 @@ class EditEnterItem extends StatefulWidget {
 
 class _EditEnterItemState extends State<EditEnterItem> {
   List<int> _items = [];
+  late List<TextEditingController> _titleControllers = [];
+  late List<TextEditingController> _descriptionControllers = [];
+  late List<TextEditingController> _tagControllers = [];
+
   @override
   void initState() {
     super.initState();
+    _items = List<int>.generate(widget.itemNum, (int index) => index);
+    _titleControllers = List.generate(
+      widget.itemNum,
+      (index) => TextEditingController(),
+    );
+    _descriptionControllers = List.generate(
+      widget.itemNum,
+      (index) => TextEditingController(),
+    );
+    _tagControllers = List.generate(
+      widget.itemNum,
+      (index) => TextEditingController(),
+    );
+  }
 
-    //_items = List<int>.generate(widget.itemNum, (int index) => index);
-    print('$_items');
+  @override
+  void dispose() {
+    for (int i = 0; i < widget.itemNum; i++) {
+      _titleControllers[i];
+      _descriptionControllers[i];
+      _tagControllers[i];
+    }
+    print('dispose');
+    super.dispose();
   }
 
   @override
@@ -28,9 +53,10 @@ class _EditEnterItemState extends State<EditEnterItem> {
     if (widget.itemNum != oldWidget.itemNum) {
       setState(() {
         print('this');
-        print('${widget.itemNum}');
-        _items.add(widget.itemNum);
-        print(_items);
+        _items.add(widget.itemNum - 1);
+        _titleControllers.add(TextEditingController());
+        _descriptionControllers.add(TextEditingController());
+        _tagControllers.add(TextEditingController());
       });
     }
   }
@@ -38,33 +64,54 @@ class _EditEnterItemState extends State<EditEnterItem> {
   @override
   Widget build(BuildContext context) {
     return ReorderableListView.builder(
+      proxyDecorator: (child, index, animation) {
+        return Material(
+          color: Colors.transparent,
+          child: ScaleTransition(
+            scale: animation.drive(
+              Tween<double>(begin: 1, end: 1.1).chain(
+                CurveTween(curve: Curves.linear),
+              ),
+            ),
+            child: child,
+          ),
+        );
+      },
       buildDefaultDragHandles: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ClampingScrollPhysics(),
       shrinkWrap: true,
       itemCount: _items.length,
       itemBuilder: (context, index) {
         return CustomReorderableDelayedDragStartListener(
           key: Key('$index'),
           delay: const Duration(
-            milliseconds: 1,
+            milliseconds: 150,
           ),
           index: index,
           child: ItemWidget(
             key: ValueKey(_items[index]),
+            titleController: _titleControllers[index],
+            tagController: _tagControllers[index],
+            descriptionController: _descriptionControllers[index],
           ),
         );
       },
       onReorder: (oldIndex, newIndex) {
-        print('old1 : ${oldIndex}');
-        print('new1 : ${newIndex}');
-        if (oldIndex < newIndex) {
-          newIndex -= 1;
-          print('old2 : ${oldIndex}');
-          print('new2 : ${newIndex}');
-        }
-        final int item = _items.removeAt(oldIndex);
-        _items.insert(newIndex, item);
-        print('${_items}');
+        setState(() {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          final int item = _items.removeAt(oldIndex);
+          _items.insert(newIndex, item);
+          final titleController = _titleControllers.removeAt(oldIndex);
+          _titleControllers.insert(newIndex, titleController);
+          final descriptionController =
+              _descriptionControllers.removeAt(oldIndex);
+          _descriptionControllers.insert(newIndex, descriptionController);
+          final tagController = _tagControllers.removeAt(oldIndex);
+          _tagControllers.insert(newIndex, tagController);
+          print('${_items}');
+        });
       },
     );
   }
@@ -84,45 +131,41 @@ class CustomReorderableDelayedDragStartListener
 
   @override
   MultiDragGestureRecognizer createRecognizer() {
+    print(index);
     return DelayedMultiDragGestureRecognizer(delay: delay, debugOwner: this);
   }
 }
 
 class ItemWidget extends StatefulWidget {
-  const ItemWidget({
-    Key? key,
-  }) : super(key: key);
+  final TextEditingController titleController;
+  final TextEditingController descriptionController;
+  final TextEditingController tagController;
+  const ItemWidget(
+      {Key? key,
+      required this.titleController,
+      required this.descriptionController,
+      required this.tagController})
+      : super(key: key);
 
   @override
   _ItemWidgetState createState() => _ItemWidgetState();
 }
 
 class _ItemWidgetState extends State<ItemWidget> {
-  late TextEditingController _titleController;
-  late TextEditingController _descriptionController;
-  late TextEditingController _tagController;
-
   @override
   void initState() {
     super.initState();
-    print(widget.key);
-    _titleController = TextEditingController();
-    _descriptionController = TextEditingController();
-    _tagController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    _tagController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.h),
       child: Container(
         width: double.infinity,
         height: 116.0.h,
@@ -134,9 +177,9 @@ class _ItemWidgetState extends State<ItemWidget> {
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 16.0.h),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: TextFormField(
@@ -145,7 +188,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                       print(value);
                     });
                   },
-                  controller: _titleController,
+                  controller: widget.titleController,
                   expands: false,
                   style: TextStyle(
                     decorationThickness: 0,
@@ -170,7 +213,7 @@ class _ItemWidgetState extends State<ItemWidget> {
               ),
               Expanded(
                 child: TextFormField(
-                  controller: _descriptionController,
+                  controller: widget.descriptionController,
                   style: TextStyle(
                     decorationThickness: 0,
                     color: Color(0xff495057),
@@ -198,7 +241,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                         ),
                       ),
                       onTap: () {
-                        _descriptionController.clear();
+                        widget.descriptionController.clear();
                       },
                     ),
                   ),
@@ -206,7 +249,15 @@ class _ItemWidgetState extends State<ItemWidget> {
               ),
               Expanded(
                 child: TextFormField(
-                  controller: _tagController,
+                  controller: widget.tagController,
+                  style: TextStyle(
+                    decorationThickness: 0,
+                    color: Color(0xff495057),
+                    fontSize: 12,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 1,
+                  ),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: '#지리산돈까스 #전통주판매',
@@ -226,7 +277,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                         ),
                       ),
                       onTap: () {
-                        _tagController.clear();
+                        widget.tagController.clear();
                       },
                     ),
                   ),

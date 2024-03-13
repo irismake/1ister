@@ -34,7 +34,12 @@ class _EditPageState extends State<EditPage> {
           titleState: true,
           actionButtonOnTap: () {},
           actionButton: null),
-      body: EditAddList(),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus(); // 포커스 해제
+        },
+        child: EditAddList(),
+      ),
     );
   }
 }
