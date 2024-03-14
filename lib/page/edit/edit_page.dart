@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lister/model/provider/my_groups_provider.dart';
-import 'package:provider/provider.dart';
 
 import '../../widget/custom_app_bar.dart';
 import 'edit_add_list.dart';
@@ -16,13 +14,11 @@ class _EditPageState extends State<EditPage> {
   @override
   void dispose() {
     super.dispose();
-    //_controller.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    // _controller = TextfieldTagsController();
   }
 
   @override
@@ -36,7 +32,7 @@ class _EditPageState extends State<EditPage> {
           actionButton: null),
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus(); // 포커스 해제
+          FocusScope.of(context).unfocus();
         },
         child: EditAddList(),
       ),

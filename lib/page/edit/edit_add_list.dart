@@ -7,6 +7,8 @@ import 'package:lister/model/provider/my_groups_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/groups.dart';
+import '../../model/keywords.dart';
+import '../../model/provider/keywords_provider.dart';
 import '../../widget/custom/custom_drop_down_button.dart';
 import '../../widget/custom/custom_switch.dart';
 import '../../widget/custom/custom_text_field.dart';
@@ -22,6 +24,7 @@ class EditAddList extends StatefulWidget {
 class _EditAddListState extends State<EditAddList> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bioController = TextEditingController();
+  TextEditingController keywordController = TextEditingController();
 
   bool _rankingState = false;
   bool _privateState = false;
@@ -46,6 +49,7 @@ class _EditAddListState extends State<EditAddList> {
   void dispose() {
     titleController.dispose();
     bioController.dispose();
+    keywordController.dispose();
     super.dispose();
   }
 
@@ -290,69 +294,86 @@ class _EditAddListState extends State<EditAddList> {
                   EdgeInsets.symmetric(horizontal: 16.0.h, vertical: 24.0.h),
               child: Column(
                 children: [
-                  Container(
-                    height: 104.0.h,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '키워드 추가',
-                              style: TextStyle(
-                                color: Color(0xFF343A40),
-                                fontSize: 16.sp,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w600,
-                                height: 1.5.h,
+                  ChangeNotifierProvider<KeywordsProvider>(
+                    create: (context) => KeywordsProvider(),
+                    child: Consumer<KeywordsProvider>(
+                      builder: (context, provider, child) {
+                        final List<KeywordData> keywords = provider.keywords;
+                        return Container(
+                          height: 104.0.h,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '키워드 추가',
+                                    style: TextStyle(
+                                      color: Color(0xFF343A40),
+                                      fontSize: 16.sp,
+                                      fontFamily: 'Pretendard',
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.5.h,
+                                    ),
+                                  ),
+                                  CustomDropDownButton(
+                                      dropDownItems: keywords,
+                                      provider: provider),
+                                ],
                               ),
-                            ),
-                            ChangeNotifierProvider<MyGroupsProvider>(
-                              create: (context) => MyGroupsProvider(),
-                              child: Consumer<MyGroupsProvider>(
-                                builder: (context, provider, child) {
-                                  final List<MyGroupData> myGroups =
-                                      provider.myGroups();
-                                  return CustomDropDownButton(
-                                      dropDownItems: myGroups,
-                                      provider: provider);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            width: 200.0.w,
-                            height: 48.0.h,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12.0.w, vertical: 12.0.h),
-                            clipBehavior: Clip.antiAlias,
-                            decoration: ShapeDecoration(
-                              color: Color(0xFFF5F6F7),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '직접입력',
-                                  style: TextStyle(
-                                    color: Color(0xFFADB5BD),
-                                    fontSize: 15.sp,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w500,
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  width: 200.0.w,
+                                  height: 48.0.h,
+                                  child: TextFormField(
+                                    controller: keywordController,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 14.0.w),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8)),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      filled: true,
+                                      fillColor: Color(0xffF5F6F7),
+                                      hintText: '직접입력',
+                                      hintStyle: TextStyle(
+                                        color: Color(0xffADB5BD),
+                                        fontSize: 15.0.sp,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1,
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                      decorationThickness: 0,
+                                      color: Color(0xFF212529),
+                                      fontSize: 15.sp,
+                                      fontFamily: 'Pretendard',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    //focusNode: focusNode,
+                                    onFieldSubmitted: (String value) {
+                                      KeywordData keywordData = KeywordData(
+                                        name: value,
+                                      );
+                                      KeywordsProvider provider =
+                                          Provider.of<KeywordsProvider>(context,
+                                              listen: false);
+                                      provider.addKeyword(keywordData);
+                                      keywordController.clear();
+                                    },
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        )
-                      ],
+                        );
+                      },
                     ),
                   ),
                   Divider(
