@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lister/model/provider/my_groups_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/groups.dart';
 import '../../widget/custom/custom_drop_down_button.dart';
 import '../../widget/custom/custom_switch.dart';
 import '../../widget/custom/custom_text_field.dart';
@@ -21,7 +22,6 @@ class EditAddList extends StatefulWidget {
 class _EditAddListState extends State<EditAddList> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bioController = TextEditingController();
-  final _cities = ['서울', '대전', '대구', '부산', '인천', '울산', '광주'];
 
   bool _rankingState = false;
   bool _privateState = false;
@@ -75,7 +75,14 @@ class _EditAddListState extends State<EditAddList> {
                       ),
                       ChangeNotifierProvider<MyGroupsProvider>(
                         create: (context) => MyGroupsProvider(),
-                        child: CustomDropDownButton(),
+                        child: Consumer<MyGroupsProvider>(
+                          builder: (context, provider, child) {
+                            final List<MyGroupData> myGroups =
+                                provider.myGroups();
+                            return CustomDropDownButton(
+                                dropDownItems: myGroups, provider: provider);
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -301,77 +308,16 @@ class _EditAddListState extends State<EditAddList> {
                                 height: 1.5.h,
                               ),
                             ),
-                            Container(
-                              height: 48.0.h,
-                              width: 200.0.w,
-                              child: DecoratedBox(
-                                decoration: ShapeDecoration(
-                                  color: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                        width: 1, color: Color(0xFFDEE2E6)),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: DropdownButton(
-                                  isDense: false, // Dropdown의 높이를 조절
-                                  itemHeight: 60,
-                                  // value: _myGroup,
-                                  items: _cities
-                                      .map((e) => DropdownMenuItem(
-                                            value:
-                                                e, // 선택 시 onChanged 를 통해 반환할 value
-                                            child: Text(e),
-                                          ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    // _myGroup = value!;
-                                  },
-                                  icon: Padding(
-                                    padding: EdgeInsets.only(right: 8.0.w),
-                                    child: SizedBox(
-                                      height: 20.0.h,
-                                      width: 20.0.w,
-                                      child: SvgPicture.asset(
-                                        'assets/icons/icon_arrow_bottom.svg',
-                                      ),
-                                    ),
-                                  ),
-                                  disabledHint: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12.0.w, vertical: 14.0.h),
-                                    child: Text(
-                                      '선택하세요',
-                                      style: TextStyle(
-                                        color: Color(0xFFADB5BD),
-                                        fontSize: 15.sp,
-                                        fontFamily: 'Pretendard',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  alignment: Alignment.centerLeft,
-                                  hint: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12.0.w, vertical: 14.0.h),
-                                    child: Text(
-                                      '선택하세요',
-                                      style: TextStyle(
-                                          color: Color(0xFFADB5BD),
-                                          fontSize: 15.sp,
-                                          fontFamily: 'Pretendard',
-                                          fontWeight: FontWeight.w500,
-                                          height: 1.3.h),
-                                    ),
-                                  ),
-                                  elevation: 0,
-                                  dropdownColor: Colors.white,
-                                  isExpanded:
-                                      true, //make true to take width of parent widget
-                                  underline: Container(), //empty line
-                                  style: TextStyle(
-                                      fontSize: 15.sp, color: Colors.black),
-                                ),
+                            ChangeNotifierProvider<MyGroupsProvider>(
+                              create: (context) => MyGroupsProvider(),
+                              child: Consumer<MyGroupsProvider>(
+                                builder: (context, provider, child) {
+                                  final List<MyGroupData> myGroups =
+                                      provider.myGroups();
+                                  return CustomDropDownButton(
+                                      dropDownItems: myGroups,
+                                      provider: provider);
+                                },
                               ),
                             ),
                           ],

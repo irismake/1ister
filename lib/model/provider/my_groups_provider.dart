@@ -9,12 +9,13 @@ class MyGroupsProvider with ChangeNotifier {
   final List<MyGroupData> _groups = [];
   bool _isInitialized = false;
 
-  int? _selectedGroupIndex;
+  int? _selectedIndex;
 
-  int? get selectedGroupIndex => _selectedGroupIndex;
+  int? get selectedIndex => _selectedIndex;
 
-  set selectedGroupIndex(int? index) {
-    _selectedGroupIndex = index;
+  set selectedIndex(int? index) {
+    _selectedIndex = index;
+    print('    notifyListeners');
     notifyListeners(); // 상태가 업데이트되었음을 알림
   }
 
