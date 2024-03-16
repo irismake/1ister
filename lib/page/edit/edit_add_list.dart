@@ -121,6 +121,7 @@ class _EditAddListState extends State<EditAddList> {
                         onChanged: (bool value) {
                           setState(() {
                             _rankingState = value;
+                            print("ranking state :${_rankingState}");
                           });
                         },
                       )
@@ -232,16 +233,46 @@ class _EditAddListState extends State<EditAddList> {
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    '항목 입력',
-                    style: TextStyle(
-                      color: Color(0xFF212529),
-                      fontSize: 16.sp,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w600,
-                      height: 1.5.h,
-                    ),
-                  ),
+                  child: _rankingState
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '순위 설정',
+                              style: TextStyle(
+                                color: Color(0xFF212529),
+                                fontSize: 16.sp,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.5.h,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8.0.h,
+                            ),
+                            Text(
+                              '내용을 드래그하여 순위를 설정해보세요.',
+                              style: TextStyle(
+                                color: Color(0xFF868E96),
+                                fontSize: 14.sp,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.4.h,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          '항목 입력',
+                          style: TextStyle(
+                            color: Color(0xFF212529),
+                            fontSize: 16.sp,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w600,
+                            height: 1.5.h,
+                          ),
+                        ),
                 ),
                 _itemState
                     ? Column(

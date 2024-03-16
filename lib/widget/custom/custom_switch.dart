@@ -201,7 +201,7 @@ class _CustomPrivateSwitchState extends State<CustomPrivateSwitch>
                               : widget.disableColor,
                           fontSize: 14.sp,
                           fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           height: 1.4.h,
                         ),
                       ),
