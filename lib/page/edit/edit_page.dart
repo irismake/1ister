@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lister/model/provider/create_lists_provider.dart';
+import 'package:lister/services/api_service.dart';
+import 'package:provider/provider.dart';
 
 import '../../widget/custom_app_bar.dart';
 import 'edit_add_list.dart';
@@ -28,13 +31,18 @@ class _EditPageState extends State<EditPage> {
           popState: true,
           titleText: '리스트 만들기',
           titleState: true,
-          actionButtonOnTap: () {},
-          actionButton: null),
+          actionButtonOnTap: () {
+            // ApiService.createLists();
+          },
+          actionButton: 'button_upload_test'),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: EditAddList(),
+        child: ChangeNotifierProvider<CreateListsProvider>(
+          create: (context) => CreateListsProvider(),
+          child: EditAddList(),
+        ),
       ),
     );
   }

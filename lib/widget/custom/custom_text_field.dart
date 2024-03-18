@@ -10,15 +10,17 @@ class CustomTextField extends StatelessWidget {
   final TextStyle textStyle;
   final TextEditingController controller;
 
-  CustomTextField({
-    required this.prefixState,
-    required this.labelState,
-    required this.labelText,
-    required this.height,
-    required this.fieldHeight,
-    required this.textStyle,
-    required this.controller,
-  });
+  final ValueChanged<String>? onfieldSubmit;
+
+  CustomTextField(
+      {required this.prefixState,
+      required this.labelState,
+      required this.labelText,
+      required this.height,
+      required this.fieldHeight,
+      required this.textStyle,
+      required this.controller,
+      this.onfieldSubmit});
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +82,9 @@ class CustomTextField extends StatelessWidget {
                   ),
                 ),
               ),
+              onFieldSubmitted: (value) {
+                onfieldSubmit!(value);
+              },
             ),
           ),
         ],

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lister/model/groups.dart';
+import 'package:lister/model/myGroupModel.dart';
 
-import '../model/lists.dart';
+import '../model/mainListModel.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
@@ -366,6 +366,62 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Request error <getMyGroups> : $e');
+    }
+  }
+
+  static Future<bool> createLists(
+      String title,
+      String description,
+      String keyword_1,
+      String keyword_2,
+      bool is_private,
+      bool is_ranking_list,
+      String? image_file_path,
+      int group_id,
+      List<Map<String, dynamic>> items) async {
+    try {
+      final userId = await storage.read(key: 'USER_ID');
+      final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+      final Uri uri = Uri.parse('$baseUrl/$listsPrefix');
+      final Map<String, dynamic> requestBody = {
+        "list": {
+          "user_id": userId,
+          "title": title,
+          "description": description,
+          "keyword_1": keyword_1,
+          "keyword_2": keyword_2,
+          "is_private": is_private,
+          "is_ranking_list": is_ranking_list,
+          "image_file_path": image_file_path,
+        },
+        "extra": {
+          "group_id": group_id,
+          "items": [
+            items,
+          ]
+        },
+      };
+
+      final http.Response response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': '$accessToken',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('User Info: $responseData');
+        return true;
+      } else {
+        throw Exception(
+            'Response code error <createLists> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <createLists> : $e');
     }
   }
 }
