@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../keywords.dart';
+import '../keywordModel.dart';
 
 class KeywordsProvider with ChangeNotifier {
   final List<KeywordData> _keywords = [];

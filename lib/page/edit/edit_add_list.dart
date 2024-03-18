@@ -6,8 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lister/model/provider/my_groups_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/groups.dart';
-import '../../model/keywords.dart';
+import '../../model/myGroupModel.dart';
+import '../../model/keywordModel.dart';
+import '../../model/provider/create_lists_provider.dart';
 import '../../model/provider/keywords_provider.dart';
 import '../../widget/custom/custom_drop_down_button.dart';
 import '../../widget/custom/custom_switch.dart';
@@ -83,6 +84,7 @@ class _EditAddListState extends State<EditAddList> {
                           builder: (context, provider, child) {
                             final List<MyGroupData> myGroups =
                                 provider.myGroups();
+
                             return CustomDropDownButton(
                                 dropDownItems: myGroups, provider: provider);
                           },
@@ -194,20 +196,24 @@ class _EditAddListState extends State<EditAddList> {
                   height: 16.0.h,
                 ),
                 CustomTextField(
-                  prefixState: false,
-                  labelState: true,
-                  labelText: '내용 입력',
-                  height: 120.0.h,
-                  fieldHeight: 80.0.h,
-                  textStyle: TextStyle(
-                      decorationThickness: 0,
-                      fontFamily: 'PretendardRegular',
-                      fontSize: 16.sp,
-                      color: Color(0xff343A40),
-                      fontWeight: FontWeight.w700,
-                      height: 1.5.h),
-                  controller: titleController,
-                ),
+                    prefixState: false,
+                    labelState: true,
+                    labelText: '내용 입력',
+                    height: 120.0.h,
+                    fieldHeight: 80.0.h,
+                    textStyle: TextStyle(
+                        decorationThickness: 0,
+                        fontFamily: 'PretendardRegular',
+                        fontSize: 16.sp,
+                        color: Color(0xff343A40),
+                        fontWeight: FontWeight.w700,
+                        height: 1.5.h),
+                    controller: titleController,
+                    onfieldSubmit: (String value) {
+                      Provider.of<CreateListsProvider>(context, listen: false)
+                          .submittedTitle = value;
+                      print("test $value");
+                    }),
                 SizedBox(
                   height: 12.0.h,
                 ),

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:provider/provider.dart";
 import 'package:intl/intl.dart';
 
-import '../../model/lists.dart';
+import '../../model/mainListModel.dart';
 import '../../model/provider/main_lists_provider.dart';
 import '../../page/list_detail_page.dart';
 import '../../services/api_service.dart';

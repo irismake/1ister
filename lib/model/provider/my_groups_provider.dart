@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../services/api_service.dart';
-import '../groups.dart';
+import '../myGroupModel.dart';
 
 class MyGroupsProvider with ChangeNotifier {
   final storage = FlutterSecureStorage();
@@ -15,7 +15,7 @@ class MyGroupsProvider with ChangeNotifier {
 
   set selectedIndex(int? index) {
     _selectedIndex = index;
-    print('    notifyListeners');
+    print('notifyListeners');
     notifyListeners(); // 상태가 업데이트되었음을 알림
   }
 
