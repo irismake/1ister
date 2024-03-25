@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../services/api_service.dart';
 import '../myGroupModel.dart';
 
 class MyGroupsProvider with ChangeNotifier {
-  final storage = FlutterSecureStorage();
   final List<MyGroupData> _groups = [];
   bool _isInitialized = false;
-
   int? _selectedIndex;
+  int? _selectedGroupId;
 
   int? get selectedIndex => _selectedIndex;
 
   set selectedIndex(int? index) {
     _selectedIndex = index;
-    print('notifyListeners');
-    notifyListeners(); // 상태가 업데이트되었음을 알림
+    _selectedGroupId = _groups[index!].id;
+    notifyListeners();
+  }
+
+  int? getSelectedGroupId() {
+    print('_selectedGroupId : $_selectedGroupId');
+    return _selectedGroupId;
   }
 
   List<MyGroupData> myGroups() {
@@ -32,7 +35,6 @@ class MyGroupsProvider with ChangeNotifier {
   }
 
   Future<void> _fetchMyGroups() async {
-    //String userId = await storage.read(key: 'ACCESS_TOKEN') ?? '';
     final results = await ApiService.getMyGroups();
     _groups.clear();
     for (var result in results) {

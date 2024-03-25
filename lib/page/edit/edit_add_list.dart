@@ -29,9 +29,7 @@ class _EditAddListState extends State<EditAddList> {
 
   bool _rankingState = false;
   bool _privateState = false;
-
   bool _itemState = false;
-
   int _itemNum = 0;
 
   XFile? _image;
@@ -78,17 +76,13 @@ class _EditAddListState extends State<EditAddList> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      ChangeNotifierProvider<MyGroupsProvider>(
-                        create: (context) => MyGroupsProvider(),
-                        child: Consumer<MyGroupsProvider>(
-                          builder: (context, provider, child) {
-                            final List<MyGroupData> myGroups =
-                                provider.myGroups();
-
-                            return CustomDropDownButton(
-                                dropDownItems: myGroups, provider: provider);
-                          },
-                        ),
+                      Consumer<MyGroupsProvider>(
+                        builder: (context, provider, child) {
+                          final List<MyGroupData> myGroups =
+                              provider.myGroups();
+                          return CustomDropDownButton(
+                              dropDownItems: myGroups, provider: provider);
+                        },
                       ),
                     ],
                   ),
@@ -123,8 +117,10 @@ class _EditAddListState extends State<EditAddList> {
                         onChanged: (bool value) {
                           setState(() {
                             _rankingState = value;
-                            print("ranking state :${_rankingState}");
                           });
+                          Provider.of<CreateListsProvider>(context,
+                                  listen: false)
+                              .submittedIsRankingList = value;
                         },
                       )
                     ],
@@ -196,24 +192,24 @@ class _EditAddListState extends State<EditAddList> {
                   height: 16.0.h,
                 ),
                 CustomTextField(
-                    prefixState: false,
-                    labelState: true,
-                    labelText: '내용 입력',
-                    height: 120.0.h,
-                    fieldHeight: 80.0.h,
-                    textStyle: TextStyle(
-                        decorationThickness: 0,
-                        fontFamily: 'PretendardRegular',
-                        fontSize: 16.sp,
-                        color: Color(0xff343A40),
-                        fontWeight: FontWeight.w700,
-                        height: 1.5.h),
-                    controller: titleController,
-                    onfieldSubmit: (String value) {
-                      Provider.of<CreateListsProvider>(context, listen: false)
-                          .submittedTitle = value;
-                      print("test $value");
-                    }),
+                  prefixState: false,
+                  labelState: true,
+                  labelText: '내용 입력',
+                  height: 120.0.h,
+                  fieldHeight: 80.0.h,
+                  textStyle: TextStyle(
+                      decorationThickness: 0,
+                      fontFamily: 'PretendardRegular',
+                      fontSize: 16.sp,
+                      color: Color(0xff343A40),
+                      fontWeight: FontWeight.w700,
+                      height: 1.5.h),
+                  controller: titleController,
+                  onfieldSubmit: (String value) {
+                    Provider.of<CreateListsProvider>(context, listen: false)
+                        .submittedTitle = value;
+                  },
+                ),
                 SizedBox(
                   height: 12.0.h,
                 ),
@@ -231,6 +227,10 @@ class _EditAddListState extends State<EditAddList> {
                       fontWeight: FontWeight.w500,
                       height: 1.5.h),
                   controller: bioController,
+                  onfieldSubmit: (String value) {
+                    Provider.of<CreateListsProvider>(context, listen: false)
+                        .submittedDescription = value;
+                  },
                 ),
                 Divider(
                   color: Color(0xFFDEE2E6),
@@ -331,87 +331,83 @@ class _EditAddListState extends State<EditAddList> {
                   EdgeInsets.symmetric(horizontal: 16.0.h, vertical: 24.0.h),
               child: Column(
                 children: [
-                  ChangeNotifierProvider<KeywordsProvider>(
-                    create: (context) => KeywordsProvider(),
-                    child: Consumer<KeywordsProvider>(
-                      builder: (context, provider, child) {
-                        final List<KeywordData> keywords = provider.keywords;
-                        return Container(
-                          height: 104.0.h,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '키워드 추가',
-                                    style: TextStyle(
-                                      color: Color(0xFF343A40),
-                                      fontSize: 16.sp,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.5.h,
-                                    ),
-                                  ),
-                                  CustomDropDownButton(
-                                      dropDownItems: keywords,
-                                      provider: provider),
-                                ],
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Container(
-                                  width: 200.0.w,
-                                  height: 48.0.h,
-                                  child: TextFormField(
-                                    controller: keywordController,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 14.0.w),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8)),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      filled: true,
-                                      fillColor: Color(0xffF5F6F7),
-                                      hintText: '직접입력',
-                                      hintStyle: TextStyle(
-                                        color: Color(0xffADB5BD),
-                                        fontSize: 15.0.sp,
-                                        fontFamily: 'Pretendard',
-                                        fontWeight: FontWeight.w500,
-                                        height: 1,
-                                      ),
-                                    ),
-                                    style: TextStyle(
-                                      decorationThickness: 0,
-                                      color: Color(0xFF212529),
-                                      fontSize: 15.sp,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    //focusNode: focusNode,
-                                    onFieldSubmitted: (String value) {
-                                      KeywordData keywordData = KeywordData(
-                                        name: value,
-                                      );
-                                      KeywordsProvider provider =
-                                          Provider.of<KeywordsProvider>(context,
-                                              listen: false);
-                                      provider.addKeyword(keywordData);
-                                      keywordController.clear();
-                                    },
+                  Consumer<KeywordsProvider>(
+                    builder: (context, provider, child) {
+                      final List<KeywordData> keywords = provider.keywords;
+                      return Container(
+                        height: 104.0.h,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '키워드 추가',
+                                  style: TextStyle(
+                                    color: Color(0xFF343A40),
+                                    fontSize: 16.sp,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.5.h,
                                   ),
                                 ),
+                                CustomDropDownButton(
+                                    dropDownItems: keywords,
+                                    provider: provider),
+                              ],
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                width: 200.0.w,
+                                height: 48.0.h,
+                                child: TextFormField(
+                                  controller: keywordController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 14.0.w),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    filled: true,
+                                    fillColor: Color(0xffF5F6F7),
+                                    hintText: '직접입력',
+                                    hintStyle: TextStyle(
+                                      color: Color(0xffADB5BD),
+                                      fontSize: 15.0.sp,
+                                      fontFamily: 'Pretendard',
+                                      fontWeight: FontWeight.w500,
+                                      height: 1,
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                    decorationThickness: 0,
+                                    color: Color(0xFF212529),
+                                    fontSize: 15.sp,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  //focusNode: focusNode,
+                                  onFieldSubmitted: (String value) {
+                                    KeywordData keywordData = KeywordData(
+                                      name: value,
+                                    );
+                                    KeywordsProvider provider =
+                                        Provider.of<KeywordsProvider>(context,
+                                            listen: false);
+                                    provider.addKeyword(keywordData);
+                                    keywordController.clear();
+                                  },
+                                ),
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                   Divider(
                     color: Color(0xFFDEE2E6),
@@ -445,6 +441,10 @@ class _EditAddListState extends State<EditAddList> {
                             setState(() {
                               _privateState = value;
                             });
+
+                            Provider.of<CreateListsProvider>(context,
+                                    listen: false)
+                                .submittedIsPrivate = value;
                           },
                         )
                       ],

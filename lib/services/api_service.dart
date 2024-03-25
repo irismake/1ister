@@ -370,15 +370,16 @@ class ApiService {
   }
 
   static Future<bool> createLists(
-      String title,
-      String description,
-      String keyword_1,
-      String keyword_2,
-      bool is_private,
-      bool is_ranking_list,
-      String? image_file_path,
-      int group_id,
-      List<Map<String, dynamic>> items) async {
+    String title,
+    String description,
+    String keyword_1,
+    String keyword_2,
+    bool isPrivate,
+    bool isRankingList,
+    String? imageFilePath,
+    int groupId,
+    List<Map<String, dynamic>> items,
+  ) async {
     try {
       final userId = await storage.read(key: 'USER_ID');
       final accessToken = await storage.read(key: 'ACCESS_TOKEN');
@@ -390,18 +391,16 @@ class ApiService {
           "description": description,
           "keyword_1": keyword_1,
           "keyword_2": keyword_2,
-          "is_private": is_private,
-          "is_ranking_list": is_ranking_list,
-          "image_file_path": image_file_path,
+          "is_private": isPrivate,
+          "is_ranking_list": isRankingList,
+          "image_file_path": imageFilePath,
         },
         "extra": {
-          "group_id": group_id,
-          "items": [
-            items,
-          ]
+          "group_id": groupId,
+          "items": items,
         },
       };
-
+      print(requestBody);
       final http.Response response = await http.post(
         uri,
         body: json.encode(requestBody),
@@ -414,7 +413,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        print('User Info: $responseData');
+        //print('User Info: $responseData');
         return true;
       } else {
         throw Exception(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lister/model/provider/create_lists_provider.dart';
-import 'package:lister/services/api_service.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/provider/create_lists_provider.dart';
+import '../../model/provider/keywords_provider.dart';
+import '../../model/provider/my_groups_provider.dart';
+import '../../services/api_service.dart';
 import '../../widget/custom_app_bar.dart';
 import 'edit_add_list.dart';
 
@@ -26,24 +28,81 @@ class _EditPageState extends State<EditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppbar(
-          popState: true,
-          titleText: '리스트 만들기',
-          titleState: true,
-          actionButtonOnTap: () {
-            // ApiService.createLists();
-          },
-          actionButton: 'button_upload_test'),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: ChangeNotifierProvider<CreateListsProvider>(
-          create: (context) => CreateListsProvider(),
-          child: EditAddList(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<MyGroupsProvider>(
+          create: (context) => MyGroupsProvider(),
         ),
-      ),
+        ChangeNotifierProvider<CreateListsProvider>(
+          create: (context) => CreateListsProvider(),
+        ),
+        ChangeNotifierProvider<KeywordsProvider>(
+          create: (context) => KeywordsProvider(),
+        ),
+      ],
+      builder: (context, child) {
+        return Scaffold(
+          appBar: CustomAppbar(
+              popState: true,
+              titleText: '리스트 만들기',
+              titleState: true,
+              actionButtonOnTap: () async {
+                // Provider.of<CreateListsProvider>(context, listen: false)
+                //         .submittedGroupId =
+                //     Provider.of<MyGroupsProvider>(context, listen: false)
+                //             .getSelectedGroupId() ??
+
+                String title =
+                    Provider.of<CreateListsProvider>(context, listen: false)
+                        .submittedTitle;
+                String description =
+                    Provider.of<CreateListsProvider>(context, listen: false)
+                        .submittedDescription;
+                String keyword_1 =
+                    Provider.of<KeywordsProvider>(context, listen: false)
+                        .getKeyword();
+                String keyword_2 =
+                    Provider.of<KeywordsProvider>(context, listen: false)
+                        .getKeyword();
+                bool isPrivate =
+                    Provider.of<CreateListsProvider>(context, listen: false)
+                        .submittedIsPrivate;
+                bool isRankingList =
+                    Provider.of<CreateListsProvider>(context, listen: false)
+                        .submittedIsRankingList;
+                String? imageFilePath =
+                    Provider.of<CreateListsProvider>(context, listen: false)
+                        .submittedImageFilePath;
+                int groupId =
+                    Provider.of<MyGroupsProvider>(context, listen: false)
+                            .getSelectedGroupId() ??
+                        0;
+                List<Map<String, dynamic>> items =
+                    Provider.of<CreateListsProvider>(context, listen: false)
+                        .submittedItems();
+                print('아이템$items');
+
+                await ApiService.createLists(
+                  title,
+                  description,
+                  keyword_1,
+                  keyword_2,
+                  isPrivate,
+                  isRankingList,
+                  imageFilePath,
+                  groupId,
+                  items,
+                );
+              },
+              actionButton: 'button_upload_test'),
+          body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: EditAddList(),
+          ),
+        );
+      },
     );
   }
 }

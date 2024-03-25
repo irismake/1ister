@@ -48,7 +48,8 @@ class CustomDropDownButton extends StatelessWidget {
             ? null
             : dropDownItems[provider.selectedIndex!].name,
         onChanged: (value) {
-          int index = dropDownItems.indexWhere((group) => group.name == value);
+          int index = dropDownItems
+              .indexWhere((dropDownItem) => dropDownItem.name == value);
           provider.selectedIndex = index;
         },
         buttonStyleData: ButtonStyleData(

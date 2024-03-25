@@ -2,6 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
+import '../model/provider/create_lists_provider.dart';
 
 class EditEnterItem extends StatefulWidget {
   final int itemNum;
@@ -14,6 +17,7 @@ class EditEnterItem extends StatefulWidget {
 
 class _EditEnterItemState extends State<EditEnterItem> {
   List<int> _items = [];
+
   late List<TextEditingController> _titleControllers = [];
   late List<TextEditingController> _descriptionControllers = [];
   late List<TextEditingController> _tagControllers = [];
@@ -159,7 +163,25 @@ class _ItemWidgetState extends State<ItemWidget> {
 
   @override
   void dispose() {
+    print('dispose');
     super.dispose();
+  }
+
+  void submittedItemTitle(dynamic key, String value) {
+    Map<dynamic, String> newItem = {key: value};
+    Provider.of<CreateListsProvider>(context, listen: false).itemTitles =
+        newItem;
+  }
+
+  void submittedItemDescription(dynamic key, String value) {
+    Map<dynamic, String> newItem = {key: value};
+    Provider.of<CreateListsProvider>(context, listen: false).itemDescriptions =
+        newItem;
+  }
+
+  void submittedItemTag(dynamic key, String value) {
+    Map<dynamic, String> newItem = {key: value};
+    Provider.of<CreateListsProvider>(context, listen: false).itemTags = newItem;
   }
 
   @override
@@ -184,9 +206,7 @@ class _ItemWidgetState extends State<ItemWidget> {
               Expanded(
                 child: TextFormField(
                   onFieldSubmitted: (value) {
-                    setState(() {
-                      print(value);
-                    });
+                    submittedItemTitle(widget.key.toString(), value);
                   },
                   controller: widget.titleController,
                   expands: false,
@@ -214,6 +234,9 @@ class _ItemWidgetState extends State<ItemWidget> {
               Expanded(
                 child: TextFormField(
                   controller: widget.descriptionController,
+                  onFieldSubmitted: (value) {
+                    submittedItemDescription(widget.key.toString(), value);
+                  },
                   style: TextStyle(
                     decorationThickness: 0,
                     color: Color(0xff495057),
@@ -250,6 +273,11 @@ class _ItemWidgetState extends State<ItemWidget> {
               Expanded(
                 child: TextFormField(
                   controller: widget.tagController,
+                  onChanged: (value) {
+                    setState(() {
+                      submittedItemTag(widget.key.toString(), value);
+                    });
+                  },
                   style: TextStyle(
                     decorationThickness: 0,
                     color: Color(0xff495057),
