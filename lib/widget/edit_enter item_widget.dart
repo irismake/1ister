@@ -1,190 +1,334 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:textfield_tags/textfield_tags.dart';
+import 'package:provider/provider.dart';
+
+import '../model/provider/create_lists_provider.dart';
 
 class EditEnterItem extends StatefulWidget {
   final int itemNum;
 
-  const EditEnterItem({super.key, required this.itemNum});
+  const EditEnterItem({Key? key, required this.itemNum}) : super(key: key);
 
   @override
-  State<EditEnterItem> createState() => _EditEnterItemState();
+  _EditEnterItemState createState() => _EditEnterItemState();
 }
 
 class _EditEnterItemState extends State<EditEnterItem> {
+  List<int> _items = [];
+
+  late List<TextEditingController> _titleControllers = [];
+  late List<TextEditingController> _descriptionControllers = [];
+  late List<TextEditingController> _tagControllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _items = List<int>.generate(widget.itemNum, (int index) => index);
+    _titleControllers = List.generate(
+      widget.itemNum,
+      (index) => TextEditingController(),
+    );
+    _descriptionControllers = List.generate(
+      widget.itemNum,
+      (index) => TextEditingController(),
+    );
+    _tagControllers = List.generate(
+      widget.itemNum,
+      (index) => TextEditingController(),
+    );
+  }
+
+  @override
+  void dispose() {
+    for (int i = 0; i < widget.itemNum; i++) {
+      _titleControllers[i];
+      _descriptionControllers[i];
+      _tagControllers[i];
+    }
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(EditEnterItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.itemNum != oldWidget.itemNum) {
+      setState(() {
+        print('this');
+        _items.add(widget.itemNum - 1);
+        _titleControllers.add(TextEditingController());
+        _descriptionControllers.add(TextEditingController());
+        _tagControllers.add(TextEditingController());
+        saveItemsOrder();
+      });
+    }
+  }
+
+  void saveItemsOrder() {
+    Provider.of<CreateListsProvider>(context, listen: false).itemsOrder =
+        _items;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<int> _items = List<int>.generate(10, (int index) => index);
-    final List myTiles = [
-      'A',
-      'B',
-      'C',
-      'D',
-    ];
-
-    return ReorderableListView(
+    return ReorderableListView.builder(
+      proxyDecorator: (child, index, animation) {
+        return Material(
+          color: Colors.transparent,
+          child: ScaleTransition(
+            scale: animation.drive(
+              Tween<double>(begin: 1, end: 1.1).chain(
+                CurveTween(curve: Curves.linear),
+              ),
+            ),
+            child: child,
+          ),
+        );
+      },
+      buildDefaultDragHandles: true,
       physics: ClampingScrollPhysics(),
       shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      children: <Widget>[
-        for (int index = 0; index < widget.itemNum; index++)
-          MyWidget(
-            key: ValueKey(_items[index]),
-            index: index,
-            onReorder: (int oldIndex, int newIndex) {
-              setState(() {
-                // onReorder 함수를 호출하여 항목을 재정렬
-                final int item = _items.removeAt(oldIndex);
-                _items.insert(newIndex, item);
-              });
-            },
+      itemCount: _items.length,
+      itemBuilder: (context, index) {
+        return CustomReorderableDelayedDragStartListener(
+          key: Key('$index'),
+          delay: const Duration(
+            milliseconds: 150,
           ),
-      ],
-      onReorder: (int oldIndex, int newIndex) {
-        setState(() {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          final int item = _items.removeAt(oldIndex);
-          _items.insert(newIndex, item);
-        });
+          index: index,
+          child: ItemWidget(
+            key: ValueKey(_items[index]),
+            titleController: _titleControllers[index],
+            tagController: _tagControllers[index],
+            descriptionController: _descriptionControllers[index],
+          ),
+        );
+      },
+      onReorder: (oldIndex, newIndex) {
+        if (oldIndex < newIndex) {
+          newIndex -= 1;
+        }
+        final int item = _items.removeAt(oldIndex);
+        _items.insert(newIndex, item);
+        final titleController = _titleControllers.removeAt(oldIndex);
+        _titleControllers.insert(newIndex, titleController);
+        final descriptionController =
+            _descriptionControllers.removeAt(oldIndex);
+        _descriptionControllers.insert(newIndex, descriptionController);
+        final tagController = _tagControllers.removeAt(oldIndex);
+        _tagControllers.insert(newIndex, tagController);
+        saveItemsOrder();
       },
     );
   }
 }
 
-class MyWidget extends StatefulWidget {
-  final int index;
-  final Function(int oldIndex, int newIndex) onReorder;
-  MyWidget({super.key, required this.index, required this.onReorder});
+class CustomReorderableDelayedDragStartListener
+    extends ReorderableDragStartListener {
+  final Duration delay;
+
+  const CustomReorderableDelayedDragStartListener({
+    this.delay = kLongPressTimeout,
+    Key? key,
+    required Widget child,
+    required int index,
+    bool enabled = true,
+  }) : super(key: key, child: child, index: index, enabled: enabled);
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  MultiDragGestureRecognizer createRecognizer() {
+    return DelayedMultiDragGestureRecognizer(delay: delay, debugOwner: this);
+  }
 }
 
-class _MyWidgetState extends State<MyWidget> {
+class ItemWidget extends StatefulWidget {
+  final TextEditingController titleController;
+  final TextEditingController descriptionController;
+  final TextEditingController tagController;
+  const ItemWidget(
+      {Key? key,
+      required this.titleController,
+      required this.descriptionController,
+      required this.tagController})
+      : super(key: key);
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _distanceToField = MediaQuery.of(context).size.width;
+  State<ItemWidget> createState() => _ItemWidgetState();
+}
+
+class _ItemWidgetState extends State<ItemWidget> {
+  late FocusNode _titleFocusNode;
+  late FocusNode _descriptionFocusNode;
+  late FocusNode _tagFocusNode;
+  late int itemKey;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleFocusNode = FocusNode();
+    _descriptionFocusNode = FocusNode();
+    _tagFocusNode = FocusNode();
+    String keyString = widget.key.toString();
+    itemKey = int.tryParse(keyString.replaceAll(RegExp(r'\D'), '')) ?? 0;
+    _titleFocusNode.addListener(_onTitleFocusChanged);
+    _descriptionFocusNode.addListener(_onDescriptionFocusChanged);
+    _tagFocusNode.addListener(_onTagFocusChanged);
   }
 
-  TextfieldTagsController _controller = TextfieldTagsController();
-  late double _distanceToField;
+  @override
+  void dispose() {
+    _titleFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+    _tagFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _onTitleFocusChanged() {
+    if (!_titleFocusNode.hasFocus) {
+      Provider.of<CreateListsProvider>(context, listen: false).itemTitles = {
+        itemKey: widget.titleController.text
+      };
+    }
+  }
+
+  void _onDescriptionFocusChanged() {
+    if (!_descriptionFocusNode.hasFocus) {
+      Provider.of<CreateListsProvider>(context, listen: false)
+          .itemDescriptions = {itemKey: widget.descriptionController.text};
+    }
+  }
+
+  void _onTagFocusChanged() {
+    if (!_tagFocusNode.hasFocus) {
+      Provider.of<CreateListsProvider>(context, listen: false).itemTags = {
+        itemKey: widget.tagController.text
+      };
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onLongPress: () {
-        setState(() {
-          print('길게 누름');
-          widget.onReorder(widget.index, 0);
-        });
-        // 길게 누를 경우 상위 위젯에서 정의한 콜백 함수 호출
-      },
-      child: Padding(
-        padding: EdgeInsets.only(bottom: 12.0.h),
-        child: TextFieldTags(
-          textfieldTagsController: _controller,
-          textSeparators: const [],
-          letterCase: LetterCase.normal,
-          validator: (String tag) {
-            if (tag == 'php') {
-              return 'No, please just no';
-            } else if (_controller.getTags!.contains(tag)) {
-              return 'you already entered that';
-            }
-            return null;
-          },
-          inputfieldBuilder: (context, tec, fn, error, onChanged, onSubmitted) {
-            return ((context, sc, tags, onTagDelete) {
-              return TextField(
-                controller: tec,
-                focusNode: fn,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Color(0xffF8F9FA),
-                  isDense: true,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.h),
+      child: Container(
+        width: double.infinity,
+        height: 116.0.h,
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: Color(0xffF8F9FA),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 16.0.h),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: TextFormField(
+                  focusNode: _titleFocusNode,
+                  controller: widget.titleController,
+                  expands: false,
+                  style: TextStyle(
+                    decorationThickness: 0,
+                    color: Color(0xff343A40),
+                    fontSize: 16,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w700,
+                    height: 1,
                   ),
-                  focusedBorder: InputBorder.none,
-                  // prefixIconConstraints: BoxConstraints(
-                  //     maxWidth: _distanceToField * 0.74),
-                  prefixIcon: tags.isNotEmpty
-                      ? SingleChildScrollView(
-                          controller: sc,
-                          scrollDirection: Axis.vertical,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 16.0.h, horizontal: 16.0.w),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '합정 최강금돈까스',
-                                  style: TextStyle(
-                                    color: Color(0xFF343A40),
-                                    fontSize: 16.sp,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w700,
-                                    height: 1.5.h,
-                                  ),
-                                ),
-                                Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: tags.map((String tag) {
-                                      return Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 4.0.h,
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  '$tag',
-                                                  style: TextStyle(
-                                                      color: Color(0xff495057),
-                                                      height: 1.5.h),
-                                                ),
-                                                InkWell(
-                                                  child: SizedBox(
-                                                    height: 24.0.h,
-                                                    child: SvgPicture.asset(
-                                                      'assets/icons/icon_close.svg',
-                                                      fit: BoxFit.contain,
-                                                    ),
-                                                  ),
-                                                  onTap: () {
-                                                    onTagDelete(tag);
-                                                  },
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }).toList()),
-                              ],
-                            ),
-                          ),
-                        )
-                      : null,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '합정 최강금돈까스+${widget.key}',
+                    hintStyle: TextStyle(
+                      color: Color(0xffADB5BD),
+                      fontSize: 16,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w700,
+                      height: 1,
+                    ),
+                  ),
                 ),
-                onChanged: onChanged,
-                onSubmitted: onSubmitted,
-              );
-            });
-          },
+              ),
+              Expanded(
+                child: TextFormField(
+                  focusNode: _descriptionFocusNode,
+                  controller: widget.descriptionController,
+                  style: TextStyle(
+                    decorationThickness: 0,
+                    color: Color(0xff495057),
+                    fontSize: 14,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 1,
+                  ),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '아침에 가서 웨이팅 해야함',
+                    hintStyle: TextStyle(
+                      color: Color(0xffADB5BD),
+                      fontSize: 14,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w500,
+                      height: 1,
+                    ),
+                    suffixIcon: InkWell(
+                      child: SizedBox(
+                        height: 24.0,
+                        child: SvgPicture.asset(
+                          'assets/icons/icon_close.svg',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      onTap: () {
+                        widget.descriptionController.clear();
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: TextFormField(
+                  focusNode: _tagFocusNode,
+                  controller: widget.tagController,
+                  style: TextStyle(
+                    decorationThickness: 0,
+                    color: Color(0xff495057),
+                    fontSize: 12,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 1,
+                  ),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '#지리산돈까스 #전통주판매',
+                    hintStyle: TextStyle(
+                      color: Color(0xffADB5BD),
+                      fontSize: 12,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w500,
+                      height: 1,
+                    ),
+                    suffixIcon: InkWell(
+                      child: SizedBox(
+                        height: 24.0,
+                        child: SvgPicture.asset(
+                          'assets/icons/icon_close.svg',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      onTap: () {
+                        widget.tagController.clear();
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

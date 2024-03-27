@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lister/model/myGroupModel.dart';
 
-import '../model/lists.dart';
+import '../model/mainListModel.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
@@ -10,6 +11,7 @@ class ApiService {
   static const String userPrefix = 'user';
   static const String listsPrefix = 'lists';
   static const String actionsPrefix = 'actions';
+  static const String groupPrefix = 'groups';
 
   static Future<bool> sendValidCode(String userEmailAddress) async {
     try {
@@ -339,6 +341,86 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Request error <actionUnLike> : $e');
+    }
+  }
+
+  static Future<List<MyGroupData>> getMyGroups() async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    final Uri uri = Uri.parse('$baseUrl/$groupPrefix/mylist?is_bucket=false');
+    try {
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': '$accessToken',
+      });
+
+      if (response.statusCode == 200) {
+        final myGroupData = json.decode(response.body);
+        print('My Group Data: $myGroupData');
+
+        MyGroupsModel myGroupsModel = MyGroupsModel.fromJson(myGroupData);
+        return Future.value(myGroupsModel.groups);
+      } else {
+        throw Exception(
+            'Response code error <getMyGroups> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <getMyGroups> : $e');
+    }
+  }
+
+  static Future<bool> createLists(
+    String title,
+    String description,
+    String keyword_1,
+    String keyword_2,
+    bool isPrivate,
+    bool isRankingList,
+    String? imageFilePath,
+    int groupId,
+    List<Map<String, dynamic>> items,
+  ) async {
+    try {
+      final userId = await storage.read(key: 'USER_ID');
+      final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+      final Uri uri = Uri.parse('$baseUrl/$listsPrefix');
+      final Map<String, dynamic> requestBody = {
+        "list": {
+          "user_id": userId,
+          "title": title,
+          "description": description,
+          "keyword_1": keyword_1,
+          "keyword_2": keyword_2,
+          "is_private": isPrivate,
+          "is_ranking_list": isRankingList,
+          "image_file_path": imageFilePath,
+        },
+        "extra": {
+          "group_id": groupId,
+          "items": items,
+        },
+      };
+      print(requestBody);
+      final http.Response response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': '$accessToken',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        //print('User Info: $responseData');
+        return true;
+      } else {
+        throw Exception(
+            'Response code error <createLists> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <createLists> : $e');
     }
   }
 }

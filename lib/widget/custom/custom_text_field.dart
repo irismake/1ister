@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final double fieldHeight;
   final TextStyle textStyle;
   final TextEditingController controller;
+  final FocusNode focusNode;
 
   CustomTextField({
     required this.prefixState,
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
     required this.fieldHeight,
     required this.textStyle,
     required this.controller,
+    required this.focusNode,
   });
 
   @override
@@ -32,21 +34,21 @@ class CustomTextField extends StatelessWidget {
               ? Text(
                   labelText!,
                   style: TextStyle(
-                    fontFamily: 'PretendardRegular',
+                    fontFamily: 'Pretendard',
                     color: Color(0xff343A40),
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     height: 1.5.h,
                   ),
                 )
-              : Container(
-                  color: Colors.deepOrange,
-                  height: 10,
+              : SizedBox(
+                  height: 0,
                 ),
           SizedBox(
             height: fieldHeight,
             child: TextFormField(
               controller: controller,
+              focusNode: focusNode,
               keyboardType: TextInputType.text,
               style: textStyle,
               maxLines: null,

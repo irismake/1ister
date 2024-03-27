@@ -1,11 +1,11 @@
 class MainListsModel {
-  final int listNextCursors;
+  final int nextCursor;
   final List<MainListData> lists;
 
-  MainListsModel({required this.listNextCursors, required this.lists});
+  MainListsModel({required this.nextCursor, required this.lists});
 
   MainListsModel.fromJson(Map<String, dynamic> json)
-      : listNextCursors = json['next_cursor'],
+      : nextCursor = json['next_cursor'],
         lists = (json['lists'] as List<dynamic>)
             .map((item) => MainListData.fromJson(item))
             .toList();
