@@ -10,6 +10,7 @@ class CreateListsProvider with ChangeNotifier {
   List<Map<int, String>> _itemTitles = [];
   List<Map<int, String>> _itemDescriptions = [];
   List<Map<int, String>> _itemTags = [];
+  List<int> _itmesOrder = [0];
 
   String get submittedTitle => _title;
   String get submittedDescription => _description;
@@ -17,6 +18,8 @@ class CreateListsProvider with ChangeNotifier {
   bool get submittedIsPrivate => _isPrivate;
   bool get submittedIsRankingList => _isRankingList;
   int get submittedGroupId => _groupId;
+  List<int> get itemsOrder => _itmesOrder;
+
   //Map<String, String> get itemTitles => _itemTitles;
   //List<Map<dynamic, String>> get itemDescriptions => _itemDescriptions;
   //List<Map<dynamic, String>> get itemTags => _itemTags;
@@ -123,26 +126,32 @@ class CreateListsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Map<String, dynamic>> submittedItems() {
-    List<Map<String, dynamic>> itemList = List.generate(
-      _itemTitles.length,
-      (index) {
-        String? itemTitle = _itemTitles[index].containsKey(index)
-            ? _itemTitles[index][index]
-            : '';
+  set itemsOrder(List<int> itemOrder) {
+    _itmesOrder = itemOrder;
+    print("CreateListsProvider itemOrder: $itemOrder");
+    //notifyListeners();
+  }
 
-        String? itemDescription = _itemDescriptions[index].containsKey(index)
-            ? _itemDescriptions[index][index]
-            : '';
-        String? itemTag =
-            _itemTags[index].containsKey(index) ? _itemTags[index][index] : '';
-        return {
-          "name": itemTitle,
-          "description": itemDescription,
-          "keyword_1": itemTag,
-        };
-      },
-    );
+  List<Map<String, dynamic>> submittedItems(List<int> order) {
+    List<Map<String, dynamic>> itemList = [];
+
+    for (int index in order) {
+      String? itemTitle = _itemTitles[index].containsKey(index)
+          ? _itemTitles[index][index]
+          : '';
+      String? itemDescription = _itemDescriptions[index].containsKey(index)
+          ? _itemDescriptions[index][index]
+          : '';
+      String? itemTag =
+          _itemTags[index].containsKey(index) ? _itemTags[index][index] : '';
+
+      itemList.add({
+        "name": itemTitle,
+        "description": itemDescription,
+        "keyword_1": itemTag,
+      });
+    }
+
     return itemList;
   }
 }

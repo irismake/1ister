@@ -61,8 +61,14 @@ class _EditEnterItemState extends State<EditEnterItem> {
         _titleControllers.add(TextEditingController());
         _descriptionControllers.add(TextEditingController());
         _tagControllers.add(TextEditingController());
+        saveItemsOrder();
       });
     }
+  }
+
+  void saveItemsOrder() {
+    Provider.of<CreateListsProvider>(context, listen: false).itemsOrder =
+        _items;
   }
 
   @override
@@ -101,21 +107,19 @@ class _EditEnterItemState extends State<EditEnterItem> {
         );
       },
       onReorder: (oldIndex, newIndex) {
-        setState(() {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          final int item = _items.removeAt(oldIndex);
-          _items.insert(newIndex, item);
-          final titleController = _titleControllers.removeAt(oldIndex);
-          _titleControllers.insert(newIndex, titleController);
-          final descriptionController =
-              _descriptionControllers.removeAt(oldIndex);
-          _descriptionControllers.insert(newIndex, descriptionController);
-          final tagController = _tagControllers.removeAt(oldIndex);
-          _tagControllers.insert(newIndex, tagController);
-          print('${_items}');
-        });
+        if (oldIndex < newIndex) {
+          newIndex -= 1;
+        }
+        final int item = _items.removeAt(oldIndex);
+        _items.insert(newIndex, item);
+        final titleController = _titleControllers.removeAt(oldIndex);
+        _titleControllers.insert(newIndex, titleController);
+        final descriptionController =
+            _descriptionControllers.removeAt(oldIndex);
+        _descriptionControllers.insert(newIndex, descriptionController);
+        final tagController = _tagControllers.removeAt(oldIndex);
+        _tagControllers.insert(newIndex, tagController);
+        saveItemsOrder();
       },
     );
   }
@@ -135,7 +139,6 @@ class CustomReorderableDelayedDragStartListener
 
   @override
   MultiDragGestureRecognizer createRecognizer() {
-    print(index);
     return DelayedMultiDragGestureRecognizer(delay: delay, debugOwner: this);
   }
 }

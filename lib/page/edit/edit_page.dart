@@ -47,11 +47,6 @@ class _EditPageState extends State<EditPage> {
               titleText: '리스트 만들기',
               titleState: true,
               actionButtonOnTap: () async {
-                // Provider.of<CreateListsProvider>(context, listen: false)
-                //         .submittedGroupId =
-                //     Provider.of<MyGroupsProvider>(context, listen: false)
-                //             .getSelectedGroupId() ??
-
                 String title =
                     Provider.of<CreateListsProvider>(context, listen: false)
                         .submittedTitle;
@@ -77,9 +72,12 @@ class _EditPageState extends State<EditPage> {
                     Provider.of<MyGroupsProvider>(context, listen: false)
                             .getSelectedGroupId() ??
                         0;
+                List<int> order =
+                    Provider.of<CreateListsProvider>(context, listen: false)
+                        .itemsOrder;
                 List<Map<String, dynamic>> items =
                     Provider.of<CreateListsProvider>(context, listen: false)
-                        .submittedItems();
+                        .submittedItems(order);
                 print('아이템$items');
 
                 await ApiService.createLists(
