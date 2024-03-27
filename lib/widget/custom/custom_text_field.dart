@@ -9,18 +9,18 @@ class CustomTextField extends StatelessWidget {
   final double fieldHeight;
   final TextStyle textStyle;
   final TextEditingController controller;
+  final FocusNode focusNode;
 
-  final ValueChanged<String>? onfieldSubmit;
-
-  CustomTextField(
-      {required this.prefixState,
-      required this.labelState,
-      required this.labelText,
-      required this.height,
-      required this.fieldHeight,
-      required this.textStyle,
-      required this.controller,
-      this.onfieldSubmit});
+  CustomTextField({
+    required this.prefixState,
+    required this.labelState,
+    required this.labelText,
+    required this.height,
+    required this.fieldHeight,
+    required this.textStyle,
+    required this.controller,
+    required this.focusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +48,7 @@ class CustomTextField extends StatelessWidget {
             height: fieldHeight,
             child: TextFormField(
               controller: controller,
+              focusNode: focusNode,
               keyboardType: TextInputType.text,
               style: textStyle,
               maxLines: null,
@@ -82,9 +83,6 @@ class CustomTextField extends StatelessWidget {
                   ),
                 ),
               ),
-              onFieldSubmitted: (value) {
-                onfieldSubmit!(value);
-              },
             ),
           ),
         ],

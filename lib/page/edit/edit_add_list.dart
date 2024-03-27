@@ -11,6 +11,7 @@ import '../../model/keywordModel.dart';
 import '../../model/provider/create_lists_provider.dart';
 import '../../model/provider/keywords_provider.dart';
 import '../../widget/custom/custom_drop_down_button.dart';
+import '../../widget/custom/custom_keyword.dart';
 import '../../widget/custom/custom_switch.dart';
 import '../../widget/custom/custom_text_field.dart';
 import '../../widget/edit_enter item_widget.dart';
@@ -26,6 +27,10 @@ class _EditAddListState extends State<EditAddList> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   TextEditingController keywordController = TextEditingController();
+
+  late FocusNode titleFocusNode;
+  late FocusNode bioFocusNode;
+  //FocusNode keywordFocusNode = FocusNode();
 
   bool _rankingState = false;
   bool _privateState = false;
@@ -45,11 +50,38 @@ class _EditAddListState extends State<EditAddList> {
   }
 
   @override
+  void initState() {
+    titleFocusNode = FocusNode();
+    bioFocusNode = FocusNode();
+
+    titleFocusNode.addListener(_onTitleFocusChanged);
+    bioFocusNode.addListener(_onDescriptionFocusChanged);
+
+    super.initState();
+  }
+
+  @override
   void dispose() {
     titleController.dispose();
     bioController.dispose();
     keywordController.dispose();
+    titleFocusNode.dispose();
+    bioFocusNode.dispose();
     super.dispose();
+  }
+
+  void _onTitleFocusChanged() {
+    if (!titleFocusNode.hasFocus) {
+      Provider.of<CreateListsProvider>(context, listen: false).submittedTitle =
+          titleController.text;
+    }
+  }
+
+  void _onDescriptionFocusChanged() {
+    if (!bioFocusNode.hasFocus) {
+      Provider.of<CreateListsProvider>(context, listen: false)
+          .submittedDescription = bioController.text;
+    }
   }
 
   @override
@@ -205,10 +237,7 @@ class _EditAddListState extends State<EditAddList> {
                       fontWeight: FontWeight.w700,
                       height: 1.5.h),
                   controller: titleController,
-                  onfieldSubmit: (String value) {
-                    Provider.of<CreateListsProvider>(context, listen: false)
-                        .submittedTitle = value;
-                  },
+                  focusNode: titleFocusNode,
                 ),
                 SizedBox(
                   height: 12.0.h,
@@ -227,10 +256,7 @@ class _EditAddListState extends State<EditAddList> {
                       fontWeight: FontWeight.w500,
                       height: 1.5.h),
                   controller: bioController,
-                  onfieldSubmit: (String value) {
-                    Provider.of<CreateListsProvider>(context, listen: false)
-                        .submittedDescription = value;
-                  },
+                  focusNode: bioFocusNode,
                 ),
                 Divider(
                   color: Color(0xFFDEE2E6),
@@ -334,30 +360,30 @@ class _EditAddListState extends State<EditAddList> {
                   Consumer<KeywordsProvider>(
                     builder: (context, provider, child) {
                       final List<KeywordData> keywords = provider.keywords;
-                      return Container(
-                        height: 104.0.h,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '키워드 추가',
-                                  style: TextStyle(
-                                    color: Color(0xFF343A40),
-                                    fontSize: 16.sp,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.5.h,
-                                  ),
+                      final bool keywordState = provider.keywordState;
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '키워드 추가',
+                                style: TextStyle(
+                                  color: Color(0xFF343A40),
+                                  fontSize: 16.sp,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.5.h,
                                 ),
-                                CustomDropDownButton(
-                                    dropDownItems: keywords,
-                                    provider: provider),
-                              ],
-                            ),
-                            Align(
+                              ),
+                              CustomDropDownButton(
+                                  dropDownItems: keywords, provider: provider),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.0.h),
+                            child: Align(
                               alignment: Alignment.centerRight,
                               child: Container(
                                 width: 200.0.w,
@@ -390,7 +416,6 @@ class _EditAddListState extends State<EditAddList> {
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w600,
                                   ),
-                                  //focusNode: focusNode,
                                   onFieldSubmitted: (String value) {
                                     KeywordData keywordData = KeywordData(
                                       name: value,
@@ -404,8 +429,23 @@ class _EditAddListState extends State<EditAddList> {
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          keywordState
+                              ? SizedBox(
+                                  width: double.infinity,
+                                  child: Wrap(
+                                    direction: Axis.horizontal,
+                                    alignment: WrapAlignment.end,
+                                    spacing: 5,
+                                    runSpacing: 5,
+                                    children: keywords.map((keywords) {
+                                      return KeyWord(
+                                          keyWordName: keywords.name);
+                                    }).toList(),
+                                  ),
+                                )
+                              : SizedBox()
+                        ],
                       );
                     },
                   ),

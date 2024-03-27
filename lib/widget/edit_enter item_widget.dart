@@ -152,36 +152,57 @@ class ItemWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ItemWidgetState createState() => _ItemWidgetState();
+  State<ItemWidget> createState() => _ItemWidgetState();
 }
 
 class _ItemWidgetState extends State<ItemWidget> {
+  late FocusNode _titleFocusNode;
+  late FocusNode _descriptionFocusNode;
+  late FocusNode _tagFocusNode;
+  late int itemKey;
+
   @override
   void initState() {
     super.initState();
+    _titleFocusNode = FocusNode();
+    _descriptionFocusNode = FocusNode();
+    _tagFocusNode = FocusNode();
+    String keyString = widget.key.toString();
+    itemKey = int.tryParse(keyString.replaceAll(RegExp(r'\D'), '')) ?? 0;
+    _titleFocusNode.addListener(_onTitleFocusChanged);
+    _descriptionFocusNode.addListener(_onDescriptionFocusChanged);
+    _tagFocusNode.addListener(_onTagFocusChanged);
   }
 
   @override
   void dispose() {
-    print('dispose');
+    _titleFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+    _tagFocusNode.dispose();
     super.dispose();
   }
 
-  void submittedItemTitle(dynamic key, String value) {
-    Map<dynamic, String> newItem = {key: value};
-    Provider.of<CreateListsProvider>(context, listen: false).itemTitles =
-        newItem;
+  void _onTitleFocusChanged() {
+    if (!_titleFocusNode.hasFocus) {
+      Provider.of<CreateListsProvider>(context, listen: false).itemTitles = {
+        itemKey: widget.titleController.text
+      };
+    }
   }
 
-  void submittedItemDescription(dynamic key, String value) {
-    Map<dynamic, String> newItem = {key: value};
-    Provider.of<CreateListsProvider>(context, listen: false).itemDescriptions =
-        newItem;
+  void _onDescriptionFocusChanged() {
+    if (!_descriptionFocusNode.hasFocus) {
+      Provider.of<CreateListsProvider>(context, listen: false)
+          .itemDescriptions = {itemKey: widget.descriptionController.text};
+    }
   }
 
-  void submittedItemTag(dynamic key, String value) {
-    Map<dynamic, String> newItem = {key: value};
-    Provider.of<CreateListsProvider>(context, listen: false).itemTags = newItem;
+  void _onTagFocusChanged() {
+    if (!_tagFocusNode.hasFocus) {
+      Provider.of<CreateListsProvider>(context, listen: false).itemTags = {
+        itemKey: widget.tagController.text
+      };
+    }
   }
 
   @override
@@ -205,9 +226,7 @@ class _ItemWidgetState extends State<ItemWidget> {
             children: [
               Expanded(
                 child: TextFormField(
-                  onFieldSubmitted: (value) {
-                    submittedItemTitle(widget.key.toString(), value);
-                  },
+                  focusNode: _titleFocusNode,
                   controller: widget.titleController,
                   expands: false,
                   style: TextStyle(
@@ -233,10 +252,8 @@ class _ItemWidgetState extends State<ItemWidget> {
               ),
               Expanded(
                 child: TextFormField(
+                  focusNode: _descriptionFocusNode,
                   controller: widget.descriptionController,
-                  onFieldSubmitted: (value) {
-                    submittedItemDescription(widget.key.toString(), value);
-                  },
                   style: TextStyle(
                     decorationThickness: 0,
                     color: Color(0xff495057),
@@ -272,12 +289,8 @@ class _ItemWidgetState extends State<ItemWidget> {
               ),
               Expanded(
                 child: TextFormField(
+                  focusNode: _tagFocusNode,
                   controller: widget.tagController,
-                  onChanged: (value) {
-                    setState(() {
-                      submittedItemTag(widget.key.toString(), value);
-                    });
-                  },
                   style: TextStyle(
                     decorationThickness: 0,
                     color: Color(0xff495057),

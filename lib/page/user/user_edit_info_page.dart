@@ -30,6 +30,10 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
 
+  late FocusNode userNameFocusNode;
+  late FocusNode nameFocusNode;
+  late FocusNode bioFocusNode;
+
   late String changedUserName;
   late String changedName;
   late String changedBio;
@@ -42,6 +46,9 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
     userNameController.text = widget.userName;
     nameController.text = widget.name;
     bioController.text = widget.bio ?? '';
+    userNameFocusNode = FocusNode();
+    nameFocusNode = FocusNode();
+    bioFocusNode = FocusNode();
   }
 
   @override
@@ -49,6 +56,9 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
     userNameController.dispose();
     nameController.dispose();
     bioController.dispose();
+    userNameFocusNode.dispose();
+    nameFocusNode.dispose();
+    bioFocusNode.dispose();
     super.dispose();
   }
 
@@ -119,9 +129,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                           fontWeight: FontWeight.w700,
                           height: 1.5.h),
                       controller: userNameController,
-                      onfieldSubmit: (String value) {
-                        changedUserName = value;
-                      },
+                      focusNode: userNameFocusNode,
                     ),
                     CustomTextField(
                       prefixState: false,
@@ -137,9 +145,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                           fontWeight: FontWeight.w700,
                           height: 1.5.h),
                       controller: nameController,
-                      onfieldSubmit: (String value) {
-                        changedName = value;
-                      },
+                      focusNode: nameFocusNode,
                     ),
                     CustomTextField(
                       prefixState: false,
@@ -155,9 +161,7 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                           fontWeight: FontWeight.w500,
                           height: 1.4.h),
                       controller: bioController,
-                      onfieldSubmit: (String value) {
-                        changedBio = value;
-                      },
+                      focusNode: bioFocusNode,
                     )
                   ],
                 ),

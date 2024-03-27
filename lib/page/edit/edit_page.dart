@@ -60,10 +60,10 @@ class _EditPageState extends State<EditPage> {
                         .submittedDescription;
                 String keyword_1 =
                     Provider.of<KeywordsProvider>(context, listen: false)
-                        .getKeyword();
+                        .getKeyword_1();
                 String keyword_2 =
                     Provider.of<KeywordsProvider>(context, listen: false)
-                        .getKeyword();
+                        .getKeyword_2();
                 bool isPrivate =
                     Provider.of<CreateListsProvider>(context, listen: false)
                         .submittedIsPrivate;
@@ -93,6 +93,7 @@ class _EditPageState extends State<EditPage> {
                   groupId,
                   items,
                 );
+                Navigator.pop(context, true);
               },
               actionButton: 'button_upload_test'),
           body: GestureDetector(

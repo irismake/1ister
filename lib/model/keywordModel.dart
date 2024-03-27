@@ -1,5 +1,5 @@
 class KeywordData {
-  final String name;
+  String name;
 
   KeywordData({
     required this.name,
