@@ -49,6 +49,27 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
     userNameFocusNode = FocusNode();
     nameFocusNode = FocusNode();
     bioFocusNode = FocusNode();
+    userNameFocusNode.addListener(_onUserNameFocusChanged);
+    nameFocusNode.addListener(_onNameFocusChanged);
+    bioFocusNode.addListener(_onBioFocusChanged);
+  }
+
+  void _onUserNameFocusChanged() {
+    if (!userNameFocusNode.hasFocus) {
+      changedUserName = userNameController.text;
+    }
+  }
+
+  void _onNameFocusChanged() {
+    if (!nameFocusNode.hasFocus) {
+      changedName = nameController.text;
+    }
+  }
+
+  void _onBioFocusChanged() {
+    if (!bioFocusNode.hasFocus) {
+      changedBio = bioController.text;
+    }
   }
 
   @override
