@@ -17,7 +17,7 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  bool _myListState = true;
+  bool _bookmarkPage = false;
   bool homePageState = false;
   bool _isLoading = true;
 
@@ -286,7 +286,7 @@ class _UserPageState extends State<UserPage> {
                           InkWell(
                             onTap: () {
                               setState(() {
-                                _myListState = true;
+                                _bookmarkPage = false;
                               });
                             },
                             child: Container(
@@ -302,9 +302,9 @@ class _UserPageState extends State<UserPage> {
                                     '나의 리스트',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: _myListState
-                                          ? Color(0xFF343A40)
-                                          : Color(0xff868E96),
+                                      color: _bookmarkPage
+                                          ? Color(0xff868E96)
+                                          : Color(0xFF343A40),
                                       fontSize: 16.sp,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w600,
@@ -315,9 +315,10 @@ class _UserPageState extends State<UserPage> {
                                     width: double.infinity,
                                     height: 2.0.h,
                                     decoration: BoxDecoration(
-                                        color: _myListState
-                                            ? Color(0xFF212529)
-                                            : Colors.transparent),
+                                      color: _bookmarkPage
+                                          ? Colors.transparent
+                                          : Color(0xFF212529),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -326,7 +327,7 @@ class _UserPageState extends State<UserPage> {
                           InkWell(
                             onTap: () {
                               setState(() {
-                                _myListState = false;
+                                _bookmarkPage = true;
                               });
                             },
                             child: Container(
@@ -342,9 +343,9 @@ class _UserPageState extends State<UserPage> {
                                     '북마크 리스트',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: _myListState
-                                          ? Color(0xff868E96)
-                                          : Color(0xFF343A40),
+                                      color: _bookmarkPage
+                                          ? Color(0xFF343A40)
+                                          : Color(0xff868E96),
                                       fontSize: 16.sp,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w600,
@@ -355,9 +356,9 @@ class _UserPageState extends State<UserPage> {
                                     width: double.infinity,
                                     height: 2.0.h,
                                     decoration: BoxDecoration(
-                                        color: _myListState
-                                            ? Colors.transparent
-                                            : Color(0xFF212529)),
+                                        color: _bookmarkPage
+                                            ? Color(0xFF212529)
+                                            : Colors.transparent),
                                   )
                                 ],
                               ),
@@ -370,11 +371,9 @@ class _UserPageState extends State<UserPage> {
                 ),
                 Expanded(
                   child: UsersListNavigator(
-                    myListState: _myListState,
+                    myListState: _bookmarkPage,
                   ),
                 ),
-                // height: 327.0.h,
-                // width: double.infinity,
               ],
             ),
     );
