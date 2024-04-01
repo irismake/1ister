@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lister/widget/custom/custom_tab_bar.dart';
 
 import '../../services/api_service.dart';
 import '../../widget/custom_app_bar.dart';
@@ -18,7 +19,7 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   bool _bookmarkPage = false;
-  bool homePageState = false;
+
   bool _isLoading = true;
 
   late String userName = '';
@@ -289,39 +290,9 @@ class _UserPageState extends State<UserPage> {
                                 _bookmarkPage = false;
                               });
                             },
-                            child: Container(
-                              height: 38.0.h,
-                              width:
-                                  (MediaQuery.of(context).size.width - 32.0.w) /
-                                      2,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '나의 리스트',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: _bookmarkPage
-                                          ? Color(0xff868E96)
-                                          : Color(0xFF343A40),
-                                      fontSize: 16.sp,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.5.h,
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    height: 2.0.h,
-                                    decoration: BoxDecoration(
-                                      color: _bookmarkPage
-                                          ? Colors.transparent
-                                          : Color(0xFF212529),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            child: CustomTabBar(
+                              bookmarkPage: _bookmarkPage,
+                              tabName: '나의 리스트',
                             ),
                           ),
                           InkWell(
@@ -330,38 +301,9 @@ class _UserPageState extends State<UserPage> {
                                 _bookmarkPage = true;
                               });
                             },
-                            child: Container(
-                              height: 38.0.h,
-                              width:
-                                  (MediaQuery.of(context).size.width - 32.0.w) /
-                                      2,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '북마크 리스트',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: _bookmarkPage
-                                          ? Color(0xFF343A40)
-                                          : Color(0xff868E96),
-                                      fontSize: 16.sp,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.5.h,
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    height: 2.0.h,
-                                    decoration: BoxDecoration(
-                                        color: _bookmarkPage
-                                            ? Color(0xFF212529)
-                                            : Colors.transparent),
-                                  )
-                                ],
-                              ),
+                            child: CustomTabBar(
+                              bookmarkPage: !_bookmarkPage,
+                              tabName: '북마크 리스트',
                             ),
                           ),
                         ],
@@ -372,6 +314,11 @@ class _UserPageState extends State<UserPage> {
                 Expanded(
                   child: UsersListNavigator(
                     myListState: _bookmarkPage,
+                    onPageChanged: (value) {
+                      setState(() {
+                        _bookmarkPage = value == 0 ? false : true;
+                      });
+                    },
                   ),
                 ),
               ],
