@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lister/model/myGroupModel.dart';
 
-import '../model/mainListModel.dart';
+import '../model/listModel.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
@@ -243,7 +243,7 @@ class ApiService {
     }
   }
 
-  static Future<List<MainListData>> getMainLists(String userId) async {
+  static Future<List<ListData>> getMainLists(String userId) async {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/$listsPrefix/main?user_id=$userId'),
@@ -251,7 +251,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final mainListsData = json.decode(response.body);
 
-        MainListsModel mainListsModel = MainListsModel.fromJson(mainListsData);
+        ListsModel mainListsModel = ListsModel.fromJson(mainListsData);
 
         return Future.value(mainListsModel.lists);
       } else {
@@ -260,6 +260,27 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Request error <getMainLists> : $e');
+    }
+  }
+
+  static Future<List<ListData>> getUsersLists(bool bookmark_page) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '$baseUrl/$listsPrefix/mylist?page_size=10&cursor=9999999999&bookmark_page=$bookmark_page'),
+      );
+      if (response.statusCode == 200) {
+        final mainListsData = json.decode(response.body);
+
+        ListsModel usersListsModel = ListsModel.fromJson(mainListsData);
+
+        return Future.value(usersListsModel.lists);
+      } else {
+        throw Exception(
+            'Response code error <getUsersLists> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <getUsersLists> : $e');
     }
   }
 

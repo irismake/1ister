@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:provider/provider.dart';
 
-import '../../model/provider/user_lists_provider.dart';
+import '../../model/provider/lists_provider.dart';
 import '../../services/api_service.dart';
 import '../../widget/custom_app_bar.dart';
 import '../../widget/navigator/user_list_navigator.dart';
@@ -68,8 +68,8 @@ class _UserPageState extends State<UserPage> {
           actionButton: 'button_hamburger'),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : ChangeNotifierProvider<UserListsProvider>(
-              create: (context) => UserListsProvider(),
+          : ChangeNotifierProvider<GetListsProvider>(
+              create: (context) => GetListsProvider(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

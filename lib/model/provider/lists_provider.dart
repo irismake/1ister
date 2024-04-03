@@ -2,21 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../services/api_service.dart';
-import '../mainListModel.dart';
+import '../listModel.dart';
 
-class MainListsProvider with ChangeNotifier {
+class GetListsProvider with ChangeNotifier {
   final storage = FlutterSecureStorage();
-  final List<MainListData> _mainLists = [];
+  final List<ListData> _mainLists = [];
+  final List<ListData> _userLists = [];
   bool _isInitialized = false;
+  bool _bookmarkPage = false;
 
-  List<MainListData> mainLists() {
-    _initialize();
+  bool get bookmarkPage => _bookmarkPage;
+
+  List<ListData> mainLists() {
+    _initializeMainLists();
     return _mainLists;
   }
 
-  void _initialize() async {
+  List<ListData> userLists() {
+    _initializeUserLists();
+    return _userLists;
+  }
+
+  void _initializeMainLists() async {
     if (!_isInitialized) {
       await _fetchMainLists();
+      _isInitialized = true;
+    }
+  }
+
+  void _initializeUserLists() async {
+    if (!_isInitialized) {
+      await _fetchUserLists();
       _isInitialized = true;
     }
   }
@@ -28,6 +44,17 @@ class MainListsProvider with ChangeNotifier {
     for (var result in results) {
       _mainLists.add(result);
     }
+    notifyListeners();
+  }
+
+  Future<void> _fetchUserLists() async {
+    // final results = getUsersLists();
+    notifyListeners();
+  }
+
+  set bookmarkPage(bool value) {
+    _bookmarkPage = value;
+    print('매개변수 : $_bookmarkPage');
     notifyListeners();
   }
 

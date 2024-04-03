@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/provider/user_lists_provider.dart';
+import '../../model/provider/lists_provider.dart';
 import '../custom/custom_tab_bar.dart';
 import '../list/user_book_mark_list.dart';
 import '../list/user_my_list.dart';
@@ -32,7 +32,7 @@ class _UserListNavigatorState extends State<UserListNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserListsProvider>(
+    return Consumer<GetListsProvider>(
       builder: (context, provider, child) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
