@@ -264,10 +264,18 @@ class ApiService {
   }
 
   static Future<List<ListData>> getUsersLists(bool bookmark_page) async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+
+    final Uri uri = Uri.parse(
+        '$baseUrl/$listsPrefix/mylist?page_size=10&cursor=9999999999&bookmark_page=$bookmark_page');
+
     try {
-      final response = await http.get(
-        Uri.parse(
-            '$baseUrl/$listsPrefix/mylist?page_size=10&cursor=9999999999&bookmark_page=$bookmark_page'),
+      final http.Response response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': '$accessToken',
+        },
       );
       if (response.statusCode == 200) {
         final mainListsData = json.decode(response.body);

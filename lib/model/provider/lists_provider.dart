@@ -7,7 +7,7 @@ import '../listModel.dart';
 class GetListsProvider with ChangeNotifier {
   final storage = FlutterSecureStorage();
   final List<ListData> _mainLists = [];
-  final List<ListData> _userLists = [];
+  final List<ListData> _usersLists = [];
   bool _isInitialized = false;
   bool _bookmarkPage = false;
 
@@ -20,7 +20,7 @@ class GetListsProvider with ChangeNotifier {
 
   List<ListData> userLists() {
     _initializeUserLists();
-    return _userLists;
+    return _usersLists;
   }
 
   void _initializeMainLists() async {
@@ -48,7 +48,11 @@ class GetListsProvider with ChangeNotifier {
   }
 
   Future<void> _fetchUserLists() async {
-    // final results = getUsersLists();
+    final results = await ApiService.getUsersLists(_bookmarkPage);
+    _usersLists.clear();
+    for (var result in results) {
+      _usersLists.add(result);
+    }
     notifyListeners();
   }
 
