@@ -62,14 +62,25 @@ class GetListsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  onTapBookMark(int index, int listId, bool isBookMarked) async {
+  onTapBookMark(int index, int listId, bool isBookMarked, String tag) async {
     if (isBookMarked) {
       await ApiService.actionUnLike(listId);
-      _mainLists[index].isBookmarked = false;
+      if (tag == 'mainList') {
+        _mainLists[index].isBookmarked = false;
+      }
+      if (tag == 'myList') {
+        _usersLists[index].isBookmarked = false;
+      }
     } else {
       await ApiService.actionLike(listId);
-      _mainLists[index].isBookmarked = true;
+      if (tag == 'mainList') {
+        _mainLists[index].isBookmarked = true;
+      }
+      if (tag == 'myList') {
+        _usersLists[index].isBookmarked = true;
+      }
     }
+
     notifyListeners();
   }
 }

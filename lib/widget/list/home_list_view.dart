@@ -97,6 +97,7 @@ class HomeListView extends StatelessWidget {
                       index: index,
                       listId: mainLists[index].id,
                       isBookMarked: mainLists[index].isBookmarked,
+                      tag: 'mainList',
                     ),
                   ],
                 ),

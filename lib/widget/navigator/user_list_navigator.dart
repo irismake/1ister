@@ -15,9 +15,8 @@ class UserListNavigator extends StatefulWidget {
 }
 
 class _UserListNavigatorState extends State<UserListNavigator> {
-  final PageController _pageController = PageController(
-    initialPage: 0,
-  );
+  final PageController _pageController =
+      PageController(initialPage: 0, viewportFraction: 1);
 
   @override
   void initState() {

@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import '../../model/listModel.dart';
 import '../../model/provider/lists_provider.dart';
 import '../../page/edit/edit_page.dart';
+import '../../page/list_detail_page.dart';
+import '../../services/api_service.dart';
 import '../custom/custom_book_mark_button.dart';
 
 class UserMyList extends StatelessWidget {
@@ -80,91 +82,101 @@ class UserMyList extends StatelessWidget {
                   ),
                 ),
               )
-            : ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: usersLists.length,
+            : GridView.builder(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0.w,
+                  // vertical: 16.0.h,
+                ),
+                itemCount: usersLists.length, //item 개수
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.643,
+                    crossAxisCount: 2, //1 개의 행에 보여줄 item 개수
+                    crossAxisSpacing: 8.0.w,
+                    mainAxisSpacing: 16.0.h),
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () async {
-                      // Map<String, dynamic> listData =
-                      //     await ApiService.getListDetail(mainLists[index].id);
-                      // final title = utf8.decode(listData['title'].toString().codeUnits);
-                      // final description =
-                      //     utf8.decode(listData['description'].toString().codeUnits);
-                      // final userName =
-                      //     utf8.decode(listData['user_name'].toString().codeUnits);
-                      // final updateDate = DateFormat('yy.MM.dd')
-                      //     .format(DateTime.parse(listData['updated_at']));
-                      // List<String> keywords = [];
-                      // keywords
-                      //     .add(utf8.decode(listData['keyword_1'].toString().codeUnits));
-                      // keywords
-                      //     .add(utf8.decode(listData['keyword_2'].toString().codeUnits));
-                      // print(keywords);
+                      Map<String, dynamic> listData =
+                          await ApiService.getListDetail(usersLists[index].id);
+                      final title =
+                          utf8.decode(listData['title'].toString().codeUnits);
+                      final description = utf8
+                          .decode(listData['description'].toString().codeUnits);
+                      final userName = utf8
+                          .decode(listData['user_name'].toString().codeUnits);
+                      final updateDate = DateFormat('yy.MM.dd')
+                          .format(DateTime.parse(listData['updated_at']));
+                      List<String> keywords = [];
+                      keywords.add(utf8
+                          .decode(listData['keyword_1'].toString().codeUnits));
+                      keywords.add(utf8
+                          .decode(listData['keyword_2'].toString().codeUnits));
+                      print(keywords);
 
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => ListDetailPage(
-                      //             title: title,
-                      //             description: description,
-                      //             userName: userName,
-                      //             updateDate: updateDate,
-                      //             keywords: keywords,
-                      //           )),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ListDetailPage(
+                                  title: title,
+                                  description: description,
+                                  userName: userName,
+                                  updateDate: updateDate,
+                                  keywords: keywords,
+                                )),
+                      );
                     },
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 12.0.w),
-                      child: SizedBox(
-                        width: 160.0,
-                        child: Stack(
+                    child: Stack(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 200.0,
-                                  width: double.infinity,
-                                  decoration: ShapeDecoration(
-                                    color: Color(0xFFF1F3F5),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
-                                  ),
-                                ),
-                                Text(
-                                  '${utf8.decode(usersLists[index].title.runes.toList())}',
-                                  style: TextStyle(
-                                    color: Color(0xFF343A40),
-                                    fontSize: 16.sp,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.5.h,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                ),
-                                Text(
-                                  '${DateFormat('yy.MM.dd').format(DateTime.parse(usersLists[index].updatedAt))}',
-                                  style: TextStyle(
-                                    color: Color(0xFF868E96),
-                                    fontSize: 12.sp,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.5.h,
-                                  ),
-                                )
-                              ],
+                            Container(
+                              height: 218.0.h,
+                              width: double.infinity,
+                              decoration: ShapeDecoration(
+                                color: Color(0xFFF1F3F5),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
                             ),
-                            CustomBookMarkButton(
-                              index: index,
-                              listId: usersLists[index].id,
-                              isBookMarked: usersLists[index].isBookmarked,
+                            SizedBox(
+                              height: 12.0.h,
                             ),
+                            Text(
+                              '${utf8.decode(usersLists[index].title.runes.toList())}',
+                              style: TextStyle(
+                                color: Color(0xFF343A40),
+                                fontSize: 14.sp,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.42.h,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                            SizedBox(
+                              height: 4.0.h,
+                            ),
+                            Text(
+                              '${DateFormat('yy.MM.dd').format(DateTime.parse(usersLists[index].updatedAt))}',
+                              style: TextStyle(
+                                color: Color(0xFF868E96),
+                                fontSize: 12.sp,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.5.h,
+                              ),
+                            )
                           ],
                         ),
-                      ),
+                        CustomBookMarkButton(
+                          index: index,
+                          listId: usersLists[index].id,
+                          isBookMarked: usersLists[index].isBookmarked,
+                          tag: 'myList',
+                        ),
+                      ],
                     ),
                   );
                 },
