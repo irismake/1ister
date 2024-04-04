@@ -7,8 +7,11 @@ import '../listModel.dart';
 class GetListsProvider with ChangeNotifier {
   final storage = FlutterSecureStorage();
   final List<ListData> _mainLists = [];
-  final List<ListData> _usersLists = [];
+  final List<ListData> _usersMyLists = [];
+  final List<ListData> _usersBookmarkLists = [];
   bool _isInitialized = false;
+  bool _isInitialized_1 = false;
+  bool _isInitialized_2 = false;
   bool _bookmarkPage = false;
 
   bool get bookmarkPage => _bookmarkPage;
@@ -18,9 +21,14 @@ class GetListsProvider with ChangeNotifier {
     return _mainLists;
   }
 
-  List<ListData> userLists() {
-    _initializeUserLists();
-    return _usersLists;
+  List<ListData> usersMyLists() {
+    _initializeUsersMyLists();
+    return _usersMyLists;
+  }
+
+  List<ListData> usersBookmarkLists() {
+    _initializeUsersBookmarkLists();
+    return _usersBookmarkLists;
   }
 
   void _initializeMainLists() async {
@@ -30,10 +38,17 @@ class GetListsProvider with ChangeNotifier {
     }
   }
 
-  void _initializeUserLists() async {
-    if (!_isInitialized) {
-      await _fetchUserLists();
-      _isInitialized = true;
+  void _initializeUsersMyLists() async {
+    if (!_isInitialized_1) {
+      await _fetchUsersMyLists();
+      _isInitialized_1 = true;
+    }
+  }
+
+  void _initializeUsersBookmarkLists() async {
+    if (!_isInitialized_2) {
+      await _fetchUsersBookmarkLists();
+      _isInitialized_2 = true;
     }
   }
 
@@ -47,11 +62,21 @@ class GetListsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _fetchUserLists() async {
+  Future<void> _fetchUsersMyLists() async {
     final results = await ApiService.getUsersLists(_bookmarkPage);
-    _usersLists.clear();
+    _usersMyLists.clear();
     for (var result in results) {
-      _usersLists.add(result);
+      _usersMyLists.add(result);
+    }
+    notifyListeners();
+  }
+
+  Future<void> _fetchUsersBookmarkLists() async {
+    print(_bookmarkPage);
+    final results = await ApiService.getUsersLists(_bookmarkPage);
+    _usersBookmarkLists.clear();
+    for (var result in results) {
+      _usersBookmarkLists.add(result);
     }
     notifyListeners();
   }
@@ -69,7 +94,7 @@ class GetListsProvider with ChangeNotifier {
         _mainLists[index].isBookmarked = false;
       }
       if (tag == 'myList') {
-        _usersLists[index].isBookmarked = false;
+        _usersMyLists[index].isBookmarked = false;
       }
     } else {
       await ApiService.actionLike(listId);
@@ -77,7 +102,7 @@ class GetListsProvider with ChangeNotifier {
         _mainLists[index].isBookmarked = true;
       }
       if (tag == 'myList') {
-        _usersLists[index].isBookmarked = true;
+        _usersMyLists[index].isBookmarked = true;
       }
     }
 

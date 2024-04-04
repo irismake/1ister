@@ -19,8 +19,8 @@ class UserMyList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<GetListsProvider>(
       builder: (context, provider, child) {
-        final List<ListData> usersLists = provider.userLists();
-        return usersLists == null
+        final List<ListData> usersMyLists = provider.usersMyLists();
+        return usersMyLists == null
             ? Container(
                 color: Color(0xffF8F9FA),
                 child: Center(
@@ -87,7 +87,7 @@ class UserMyList extends StatelessWidget {
                   horizontal: 16.0.w,
                   // vertical: 16.0.h,
                 ),
-                itemCount: usersLists.length, //item 개수
+                itemCount: usersMyLists.length, //item 개수
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 0.643,
                     crossAxisCount: 2, //1 개의 행에 보여줄 item 개수
@@ -97,7 +97,8 @@ class UserMyList extends StatelessWidget {
                   return GestureDetector(
                     onTap: () async {
                       Map<String, dynamic> listData =
-                          await ApiService.getListDetail(usersLists[index].id);
+                          await ApiService.getListDetail(
+                              usersMyLists[index].id);
                       final title =
                           utf8.decode(listData['title'].toString().codeUnits);
                       final description = utf8
@@ -144,7 +145,7 @@ class UserMyList extends StatelessWidget {
                               height: 12.0.h,
                             ),
                             Text(
-                              '${utf8.decode(usersLists[index].title.runes.toList())}',
+                              '${utf8.decode(usersMyLists[index].title.runes.toList())}',
                               style: TextStyle(
                                 color: Color(0xFF343A40),
                                 fontSize: 14.sp,
@@ -159,7 +160,7 @@ class UserMyList extends StatelessWidget {
                               height: 4.0.h,
                             ),
                             Text(
-                              '${DateFormat('yy.MM.dd').format(DateTime.parse(usersLists[index].updatedAt))}',
+                              '${DateFormat('yy.MM.dd').format(DateTime.parse(usersMyLists[index].updatedAt))}',
                               style: TextStyle(
                                 color: Color(0xFF868E96),
                                 fontSize: 12.sp,
@@ -172,8 +173,8 @@ class UserMyList extends StatelessWidget {
                         ),
                         CustomBookMarkButton(
                           index: index,
-                          listId: usersLists[index].id,
-                          isBookMarked: usersLists[index].isBookmarked,
+                          listId: usersMyLists[index].id,
+                          isBookMarked: usersMyLists[index].isBookmarked,
                           tag: 'myList',
                         ),
                       ],
