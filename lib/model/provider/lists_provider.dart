@@ -13,6 +13,7 @@ class GetListsProvider with ChangeNotifier {
   bool _isInitialized_1 = false;
   bool _isInitialized_2 = false;
   bool _bookmarkPage = false;
+  bool _changeBookmarked = false;
 
   bool get bookmarkPage => _bookmarkPage;
 
@@ -72,7 +73,6 @@ class GetListsProvider with ChangeNotifier {
   }
 
   Future<void> _fetchUsersBookmarkLists() async {
-    print(_bookmarkPage);
     final results = await ApiService.getUsersLists(_bookmarkPage);
     _usersBookmarkLists.clear();
     for (var result in results) {
@@ -83,7 +83,13 @@ class GetListsProvider with ChangeNotifier {
 
   set bookmarkPage(bool value) {
     _bookmarkPage = value;
-    print('매개변수 : $_bookmarkPage');
+
+    if (_changeBookmarked) {
+      if (_bookmarkPage) {
+        _fetchUsersBookmarkLists();
+      }
+    }
+    _changeBookmarked = false;
     notifyListeners();
   }
 
@@ -96,6 +102,9 @@ class GetListsProvider with ChangeNotifier {
       if (tag == 'myList') {
         _usersMyLists[index].isBookmarked = false;
       }
+      if (tag == 'bookmarkList') {
+        _usersBookmarkLists[index].isBookmarked = false;
+      }
     } else {
       await ApiService.actionLike(listId);
       if (tag == 'mainList') {
@@ -104,8 +113,15 @@ class GetListsProvider with ChangeNotifier {
       if (tag == 'myList') {
         _usersMyLists[index].isBookmarked = true;
       }
+      if (tag == 'bookmarkList') {
+        _usersBookmarkLists[index].isBookmarked = true;
+      }
     }
+    _changeBookmarked = true;
 
+    if (_bookmarkPage) {
+      _fetchUsersBookmarkLists();
+    }
     notifyListeners();
   }
 }

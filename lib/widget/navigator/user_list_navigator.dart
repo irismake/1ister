@@ -40,7 +40,6 @@ class _UserListNavigatorState extends State<UserListNavigator> {
               padding: EdgeInsets.only(
                 left: 16.0.w,
                 right: 16.0.w,
-                bottom: 20.0.h,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

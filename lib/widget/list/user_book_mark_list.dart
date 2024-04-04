@@ -38,7 +38,7 @@ class UserBookMarkList extends StatelessWidget {
             : GridView.builder(
                 padding: EdgeInsets.symmetric(
                   horizontal: 16.0.w,
-                  // vertical: 16.0.h,
+                  vertical: 20.0.h,
                 ),
                 itemCount: usersBookmarkLists.length, //item 개수
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -128,7 +128,7 @@ class UserBookMarkList extends StatelessWidget {
                           index: index,
                           listId: usersBookmarkLists[index].id,
                           isBookMarked: usersBookmarkLists[index].isBookmarked,
-                          tag: 'myList',
+                          tag: 'bookmarkList',
                         ),
                       ],
                     ),

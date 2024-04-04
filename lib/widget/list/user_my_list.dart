@@ -85,7 +85,7 @@ class UserMyList extends StatelessWidget {
             : GridView.builder(
                 padding: EdgeInsets.symmetric(
                   horizontal: 16.0.w,
-                  // vertical: 16.0.h,
+                  vertical: 20.0.h,
                 ),
                 itemCount: usersMyLists.length, //item 개수
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

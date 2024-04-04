@@ -344,9 +344,11 @@ class ApiService {
 
   static Future<bool> actionUnLike(int listId) async {
     try {
+      final userId = await storage.read(key: 'USER_ID');
+      final accessToken = await storage.read(key: 'ACCESS_TOKEN');
       final Uri uri = Uri.parse('$baseUrl/$actionsPrefix/unlike');
       final Map<String, dynamic> requestBody = {
-        "user_id": 13,
+        "user_id": userId,
         "list_id": listId
       };
 
@@ -356,7 +358,7 @@ class ApiService {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': await storage.read(key: 'ACCESS_TOKEN') ?? '',
+          'Authorization': '$accessToken',
         },
       );
 
