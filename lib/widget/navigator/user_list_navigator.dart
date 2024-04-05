@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
-import '../bottom_navigation_bar.dart';
+import '../../model/provider/lists_provider.dart';
+import '../custom/custom_tab_bar.dart';
 import '../list/user_book_mark_list.dart';
 import '../list/user_my_list.dart';
 
-class UsersListNavigator extends StatefulWidget {
-  final bool myListState;
-
-  const UsersListNavigator({Key? key, required this.myListState})
-      : super(key: key);
+class UserListNavigator extends StatefulWidget {
+  const UserListNavigator({super.key});
 
   @override
-  State<UsersListNavigator> createState() => _UsersListNavigatorState();
+  State<UserListNavigator> createState() => _UserListNavigatorState();
 }
 
-class _UsersListNavigatorState extends State<UsersListNavigator> {
-  bool homePageState = false;
-  final _pages = [
-    UserMyList(),
-    UserBookMarkList(),
-  ];
-  final _navigatorKeyList =
-      List.generate(2, (index) => GlobalKey<NavigatorState>());
+class _UserListNavigatorState extends State<UserListNavigator> {
+  final PageController _pageController =
+      PageController(initialPage: 0, viewportFraction: 1);
 
   @override
   void initState() {
@@ -30,43 +25,70 @@ class _UsersListNavigatorState extends State<UsersListNavigator> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (bool didPop) {
-        if (didPop) {
-          // IOS 뒤로가기 버튼, ButtonWidget이건 뒤로가기 제스쳐가 감지되면 호출 된다.
-          print('didPop호출');
-          return;
-        }
-        print('뒤로가기');
+    return Consumer<GetListsProvider>(
+      builder: (context, provider, child) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: 16.0.w,
+                right: 16.0.w,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      provider.bookmarkPage = false;
+                      _pageController.animateToPage(
+                        0,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    child: CustomTabBar(
+                      bookmarkPage: provider.bookmarkPage,
+                      tabName: '나의 리스트',
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      provider.bookmarkPage = true;
+                      _pageController.animateToPage(
+                        1,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    child: CustomTabBar(
+                      bookmarkPage: !provider.bookmarkPage,
+                      tabName: '북마크 리스트',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (page) {
+                  provider.bookmarkPage = page == 0 ? false : true;
+                },
+                children: List.generate(2, (index) {
+                  return index == 0 ? UserMyList() : UserBookMarkList();
+                }),
+              ),
+            ),
+          ],
+        );
       },
-      child: DefaultTabController(
-        initialIndex: 0,
-        length: 2,
-        child: TabBarView(
-          children: _pages.map(
-            (page) {
-              //int index = 0;
-              // if (widget.myListState) {
-              //   index = 0;
-              // } else {
-              //   index = 1;
-              // }
-              int index = _pages.indexOf(page);
-              print("user_list_${index}");
-              return CustomNavigator(
-                page: widget.myListState ? _pages[0] : _pages[1],
-                navigatorKey: _navigatorKeyList[index],
-              );
-            },
-          ).toList(),
-        ),
-      ),
     );
   }
 }

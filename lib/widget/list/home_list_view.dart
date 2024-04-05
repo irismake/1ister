@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:provider/provider.dart";
 import 'package:intl/intl.dart';
 
-import '../../model/mainListModel.dart';
-import '../../model/provider/main_lists_provider.dart';
+import '../../model/listModel.dart';
+import '../../model/provider/lists_provider.dart';
 import '../../page/list_detail_page.dart';
 import '../../services/api_service.dart';
 import '../custom/custom_book_mark_button.dart';
@@ -14,8 +14,8 @@ class HomeListView extends StatelessWidget {
   HomeListView({Key? key});
   @override
   Widget build(BuildContext context) {
-    return Consumer<MainListsProvider>(builder: (context, provider, child) {
-      final List<MainListData> mainLists = provider.mainLists();
+    return Consumer<GetListsProvider>(builder: (context, provider, child) {
+      final List<ListData> mainLists = provider.mainLists();
       return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: mainLists.length,
@@ -97,6 +97,7 @@ class HomeListView extends StatelessWidget {
                       index: index,
                       listId: mainLists[index].id,
                       isBookMarked: mainLists[index].isBookmarked,
+                      tag: 'mainList',
                     ),
                   ],
                 ),

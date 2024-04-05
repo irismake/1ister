@@ -3,23 +3,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/provider/main_lists_provider.dart';
+import '../../model/provider/lists_provider.dart';
 
 class CustomBookMarkButton extends StatelessWidget {
   final int index;
   final int listId;
   final bool isBookMarked;
+  final String tag;
 
   const CustomBookMarkButton({
     required this.index,
     required this.listId,
     required this.isBookMarked,
+    required this.tag,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MainListsProvider>(
+    return Consumer<GetListsProvider>(
       builder: (context, provider, child) {
         return Positioned(
           top: 4.0.h,
@@ -29,7 +31,7 @@ class CustomBookMarkButton extends StatelessWidget {
             width: 32.0.w,
             child: InkWell(
               onTap: () async {
-                await provider.onTapBookMark(index, listId, isBookMarked);
+                await provider.onTapBookMark(index, listId, isBookMarked, tag);
               },
               child: isBookMarked
                   ? SvgPicture.asset(
