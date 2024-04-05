@@ -112,15 +112,33 @@ class UserBookMarkList extends StatelessWidget {
                               SizedBox(
                                 height: 4.0.h,
                               ),
-                              Text(
-                                '${DateFormat('yy.MM.dd').format(DateTime.parse(usersBookmarkLists[index].updatedAt))}',
-                                style: TextStyle(
-                                  color: Color(0xFF868E96),
-                                  fontSize: 12.sp,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.5.h,
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${utf8.decode(usersBookmarkLists[index].username.runes.toList())}',
+                                    style: TextStyle(
+                                      color: Color(0xFF868E96),
+                                      fontSize: 12.sp,
+                                      fontFamily: 'Pretendard',
+                                      fontWeight: FontWeight.w500,
+                                      height: 1.5.h,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 8.0.w,
+                                  ),
+                                  Text(
+                                    '${DateFormat('yy.MM.dd').format(DateTime.parse(usersBookmarkLists[index].updatedAt))}',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 25, 35, 44),
+                                      fontSize: 12.sp,
+                                      fontFamily: 'Pretendard',
+                                      fontWeight: FontWeight.w500,
+                                      height: 1.5.h,
+                                    ),
+                                  ),
+                                ],
                               )
                             ],
                           ),
