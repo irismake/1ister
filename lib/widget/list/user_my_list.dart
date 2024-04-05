@@ -20,7 +20,7 @@ class UserMyList extends StatelessWidget {
     return Consumer<GetListsProvider>(
       builder: (context, provider, child) {
         final List<ListData> usersMyLists = provider.usersMyLists();
-        return usersMyLists == null
+        return usersMyLists.isEmpty
             ? Container(
                 color: Color(0xffF8F9FA),
                 child: Center(

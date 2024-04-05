@@ -19,7 +19,7 @@ class UserBookMarkList extends StatelessWidget {
     return Consumer<GetListsProvider>(
       builder: (context, provider, child) {
         final List<ListData> usersBookmarkLists = provider.usersBookmarkLists();
-        return usersBookmarkLists == null
+        return usersBookmarkLists.isEmpty
             ? Container(
                 color: Color(0xffF8F9FA),
                 child: Center(
