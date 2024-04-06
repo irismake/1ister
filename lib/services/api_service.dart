@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lister/model/followModel.dart';
 import 'package:lister/model/myGroupModel.dart';
 
 import '../model/listModel.dart';
@@ -186,7 +187,7 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getUserFollows() async {
+  static Future<FollowsModel> getUserFollows() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/follows');
 
@@ -198,8 +199,10 @@ class ApiService {
       });
 
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        return responseData;
+        final followsData = json.decode(response.body);
+        FollowsModel followsModel = FollowsModel.fromJson(followsData);
+
+        return Future.value(followsModel);
       } else {
         throw Exception(
             'Response code error <getUserInfo> : ${response.statusCode}');

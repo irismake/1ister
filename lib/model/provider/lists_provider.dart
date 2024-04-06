@@ -12,10 +12,10 @@ class GetListsProvider with ChangeNotifier {
   bool _isInitialized = false;
   bool _isInitialized_1 = false;
   bool _isInitialized_2 = false;
-  bool _bookmarkPage = false;
+  bool _pageState = false;
   bool _changeBookmarked = false;
 
-  bool get bookmarkPage => _bookmarkPage;
+  bool get pageState => _pageState;
 
   List<ListData> mainLists() {
     _initializeMainLists();
@@ -64,7 +64,7 @@ class GetListsProvider with ChangeNotifier {
   }
 
   Future<void> _fetchUsersMyLists() async {
-    final results = await ApiService.getUsersLists(_bookmarkPage);
+    final results = await ApiService.getUsersLists(_pageState);
     _usersMyLists.clear();
     for (var result in results) {
       _usersMyLists.add(result);
@@ -73,7 +73,7 @@ class GetListsProvider with ChangeNotifier {
   }
 
   Future<void> _fetchUsersBookmarkLists() async {
-    final results = await ApiService.getUsersLists(_bookmarkPage);
+    final results = await ApiService.getUsersLists(_pageState);
     _usersBookmarkLists.clear();
     for (var result in results) {
       _usersBookmarkLists.add(result);
@@ -81,11 +81,11 @@ class GetListsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set bookmarkPage(bool value) {
-    _bookmarkPage = value;
+  set pageState(bool value) {
+    _pageState = value;
 
     if (_changeBookmarked) {
-      if (_bookmarkPage) {
+      if (_pageState) {
         _fetchUsersBookmarkLists();
       }
     }
@@ -119,7 +119,7 @@ class GetListsProvider with ChangeNotifier {
     }
     _changeBookmarked = true;
 
-    if (_bookmarkPage) {
+    if (_pageState) {
       _fetchUsersBookmarkLists();
     }
     notifyListeners();
