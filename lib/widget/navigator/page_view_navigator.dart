@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../page/user/follow/follower_widget.dart';
+import '../../page/user/follow/following_widget.dart';
 import '../custom/custom_tab_bar.dart';
 import '../list/user_book_mark_list.dart';
 import '../list/user_my_list.dart';
@@ -31,8 +33,17 @@ class _PageViewNavigatorState extends State<PageViewNavigator> {
   @override
   void initState() {
     super.initState();
+    canPop();
     _pageController =
         PageController(initialPage: widget.initialPage, viewportFraction: 1);
+  }
+
+  void canPop() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (widget.followState) {
+        widget.provider.pageState = widget.initialPage == 0 ? false : true;
+      }
+    });
   }
 
   @override
@@ -96,12 +107,8 @@ class _PageViewNavigatorState extends State<PageViewNavigator> {
               (index) {
                 return widget.followState
                     ? index == 0
-                        ? Container(
-                            color: Colors.red,
-                          )
-                        : Container(
-                            color: Colors.deepOrange,
-                          )
+                        ? FollowerWidget()
+                        : FollowingWidget()
                     : index == 0
                         ? UserMyList()
                         : UserBookMarkList();

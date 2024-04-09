@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lister/model/followModel.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/provider/follow_provider.dart';
@@ -58,7 +57,10 @@ class _UserPageState extends State<UserPage> {
           ? const Center(child: CircularProgressIndicator())
           : Consumer<GetFollowsProvider>(
               builder: (context, provider, child) {
-                final FollowsModel usersFollowList = provider.followsData();
+                final int followingCount = provider.usersFollowingCount();
+                final int followerCount = provider.usersFollowerCount();
+                print(followingCount);
+                print(followerCount);
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -140,9 +142,6 @@ class _UserPageState extends State<UserPage> {
                                                       builder: (context) =>
                                                           UserFollowsPage(
                                                         name: name,
-                                                        followsInfo:
-                                                            usersFollowList
-                                                                .followers,
                                                         initialPage: 0,
                                                       ),
                                                     ),
@@ -150,7 +149,7 @@ class _UserPageState extends State<UserPage> {
                                                 },
                                                 child: Text(
                                                   textAlign: TextAlign.center,
-                                                  '${usersFollowList.followerCount}',
+                                                  '$followerCount',
                                                   style: TextStyle(
                                                     color: Color(0xFF868E96),
                                                     fontSize: 14.sp,
@@ -191,16 +190,13 @@ class _UserPageState extends State<UserPage> {
                                                       builder: (context) =>
                                                           UserFollowsPage(
                                                         name: name,
-                                                        followsInfo:
-                                                            usersFollowList
-                                                                .followings,
                                                         initialPage: 1,
                                                       ),
                                                     ),
                                                   );
                                                 },
                                                 child: Text(
-                                                  '${usersFollowList.followingCount}',
+                                                  '$followingCount',
                                                   style: TextStyle(
                                                     color: Color(0xFF868E96),
                                                     fontSize: 14.sp,

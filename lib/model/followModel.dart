@@ -11,22 +11,15 @@ class FollowsModel {
     required this.followings,
   });
 
-  factory FollowsModel.fromJson(Map<String, dynamic> json) {
-    List<FollowData> followers = (json['followers'] as List<dynamic>)
-        .map((item) => FollowData.fromJson(item))
-        .toList();
-
-    List<FollowData> followings = (json['followings'] as List<dynamic>)
-        .map((item) => FollowData.fromJson(item))
-        .toList();
-
-    return FollowsModel(
-      followingCount: json['following_count'] as int,
-      followerCount: json['follower_count'] as int,
-      followers: followers,
-      followings: followings,
-    );
-  }
+  FollowsModel.fromJson(Map<String, dynamic> json)
+      : followingCount = json['following_count'],
+        followerCount = json['follower_count'],
+        followers = (json['followers'] as List<dynamic>)
+            .map((item) => FollowData.fromJson(item))
+            .toList(),
+        followings = (json['followings'] as List<dynamic>)
+            .map((item) => FollowData.fromJson(item))
+            .toList();
 }
 
 class FollowData {
@@ -42,12 +35,9 @@ class FollowData {
     required this.bio,
   });
 
-  factory FollowData.fromJson(Map<String, dynamic> json) {
-    return FollowData(
-      username: json['username'] as String,
-      name: json['name'] as String,
-      picture: json['picture'] as String,
-      bio: json['bio'] as String,
-    );
-  }
+  FollowData.fromJson(Map<String, dynamic> json)
+      : username = json['username'] as String,
+        name = json['name'] as String,
+        picture = json['picture'] as String,
+        bio = json['bio'] as String;
 }

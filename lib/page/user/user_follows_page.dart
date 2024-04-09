@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/followModel.dart';
 import '../../model/provider/follow_provider.dart';
 import '../../widget/custom_app_bar.dart';
 import '../../widget/navigator/page_view_navigator.dart';
@@ -10,12 +9,11 @@ import '../../widget/navigator/page_view_navigator.dart';
 class UserFollowsPage extends StatelessWidget {
   final String name;
   final int initialPage;
-  final List<FollowData> followsInfo;
+
   const UserFollowsPage({
     super.key,
     required this.name,
     required this.initialPage,
-    required this.followsInfo,
   });
 
   @override
@@ -32,6 +30,7 @@ class UserFollowsPage extends StatelessWidget {
         child: Consumer<GetFollowsProvider>(
           builder: (context, getFollowsProvider, child) {
             final provider = getFollowsProvider;
+            //getFollowsProvider.pageState = initialPage == 0 ? false : true;
             return PageViewNavigator(
               followState: true,
               provider: provider,
