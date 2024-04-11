@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
+import '../../model/followModel.dart';
+import '../../model/provider/follow_provider.dart';
 import '../../page/user/follow/follower_widget.dart';
 import '../../page/user/follow/following_widget.dart';
 import '../custom/custom_tab_bar.dart';
@@ -105,13 +108,29 @@ class _PageViewNavigatorState extends State<PageViewNavigator> {
             children: List.generate(
               2,
               (index) {
-                return widget.followState
-                    ? index == 0
-                        ? FollowerWidget()
-                        : FollowingWidget()
-                    : index == 0
-                        ? UserMyList()
-                        : UserBookMarkList();
+                return Consumer<GetFollowsProvider>(
+                  builder: (context, provider, child) {
+                    final int followerCount = provider.usersFollowerCount();
+                    final int followingCount = provider.usersFollowingCount();
+                    final List<FollowData> usersFollowerLists =
+                        provider.usersFollowerLists() ?? [];
+                    final List<FollowData> usersFollowingLists =
+                        provider.usersFollowingLists() ?? [];
+                    return widget.followState
+                        ? index == 0
+                            ? FollowWidget(
+                                followCount: followerCount,
+                                usersFollowLists: usersFollowerLists,
+                              )
+                            : FollowWidget(
+                                followCount: followingCount,
+                                usersFollowLists: usersFollowingLists,
+                              )
+                        : index == 0
+                            ? UserMyList()
+                            : UserBookMarkList();
+                  },
+                );
               },
             ),
           ),

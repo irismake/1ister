@@ -30,7 +30,6 @@ class UserFollowsPage extends StatelessWidget {
         child: Consumer<GetFollowsProvider>(
           builder: (context, getFollowsProvider, child) {
             final provider = getFollowsProvider;
-            //getFollowsProvider.pageState = initialPage == 0 ? false : true;
             return PageViewNavigator(
               followState: true,
               provider: provider,
