@@ -8,7 +8,7 @@ import '../model/listModel.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
-  static const String baseUrl = 'http://172.30.1.87:5999';
+  static const String baseUrl = 'http://172.30.34.254:5999';
   static const String userPrefix = 'user';
   static const String listsPrefix = 'lists';
   static const String actionsPrefix = 'actions';

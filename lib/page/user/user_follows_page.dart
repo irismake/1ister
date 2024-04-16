@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/provider/follow_provider.dart';
+import '../../model/provider/get_follow_provider.dart';
 import '../../widget/custom_app_bar.dart';
 import '../../widget/navigator/page_view_navigator.dart';
 

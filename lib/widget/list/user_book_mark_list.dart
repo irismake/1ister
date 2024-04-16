@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/listModel.dart';
-import '../../model/provider/lists_provider.dart';
+import '../../model/provider/get_lists_provider.dart';
 import '../../page/list_detail_page.dart';
 import '../../services/api_service.dart';
 import '../custom/custom_book_mark_button.dart';
@@ -19,7 +19,7 @@ class UserBookMarkList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<GetListsProvider>(
       builder: (context, provider, child) {
-        final List<ListData> usersBookmarkLists = provider.usersBookmarkLists();
+        final List<ListData> usersBookmarkLists = provider.usersBookmarkLists;
         return usersBookmarkLists.isEmpty
             ? Container(
                 color: Color(0xffF8F9FA),

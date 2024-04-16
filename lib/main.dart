@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'model/provider/create_lists_provider.dart';
-import 'model/provider/follow_provider.dart';
+import 'model/provider/get_follow_provider.dart';
 import 'model/provider/keywords_provider.dart';
-import 'model/provider/lists_provider.dart';
+import 'model/provider/get_lists_provider.dart';
 import 'model/provider/my_groups_provider.dart';
 import 'page/splash/splash_page.dart';
 

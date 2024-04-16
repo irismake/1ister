@@ -10,46 +10,24 @@ class GetListsProvider with ChangeNotifier {
   final List<ListData> _usersMyLists = [];
   final List<ListData> _usersBookmarkLists = [];
   bool _isInitialized = false;
-  bool _isInitialized_1 = false;
-  bool _isInitialized_2 = false;
   bool _pageState = false;
   bool _changeBookmarked = false;
 
   bool get pageState => _pageState;
+
+  List<ListData> get usersMyLists => _usersMyLists;
+
+  List<ListData> get usersBookmarkLists => _usersBookmarkLists;
 
   List<ListData> mainLists() {
     _initializeMainLists();
     return _mainLists;
   }
 
-  List<ListData> usersMyLists() {
-    _initializeUsersMyLists();
-    return _usersMyLists;
-  }
-
-  List<ListData> usersBookmarkLists() {
-    _initializeUsersBookmarkLists();
-    return _usersBookmarkLists;
-  }
-
   void _initializeMainLists() async {
     if (!_isInitialized) {
       await _fetchMainLists();
       _isInitialized = true;
-    }
-  }
-
-  void _initializeUsersMyLists() async {
-    if (!_isInitialized_1) {
-      await _fetchUsersMyLists();
-      _isInitialized_1 = true;
-    }
-  }
-
-  void _initializeUsersBookmarkLists() async {
-    if (!_isInitialized_2) {
-      await _fetchUsersBookmarkLists();
-      _isInitialized_2 = true;
     }
   }
 
@@ -64,7 +42,7 @@ class GetListsProvider with ChangeNotifier {
   }
 
   Future<void> _fetchUsersMyLists() async {
-    final results = await ApiService.getUsersLists(_pageState);
+    final results = await ApiService.getUsersLists(false);
     _usersMyLists.clear();
     for (var result in results) {
       _usersMyLists.add(result);
@@ -73,12 +51,20 @@ class GetListsProvider with ChangeNotifier {
   }
 
   Future<void> _fetchUsersBookmarkLists() async {
-    final results = await ApiService.getUsersLists(_pageState);
+    final results = await ApiService.getUsersLists(true);
     _usersBookmarkLists.clear();
     for (var result in results) {
       _usersBookmarkLists.add(result);
     }
     notifyListeners();
+  }
+
+  Future<void> initializeData() async {
+    if (!_isInitialized) {
+      await _fetchUsersMyLists();
+      await _fetchUsersBookmarkLists();
+      _isInitialized = true;
+    }
   }
 
   set pageState(bool value) {

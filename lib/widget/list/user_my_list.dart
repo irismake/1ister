@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/listModel.dart';
-import '../../model/provider/lists_provider.dart';
+import '../../model/provider/get_lists_provider.dart';
 import '../../page/edit/edit_page.dart';
 import '../../page/list_detail_page.dart';
 import '../../services/api_service.dart';
@@ -20,7 +20,7 @@ class UserMyList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<GetListsProvider>(
       builder: (context, provider, child) {
-        final List<ListData> usersMyLists = provider.usersMyLists();
+        final List<ListData> usersMyLists = provider.usersMyLists;
         return usersMyLists.isEmpty
             ? Container(
                 color: Color(0xffF8F9FA),

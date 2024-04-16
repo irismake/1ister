@@ -5,7 +5,7 @@ import "package:provider/provider.dart";
 import 'package:intl/intl.dart';
 
 import '../../model/listModel.dart';
-import '../../model/provider/lists_provider.dart';
+import '../../model/provider/get_lists_provider.dart';
 import '../../page/list_detail_page.dart';
 import '../../services/api_service.dart';
 import '../custom/custom_book_mark_button.dart';
