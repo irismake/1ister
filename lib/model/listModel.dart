@@ -2,7 +2,10 @@ class ListsModel {
   final int nextCursor;
   final List<ListData> lists;
 
-  ListsModel({required this.nextCursor, required this.lists});
+  ListsModel({
+    required this.nextCursor,
+    required this.lists,
+  });
 
   ListsModel.fromJson(Map<String, dynamic> json)
       : nextCursor = json['next_cursor'],

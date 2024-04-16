@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/provider/lists_provider.dart';
+import '../../model/provider/get_lists_provider.dart';
 
 class CustomBookMarkButton extends StatelessWidget {
   final int index;

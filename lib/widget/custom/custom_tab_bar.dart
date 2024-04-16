@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTabBar extends StatelessWidget {
-  final bool bookmarkPage;
+  final bool pageState;
   final String tabName;
 
   const CustomTabBar(
-      {super.key, required this.bookmarkPage, required this.tabName});
+      {super.key, required this.pageState, required this.tabName});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CustomTabBar extends StatelessWidget {
             tabName,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: bookmarkPage ? Color(0xff868E96) : Color(0xFF343A40),
+              color: pageState ? Color(0xff868E96) : Color(0xFF343A40),
               fontSize: 16.sp,
               fontFamily: 'Pretendard',
               fontWeight: FontWeight.w600,
@@ -31,7 +31,7 @@ class CustomTabBar extends StatelessWidget {
             width: double.infinity,
             height: 2.0.h,
             decoration: BoxDecoration(
-              color: bookmarkPage ? Colors.transparent : Color(0xFF212529),
+              color: pageState ? Colors.transparent : Color(0xFF212529),
             ),
           ),
         ],
