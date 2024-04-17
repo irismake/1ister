@@ -1,7 +1,10 @@
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
+import '../../model/myGroupModel.dart';
+import '../../model/provider/my_groups_provider.dart';
 import '../../widget/custom/custom_search_bar.dart';
 import '../../widget/custom_app_bar.dart';
 import '../../widget/book_mark_list_widget.dart';
@@ -37,17 +40,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
               height: 24.0.h,
             ),
             Expanded(
-              child: DynamicHeightGridView(
-                itemCount: 10,
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0.w,
-                mainAxisSpacing: 16.0.h,
-                builder: (ctx, index) {
-                  return GestureDetector(
-                      onTap: () async {},
-                      child: BookMarkListWidget(index: index));
-                },
-              ),
+              child: BookMarkListWidget(),
             ),
           ],
         ),

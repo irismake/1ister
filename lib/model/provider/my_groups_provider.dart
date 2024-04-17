@@ -11,6 +11,15 @@ class MyGroupsProvider with ChangeNotifier {
 
   int? get selectedIndex => _selectedIndex;
 
+  List<MyGroupData> get groups => _groups;
+
+  Future<void> initializeData() async {
+    if (!_isInitialized) {
+      await _fetchMyGroups();
+      _isInitialized = true;
+    }
+  }
+
   set selectedIndex(int? index) {
     _selectedIndex = index;
     _selectedGroupId = _groups[index!].id;
@@ -23,16 +32,16 @@ class MyGroupsProvider with ChangeNotifier {
   }
 
   List<MyGroupData> myGroups() {
-    _initialize();
+    initializeData();
     return _groups;
   }
 
-  void _initialize() async {
-    if (!_isInitialized) {
-      await _fetchMyGroups();
-      _isInitialized = true;
-    }
-  }
+  // void _initialize() async {
+  //   if (!_isInitialized) {
+  //     await _fetchMyGroups();
+  //     _isInitialized = true;
+  //   }
+  // }
 
   Future<void> _fetchMyGroups() async {
     final results = await ApiService.getMyGroups();
@@ -40,6 +49,7 @@ class MyGroupsProvider with ChangeNotifier {
     for (var result in results) {
       _groups.add(result);
     }
+    print('iiii${_groups}');
     notifyListeners();
   }
 }

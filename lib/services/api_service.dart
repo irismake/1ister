@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lister/model/followModel.dart';
-import 'package:lister/model/myGroupModel.dart';
 
+import '../model/followModel.dart';
 import '../model/listModel.dart';
+import '../model/myGroupModel.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
-  static const String baseUrl = 'http://172.30.34.254:5999';
+  static const String baseUrl = 'http://172.30.1.87:5999';
   static const String userPrefix = 'user';
   static const String listsPrefix = 'lists';
   static const String actionsPrefix = 'actions';
@@ -265,6 +265,33 @@ class ApiService {
       throw Exception('Request error <getMainLists> : $e');
     }
   }
+
+  // static Future<List<BookmarkData>> getBookmarkLists() async {
+  //   final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+
+  //   final Uri uri = Uri.parse('$baseUrl/$groupPrefix/mylist');
+  //   try {
+  //     final http.Response response = await http.get(
+  //       uri,
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': '$accessToken',
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final bookmarksData = json.decode(response.body);
+
+  //       BookmarkModel bookmarkModel = BookmarkModel.fromJson(bookmarksData);
+
+  //       return Future.value(bookmarkModel.groups);
+  //     } else {
+  //       throw Exception(
+  //           'Response code error <getUsersLists> : ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Request error <getUsersLists> : $e');
+  //   }
+  // }
 
   static Future<List<ListData>> getUsersLists(bool bookmark_page) async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
