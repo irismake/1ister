@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/listModel.dart';
+import '../../model/list_model.dart';
 import '../../model/provider/get_lists_provider.dart';
 import '../../page/list_detail_page.dart';
 import '../../services/api_service.dart';

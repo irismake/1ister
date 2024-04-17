@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/api_service.dart';
-import '../myGroupModel.dart';
+import '../my_group_model.dart';
 
 class MyGroupsProvider with ChangeNotifier {
   final List<MyGroupData> _groups = [];

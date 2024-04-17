@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/provider/get_follow_provider.dart';
+import '../../model/provider/follows_provider.dart';
 import '../../model/provider/get_lists_provider.dart';
 import '../../services/api_service.dart';
 import '../../widget/custom_app_bar.dart';
@@ -39,7 +39,7 @@ class _UserPageState extends State<UserPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final provider = Provider.of<GetFollowsProvider>(context);
+    final provider = Provider.of<FollowsProvider>(context);
     provider.initializeData();
     followingCount = provider.usersFollowingCount;
     followerCount = provider.usersFollowerCount;

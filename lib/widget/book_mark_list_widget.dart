@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../model/myGroupModel.dart';
+import '../model/my_group_model.dart';
 import '../model/provider/my_groups_provider.dart';
 
 class BookMarkListWidget extends StatelessWidget {

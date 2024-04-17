@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../model/followModel.dart';
+import '../../../model/follows_model.dart';
 import '../../../widget/custom/custom_follow_button.dart';
 
 class FollowWidget extends StatelessWidget {

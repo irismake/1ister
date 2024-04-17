@@ -1,17 +1,17 @@
-class FollowsModel {
+class FollowModel {
   final int followingCount;
   final int followerCount;
   final List<FollowData> followers;
   final List<FollowData> followings;
 
-  FollowsModel({
+  FollowModel({
     required this.followingCount,
     required this.followerCount,
     required this.followers,
     required this.followings,
   });
 
-  FollowsModel.fromJson(Map<String, dynamic> json)
+  FollowModel.fromJson(Map<String, dynamic> json)
       : followingCount = json['following_count'],
         followerCount = json['follower_count'],
         followers = (json['followers'] as List<dynamic>)

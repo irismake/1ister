@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/myGroupModel.dart';
+import '../../model/my_group_model.dart';
 import '../../model/provider/my_groups_provider.dart';
 import '../../widget/custom/custom_search_bar.dart';
 import '../../widget/custom_app_bar.dart';

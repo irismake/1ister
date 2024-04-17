@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../model/followModel.dart';
-import '../model/listModel.dart';
-import '../model/myGroupModel.dart';
+import '../model/follows_model.dart';
+import '../model/list_model.dart';
+import '../model/my_group_model.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
@@ -187,7 +187,7 @@ class ApiService {
     }
   }
 
-  static Future<FollowsModel> getUserFollows() async {
+  static Future<FollowModel> getUserFollows() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/follows');
 
@@ -200,7 +200,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final followsData = json.decode(response.body);
-        FollowsModel followsModel = FollowsModel.fromJson(followsData);
+        FollowModel followsModel = FollowModel.fromJson(followsData);
 
         return Future.value(followsModel);
       } else {
@@ -254,7 +254,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final mainListsData = json.decode(response.body);
 
-        ListsModel mainListsModel = ListsModel.fromJson(mainListsData);
+        ListModel mainListsModel = ListModel.fromJson(mainListsData);
 
         return Future.value(mainListsModel.lists);
       } else {
@@ -310,7 +310,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final mainListsData = json.decode(response.body);
 
-        ListsModel usersListsModel = ListsModel.fromJson(mainListsData);
+        ListModel usersListsModel = ListModel.fromJson(mainListsData);
 
         return Future.value(usersListsModel.lists);
       } else {
@@ -419,7 +419,7 @@ class ApiService {
         final myGroupData = json.decode(response.body);
         print('My Group Data: $myGroupData');
 
-        MyGroupsModel myGroupsModel = MyGroupsModel.fromJson(myGroupData);
+        MyGroupModel myGroupsModel = MyGroupModel.fromJson(myGroupData);
         return Future.value(myGroupsModel.groups);
       } else {
         throw Exception(

@@ -1,13 +1,13 @@
-class ListsModel {
+class ListModel {
   final int nextCursor;
   final List<ListData> lists;
 
-  ListsModel({
+  ListModel({
     required this.nextCursor,
     required this.lists,
   });
 
-  ListsModel.fromJson(Map<String, dynamic> json)
+  ListModel.fromJson(Map<String, dynamic> json)
       : nextCursor = json['next_cursor'],
         lists = (json['lists'] as List<dynamic>)
             .map((item) => ListData.fromJson(item))

@@ -6,9 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lister/model/provider/my_groups_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/myGroupModel.dart';
-import '../../model/keywordModel.dart';
-import '../../model/provider/create_lists_provider.dart';
+import '../../model/my_group_model.dart';
+import '../../model/keyword_model.dart';
+import '../../model/provider/create_list_provider.dart';
 import '../../model/provider/keywords_provider.dart';
 import '../../widget/custom/custom_drop_down_button.dart';
 import '../../widget/custom/custom_keyword.dart';
@@ -72,14 +72,14 @@ class _EditAddListState extends State<EditAddList> {
 
   void _onTitleFocusChanged() {
     if (!titleFocusNode.hasFocus) {
-      Provider.of<CreateListsProvider>(context, listen: false).submittedTitle =
+      Provider.of<CreateListProvider>(context, listen: false).submittedTitle =
           titleController.text;
     }
   }
 
   void _onDescriptionFocusChanged() {
     if (!bioFocusNode.hasFocus) {
-      Provider.of<CreateListsProvider>(context, listen: false)
+      Provider.of<CreateListProvider>(context, listen: false)
           .submittedDescription = bioController.text;
     }
   }
@@ -150,7 +150,7 @@ class _EditAddListState extends State<EditAddList> {
                           setState(() {
                             _rankingState = value;
                           });
-                          Provider.of<CreateListsProvider>(context,
+                          Provider.of<CreateListProvider>(context,
                                   listen: false)
                               .submittedIsRankingList = value;
                         },
@@ -482,7 +482,7 @@ class _EditAddListState extends State<EditAddList> {
                               _privateState = value;
                             });
 
-                            Provider.of<CreateListsProvider>(context,
+                            Provider.of<CreateListProvider>(context,
                                     listen: false)
                                 .submittedIsPrivate = value;
                           },

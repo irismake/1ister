@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-class MyGroupsModel {
+class MyGroupModel {
   final int totalListCount;
   final List<MyGroupData> groups;
 
-  MyGroupsModel({required this.totalListCount, required this.groups});
+  MyGroupModel({required this.totalListCount, required this.groups});
 
-  MyGroupsModel.fromJson(Map<String, dynamic> json)
+  MyGroupModel.fromJson(Map<String, dynamic> json)
       : totalListCount = json['total_list_count'],
         groups = (json['groups'] as List<dynamic>)
             .map((item) => MyGroupData.fromJson(item))
