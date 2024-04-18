@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lister/model/user_info_model.dart';
 
 import '../model/follows_model.dart';
 import '../model/list_model.dart';
@@ -163,7 +164,7 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getUserInfo() async {
+  static Future<UserInfoModel> getUserInfo() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final userId = await storage.read(key: 'USER_ID');
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/info?user_id=$userId');
@@ -177,7 +178,8 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        return responseData;
+        UserInfoModel userInfoData = UserInfoModel.fromJson(responseData);
+        return Future.value(userInfoData);
       } else {
         throw Exception(
             'Response code error <getUserInfo> : ${response.statusCode}');
@@ -405,7 +407,7 @@ class ApiService {
     }
   }
 
-  static Future<List<MyGroupData>> getMyGroups() async {
+  static Future<MyGroupModel> getMyGroups() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final Uri uri = Uri.parse('$baseUrl/$groupPrefix/mylist?is_bucket=false');
     try {
@@ -420,7 +422,7 @@ class ApiService {
         print('My Group Data: $myGroupData');
 
         MyGroupModel myGroupsModel = MyGroupModel.fromJson(myGroupData);
-        return Future.value(myGroupsModel.groups);
+        return Future.value(myGroupsModel);
       } else {
         throw Exception(
             'Response code error <getMyGroups> : ${response.statusCode}');
