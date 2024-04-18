@@ -5,6 +5,7 @@ import '../my_group_model.dart';
 
 class MyGroupsProvider with ChangeNotifier {
   final List<MyGroupData> _groups = [];
+  int? totalListCount;
   bool _isInitialized = false;
   int? _selectedIndex;
   int? _selectedGroupId;
@@ -12,6 +13,7 @@ class MyGroupsProvider with ChangeNotifier {
   int? get selectedIndex => _selectedIndex;
 
   List<MyGroupData> get groups => _groups;
+  //int get totalListCount =>
 
   Future<void> initializeData() async {
     if (!_isInitialized) {
@@ -45,8 +47,10 @@ class MyGroupsProvider with ChangeNotifier {
 
   Future<void> _fetchMyGroups() async {
     final results = await ApiService.getMyGroups();
+    List<MyGroupData> myGroups = results.groups;
+    totalListCount = results.totalListCount;
     _groups.clear();
-    for (var result in results) {
+    for (var result in myGroups) {
       _groups.add(result);
     }
     print('iiii${_groups}');

@@ -1,13 +1,9 @@
-import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
-import '../../model/my_group_model.dart';
-import '../../model/provider/my_groups_provider.dart';
 import '../../widget/custom/custom_search_bar.dart';
 import '../../widget/custom_app_bar.dart';
-import '../../widget/book_mark_list_widget.dart';
+import 'book_mark_list_widget.dart';
 
 class BookMarkPage extends StatefulWidget {
   const BookMarkPage({Key? key}) : super(key: key);

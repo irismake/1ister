@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../model/my_group_model.dart';
-import '../model/provider/my_groups_provider.dart';
+import '../../model/my_group_model.dart';
+import '../../model/provider/my_groups_provider.dart';
 
 class BookMarkListWidget extends StatelessWidget {
   const BookMarkListWidget({
@@ -26,7 +26,7 @@ class BookMarkListWidget extends StatelessWidget {
               return CircularProgressIndicator();
             } else {
               return DynamicHeightGridView(
-                itemCount: myGroups.length,
+                itemCount: myGroups.length + 1,
                 crossAxisCount: 2,
                 crossAxisSpacing: 8.0.w,
                 mainAxisSpacing: 16.0.h,
@@ -48,16 +48,27 @@ class BookMarkListWidget extends StatelessWidget {
                         ),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(
-                            '${myGroups[index].name} (${myGroups[index].listCount})',
-                            style: TextStyle(
-                              color: Color(0xFF343A40),
-                              fontSize: 14.sp,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              height: 1.4.h,
-                            ),
-                          ),
+                          child: index == 0
+                              ? Text(
+                                  '모든 리스트 (${provider.totalListCount})',
+                                  style: TextStyle(
+                                    color: Color(0xFF343A40),
+                                    fontSize: 14.sp,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.4.h,
+                                  ),
+                                )
+                              : Text(
+                                  '${myGroups[index - 1].name} (${myGroups[index - 1].listCount})',
+                                  style: TextStyle(
+                                    color: Color(0xFF343A40),
+                                    fontSize: 14.sp,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.4.h,
+                                  ),
+                                ),
                         ),
                       ],
                     ),
