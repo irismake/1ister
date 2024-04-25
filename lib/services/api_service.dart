@@ -432,6 +432,29 @@ class ApiService {
     }
   }
 
+  static Future<List<ListData>> getMyGroupLists(int groupId) async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    final Uri uri = Uri.parse('$baseUrl/$groupPrefix/$groupId');
+    try {
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': '$accessToken',
+      });
+      if (response.statusCode == 200) {
+        final jsonDataDecoded = json.decode(response.body);
+        final myGrouplistsData = jsonDataDecoded['list_page'];
+        ListModel myGroupLists = ListModel.fromJson(myGrouplistsData);
+        return Future.value(myGroupLists.lists);
+      } else {
+        throw Exception(
+            'Response code error <getMyGroups> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <getMyGroups> : $e');
+    }
+  }
+
   static Future<bool> createLists(
     String title,
     String description,

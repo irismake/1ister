@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/model/provider/user_info_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/provider/my_groups_provider.dart';
 import '../../widget/custom/custom_search_bar.dart';
 import '../../widget/custom_app_bar.dart';
+import 'bookmark_group_lists_widget.dart';
 import 'bookmark_groups_widget.dart';
 
-class BookMarkPage extends StatelessWidget {
-  const BookMarkPage({Key? key}) : super(key: key);
+class BookmarkListPage extends StatelessWidget {
+  final String groupTitle;
+  final int groupId;
+  const BookmarkListPage({
+    super.key,
+    required this.groupTitle,
+    required this.groupId,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final userInfoProvider = Provider.of<UserInfoProvider>(context);
-    userInfoProvider.initializeData();
-    String name =
-        Provider.of<UserInfoProvider>(context, listen: false).userInfo.name;
-
     return Scaffold(
       appBar: CustomAppbar(
           popState: true,
-          titleText: '${name}의 북마크',
+          titleText: '${groupTitle}',
           titleState: true,
           actionButtonOnTap: () {},
           actionButton: 'button_plus'),
@@ -37,9 +39,19 @@ class BookMarkPage extends StatelessWidget {
             SizedBox(
               height: 24.0.h,
             ),
-            Expanded(
-              child: BookMarkGroupsWidget(),
-            ),
+            Consumer<MyGroupsProvider>(builder: (context, provider, child) {
+              //provider.bookmarkGroupId = groupId;
+              // WidgetsBinding.instance.addPostFrameCallback((_) {
+              //   provider.initializeMyGroupListsData();
+              // });
+
+              //print(provider.bookmarkGroupId);
+              return Expanded(
+                child: BookMarkGroupListsWidget(
+                  groupId: groupId,
+                ),
+              );
+            }),
           ],
         ),
       ),

@@ -5,9 +5,10 @@ import 'package:provider/provider.dart';
 
 import '../../model/my_group_model.dart';
 import '../../model/provider/my_groups_provider.dart';
+import 'bookmark_list_page.dart';
 
-class BookMarkListWidget extends StatelessWidget {
-  const BookMarkListWidget({
+class BookMarkGroupsWidget extends StatelessWidget {
+  const BookMarkGroupsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -15,10 +16,10 @@ class BookMarkListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<MyGroupsProvider>(
       builder: (context, provider, child) {
-        final List<MyGroupData> myGroups = provider.myGroups();
-        print(" hggg$myGroups");
+        final List<MyGroupData> myGroups = provider.myGroups;
+
         return FutureBuilder(
-          future: provider.initializeData(),
+          future: provider.initializeMyGroupData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
@@ -30,6 +31,18 @@ class BookMarkListWidget extends StatelessWidget {
                 mainAxisSpacing: 16.0.h,
                 builder: (ctx, index) {
                   return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookmarkListPage(
+                              groupTitle: index == 0
+                                  ? '모든 리스트 (${provider.totalListCount})'
+                                  : '${myGroups[index - 1].name} (${myGroups[index - 1].listCount})',
+                              groupId: myGroups[index - 1].id),
+                        ),
+                      );
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -60,7 +73,7 @@ class BookMarkListWidget extends StatelessWidget {
                               : Text(
                                   '${myGroups[index - 1].name} (${myGroups[index - 1].listCount})',
                                   style: TextStyle(
-                                    color: Color(0xFF343A40),
+                                    color: Color.fromRGBO(52, 58, 64, 1),
                                     fontSize: 14.sp,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w600,

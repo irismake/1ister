@@ -110,8 +110,7 @@ class _EditAddListState extends State<EditAddList> {
                       ),
                       Consumer<MyGroupsProvider>(
                         builder: (context, provider, child) {
-                          final List<MyGroupData> myGroups =
-                              provider.myGroups();
+                          final List<MyGroupData> myGroups = provider.myGroups;
                           return CustomDropDownButton(
                               dropDownItems: myGroups, provider: provider);
                         },
