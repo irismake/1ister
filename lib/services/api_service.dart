@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lister/model/list_detail_model.dart';
 import 'package:lister/model/user_info_model.dart';
 
 import '../model/follows_model.dart';
@@ -324,14 +325,16 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getListDetail(int listId) async {
+  static Future<ListDetailModel> getListDetail(int listId) async {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/$listsPrefix/$listId'),
       );
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        return responseData;
+        ListDetailModel listsDetailModel =
+            ListDetailModel.fromJson(responseData);
+        return listsDetailModel;
       } else {
         throw Exception(
             'Response code error <getListDetail> : ${response.statusCode}');

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lister/model/list_detail_model.dart';
 import "package:provider/provider.dart";
 import 'package:intl/intl.dart';
 
@@ -22,20 +23,17 @@ class HomeListView extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () async {
-              Map<String, dynamic> listData =
+              ListDetailModel listDetailData =
                   await ApiService.getListDetail(mainLists[index].id);
-              final title = utf8.decode(listData['title'].toString().codeUnits);
-              final description =
-                  utf8.decode(listData['description'].toString().codeUnits);
-              final userName =
-                  utf8.decode(listData['user_name'].toString().codeUnits);
+              final title = listDetailData.title;
+              final description = listDetailData.description;
+              final userName = listDetailData.userName;
+
               final updateDate = DateFormat('yy.MM.dd')
-                  .format(DateTime.parse(listData['updated_at']));
+                  .format(DateTime.parse(listDetailData.updatedAt));
               List<String> keywords = [];
-              keywords
-                  .add(utf8.decode(listData['keyword_1'].toString().codeUnits));
-              keywords
-                  .add(utf8.decode(listData['keyword_2'].toString().codeUnits));
+              keywords.add(listDetailData.keyword1);
+              keywords.add(listDetailData.keyword2);
               print(keywords);
 
               Navigator.push(
@@ -82,7 +80,7 @@ class HomeListView extends StatelessWidget {
                           maxLines: 2,
                         ),
                         Text(
-                          '${DateFormat('yy.MM.dd').format(DateTime.parse(mainLists[index].updatedAt))}',
+                          '${mainLists[index].updatedAt}',
                           style: TextStyle(
                             color: Color(0xFF868E96),
                             fontSize: 12.sp,

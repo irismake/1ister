@@ -47,7 +47,7 @@ class FollowWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${utf8.decode(usersFollowLists[index].name.runes.toList())}',
+                            '${usersFollowLists[index].name}',
                             style: TextStyle(
                               color: Color(0xFF343A40),
                               fontSize: 14,
@@ -59,7 +59,7 @@ class FollowWidget extends StatelessWidget {
                             maxLines: 2,
                           ),
                           Text(
-                            '${utf8.decode(usersFollowLists[index].bio.runes.toList())}',
+                            '${usersFollowLists[index].bio}',
                             style: TextStyle(
                               color: Color(0xFF868E96),
                               fontSize: 12,

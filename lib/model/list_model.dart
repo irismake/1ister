@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class ListModel {
   final int nextCursor;
   final List<ListData> lists;
@@ -56,5 +58,6 @@ class ListData {
         isPrivate = json['is_private'] as bool,
         likeCount = json['like_count'] as int,
         _isBookmarked = json['is_bookmarked'] as bool, // 변경 가능한 속성으로 변경
-        updatedAt = json['updated_at'] as String;
+        updatedAt = DateFormat('yy.MM.dd')
+            .format(DateTime.parse(json['updated_at'] as String));
 }

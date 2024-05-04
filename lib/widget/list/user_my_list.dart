@@ -4,6 +4,7 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:lister/model/list_detail_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/list_model.dart';
@@ -88,22 +89,17 @@ class UserMyList extends StatelessWidget {
                   builder: (ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        Map<String, dynamic> listData =
+                        ListDetailModel listDetailData =
                             await ApiService.getListDetail(
                                 usersMyLists[index].id);
-                        final title =
-                            utf8.decode(listData['title'].toString().codeUnits);
-                        final description = utf8.decode(
-                            listData['description'].toString().codeUnits);
-                        final userName = utf8
-                            .decode(listData['user_name'].toString().codeUnits);
+                        final title = listDetailData.title;
+                        final description = listDetailData.description;
+                        final userName = listDetailData.userName;
                         final updateDate = DateFormat('yy.MM.dd')
-                            .format(DateTime.parse(listData['updated_at']));
+                            .format(DateTime.parse(listDetailData.updatedAt));
                         List<String> keywords = [];
-                        keywords.add(utf8.decode(
-                            listData['keyword_1'].toString().codeUnits));
-                        keywords.add(utf8.decode(
-                            listData['keyword_2'].toString().codeUnits));
+                        keywords.add(listDetailData.keyword1);
+                        keywords.add(listDetailData.keyword2);
                         print(keywords);
 
                         Navigator.push(
@@ -137,7 +133,7 @@ class UserMyList extends StatelessWidget {
                                 height: 12.0.h,
                               ),
                               Text(
-                                '${utf8.decode(usersMyLists[index].title.runes.toList())}',
+                                '${usersMyLists[index].title}',
                                 style: TextStyle(
                                   color: Color(0xFF343A40),
                                   fontSize: 14.sp,
@@ -152,7 +148,7 @@ class UserMyList extends StatelessWidget {
                                 height: 4.0.h,
                               ),
                               Text(
-                                '${DateFormat('yy.MM.dd').format(DateTime.parse(usersMyLists[index].updatedAt))}',
+                                '${usersMyLists[index].updatedAt}',
                                 style: TextStyle(
                                   color: Color(0xFF868E96),
                                   fontSize: 12.sp,

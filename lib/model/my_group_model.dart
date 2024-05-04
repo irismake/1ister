@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class MyGroupModel {
   final int totalListCount;
   final List<MyGroupData> groups;
@@ -30,5 +32,6 @@ class MyGroupData {
       : id = json['id'],
         name = utf8.decode(json['name'].toString().codeUnits),
         listCount = json['list_count'],
-        updatedAt = json['updated_at'] as String;
+        updatedAt = DateFormat('yy.MM.dd')
+            .format(DateTime.parse(json['updated_at'] as String));
 }

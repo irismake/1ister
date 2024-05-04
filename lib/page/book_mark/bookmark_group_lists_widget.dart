@@ -2,6 +2,7 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:lister/model/list_detail_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/list_model.dart';
@@ -57,20 +58,20 @@ class _BookMarkGroupListsWidgetState extends State<BookMarkGroupListsWidget> {
             builder: (ctx, index) {
               return GestureDetector(
                 onTap: () async {
-                  Map<String, dynamic> listDetailData =
+                  ListDetailModel listDetailData =
                       await ApiService.getListDetail(myGroupLists[index].id);
 
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ListDetailPage(
-                        title: myGroupLists[index].title,
-                        description: 'myGroupLists[index].',
-                        userName: myGroupLists[index].username,
-                        updateDate: myGroupLists[index].updatedAt,
+                        title: listDetailData.title,
+                        description: listDetailData.description,
+                        userName: listDetailData.userName,
+                        updateDate: listDetailData.updatedAt,
                         keywords: [
-                          myGroupLists[index].keyword1,
-                          myGroupLists[index].keyword2
+                          listDetailData.keyword1,
+                          listDetailData.keyword2
                         ],
                       ),
                     ),
