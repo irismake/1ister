@@ -96,7 +96,7 @@ class _BookMarkGroupListsWidgetState extends State<BookMarkGroupListsWidget> {
                       child: Text(
                         '${myGroupLists[index].title}',
                         style: TextStyle(
-                          color: Color.fromRGBO(52, 58, 64, 1),
+                          color: Color(0xFF343A40),
                           fontSize: 14.sp,
                           fontFamily: 'Pretendard',
                           fontWeight: FontWeight.w600,

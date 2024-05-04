@@ -73,7 +73,7 @@ class BookMarkGroupsWidget extends StatelessWidget {
                               : Text(
                                   '${myGroups[index - 1].name} (${myGroups[index - 1].listCount})',
                                   style: TextStyle(
-                                    color: Color.fromRGBO(52, 58, 64, 1),
+                                    color: Color(0XFF343A40),
                                     fontSize: 14.sp,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w600,
