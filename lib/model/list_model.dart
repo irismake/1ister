@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ListModel {
   final int nextCursor;
   final List<ListData> lists;
@@ -47,10 +49,10 @@ class ListData {
 
   ListData.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        title = json['title'] as String,
-        username = json['username'] as String,
-        keyword1 = json['keyword_1'] as String,
-        keyword2 = json['keyword_2'] as String,
+        title = utf8.decode(json['title'].toString().codeUnits),
+        username = utf8.decode(json['username'].toString().codeUnits),
+        keyword1 = utf8.decode(json['keyword_1'].toString().codeUnits),
+        keyword2 = utf8.decode(json['keyword_2'].toString().codeUnits),
         isPrivate = json['is_private'] as bool,
         likeCount = json['like_count'] as int,
         _isBookmarked = json['is_bookmarked'] as bool, // 변경 가능한 속성으로 변경

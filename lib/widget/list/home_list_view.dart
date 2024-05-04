@@ -70,7 +70,7 @@ class HomeListView extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${utf8.decode(mainLists[index].title.runes.toList())}',
+                          '${mainLists[index].title}',
                           style: TextStyle(
                             color: Color(0xFF343A40),
                             fontSize: 16.sp,

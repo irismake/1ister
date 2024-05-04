@@ -17,7 +17,6 @@ class MyGroupsProvider with ChangeNotifier {
   int? get bookmarkGroupId => _bookmarkGroupId;
 
   List<MyGroupData> get myGroups => _myGroups;
-  //int get totalListCount =>
 
   List<ListData> get myGroupLists => _myGroupLists;
 
@@ -29,10 +28,8 @@ class MyGroupsProvider with ChangeNotifier {
   }
 
   Future<void> initializeMyGroupListsData() async {
-    if (!_isInitialized) {
-      await _fetchMyGroupLists();
-      _isInitialized = true;
-    }
+    await _fetchMyGroupLists();
+    print('d');
   }
 
   set selectedIndex(int? index) {
@@ -51,18 +48,6 @@ class MyGroupsProvider with ChangeNotifier {
     return _selectedGroupId;
   }
 
-  // List<MyGroupData> myGroups() {
-  //   initializeMyGroupData();
-  //   return _groups;
-  // }
-
-  // void _initialize() async {
-  //   if (!_isInitialized) {
-  //     await _fetchMyGroups();
-  //     _isInitialized = true;
-  //   }
-  // }
-
   Future<void> _fetchMyGroups() async {
     final results = await ApiService.getMyGroups();
     List<MyGroupData> myGroups = results.groups;
@@ -71,13 +56,11 @@ class MyGroupsProvider with ChangeNotifier {
     for (var result in myGroups) {
       _myGroups.add(result);
     }
-    print('iiii${_myGroups}');
     notifyListeners();
   }
 
   Future<void> _fetchMyGroupLists() async {
     final results = await ApiService.getMyGroupLists(_bookmarkGroupId ?? 0);
-    print(results);
     _myGroupLists.clear();
     for (var result in results) {
       _myGroupLists.add(result);
