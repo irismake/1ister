@@ -56,8 +56,7 @@ class UserBookMarkList extends StatelessWidget {
                         final title = listDetailData.title;
                         final description = listDetailData.description;
                         final userName = listDetailData.userName;
-                        final updateDate = DateFormat('yy.MM.dd')
-                            .format(DateTime.parse(listDetailData.updatedAt));
+                        final updateDate = listDetailData.updatedAt;
                         List<String> keywords = [];
                         keywords.add(listDetailData.keyword1);
                         keywords.add(listDetailData.keyword2);

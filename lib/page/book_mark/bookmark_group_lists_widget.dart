@@ -126,7 +126,7 @@ class _BookMarkGroupListsWidgetState extends State<BookMarkGroupListsWidget> {
                             width: 8.0.w,
                           ),
                           Text(
-                            '${DateFormat('yy.MM.dd').format(DateTime.parse(myGroupLists[index].updatedAt))}',
+                            '${myGroupLists[index].updatedAt}',
                             style: TextStyle(
                               color: Color(0xFF868E96),
                               fontSize: 12.sp,
