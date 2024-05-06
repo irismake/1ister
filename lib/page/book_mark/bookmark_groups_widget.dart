@@ -22,7 +22,9 @@ class BookMarkGroupsWidget extends StatelessWidget {
           future: provider.initializeMyGroupData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             } else {
               return DynamicHeightGridView(
                 itemCount: myGroups.length + 1,
