@@ -58,21 +58,11 @@ class _BookMarkGroupListsWidgetState extends State<BookMarkGroupListsWidget> {
             builder: (ctx, index) {
               return GestureDetector(
                 onTap: () async {
-                  ListDetailModel listDetailData =
-                      await ApiService.getListDetail(myGroupLists[index].id);
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ListDetailPage(
-                        title: listDetailData.title,
-                        description: listDetailData.description,
-                        userName: listDetailData.userName,
-                        updateDate: listDetailData.updatedAt,
-                        keywords: [
-                          listDetailData.keyword1,
-                          listDetailData.keyword2
-                        ],
+                        listId: myGroupLists[index].id,
                       ),
                     ),
                   );

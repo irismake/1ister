@@ -50,28 +50,13 @@ class UserBookMarkList extends StatelessWidget {
                   builder: (ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        ListDetailModel listDetailData =
-                            await ApiService.getListDetail(
-                                usersBookmarkLists[index].id);
-                        final title = listDetailData.title;
-                        final description = listDetailData.description;
-                        final userName = listDetailData.userName;
-                        final updateDate = listDetailData.updatedAt;
-                        List<String> keywords = [];
-                        keywords.add(listDetailData.keyword1);
-                        keywords.add(listDetailData.keyword2);
-                        print(keywords);
-
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ListDetailPage(
-                                    title: title,
-                                    description: description,
-                                    userName: userName,
-                                    updateDate: updateDate,
-                                    keywords: keywords,
-                                  )),
+                            builder: (context) => ListDetailPage(
+                              listId: usersBookmarkLists[index].id,
+                            ),
+                          ),
                         );
                       },
                       child: Stack(

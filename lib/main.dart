@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lister/model/provider/list_detail_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'model/provider/create_list_provider.dart';
@@ -31,6 +32,9 @@ void main() {
           ),
           ChangeNotifierProvider<UserInfoProvider>(
             create: (context) => UserInfoProvider(),
+          ),
+          ChangeNotifierProvider<ListDetailProvider>(
+            create: (context) => ListDetailProvider(),
           ),
         ],
         builder: (context, child) {
