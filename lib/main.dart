@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lister/model/provider/list_detail_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'model/provider/create_lists_provider.dart';
-import 'model/provider/get_follow_provider.dart';
+import 'model/provider/create_list_provider.dart';
+import 'model/provider/follows_provider.dart';
 import 'model/provider/keywords_provider.dart';
 import 'model/provider/get_lists_provider.dart';
 import 'model/provider/my_groups_provider.dart';
+import 'model/provider/user_info_provider.dart';
 import 'page/splash/splash_page.dart';
 
 void main() {
@@ -16,8 +18,8 @@ void main() {
           ChangeNotifierProvider<MyGroupsProvider>(
             create: (context) => MyGroupsProvider(),
           ),
-          ChangeNotifierProvider<CreateListsProvider>(
-            create: (context) => CreateListsProvider(),
+          ChangeNotifierProvider<CreateListProvider>(
+            create: (context) => CreateListProvider(),
           ),
           ChangeNotifierProvider<KeywordsProvider>(
             create: (context) => KeywordsProvider(),
@@ -25,8 +27,14 @@ void main() {
           ChangeNotifierProvider<GetListsProvider>(
             create: (context) => GetListsProvider(),
           ),
-          ChangeNotifierProvider<GetFollowsProvider>(
-            create: (context) => GetFollowsProvider(),
+          ChangeNotifierProvider<FollowsProvider>(
+            create: (context) => FollowsProvider(),
+          ),
+          ChangeNotifierProvider<UserInfoProvider>(
+            create: (context) => UserInfoProvider(),
+          ),
+          ChangeNotifierProvider<ListDetailProvider>(
+            create: (context) => ListDetailProvider(),
           ),
         ],
         builder: (context, child) {

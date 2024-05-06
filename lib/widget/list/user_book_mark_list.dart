@@ -4,9 +4,10 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:lister/model/list_detail_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/listModel.dart';
+import '../../model/list_model.dart';
 import '../../model/provider/get_lists_provider.dart';
 import '../../page/list_detail_page.dart';
 import '../../services/api_service.dart';
@@ -49,34 +50,13 @@ class UserBookMarkList extends StatelessWidget {
                   builder: (ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        Map<String, dynamic> listData =
-                            await ApiService.getListDetail(
-                                usersBookmarkLists[index].id);
-                        final title =
-                            utf8.decode(listData['title'].toString().codeUnits);
-                        final description = utf8.decode(
-                            listData['description'].toString().codeUnits);
-                        final userName = utf8
-                            .decode(listData['user_name'].toString().codeUnits);
-                        final updateDate = DateFormat('yy.MM.dd')
-                            .format(DateTime.parse(listData['updated_at']));
-                        List<String> keywords = [];
-                        keywords.add(utf8.decode(
-                            listData['keyword_1'].toString().codeUnits));
-                        keywords.add(utf8.decode(
-                            listData['keyword_2'].toString().codeUnits));
-                        print(keywords);
-
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ListDetailPage(
-                                    title: title,
-                                    description: description,
-                                    userName: userName,
-                                    updateDate: updateDate,
-                                    keywords: keywords,
-                                  )),
+                            builder: (context) => ListDetailPage(
+                              listId: usersBookmarkLists[index].id,
+                            ),
+                          ),
                         );
                       },
                       child: Stack(
@@ -98,7 +78,7 @@ class UserBookMarkList extends StatelessWidget {
                                 height: 12.0.h,
                               ),
                               Text(
-                                '${utf8.decode(usersBookmarkLists[index].title.runes.toList())}',
+                                '${usersBookmarkLists[index].title}',
                                 style: TextStyle(
                                   color: Color(0xFF343A40),
                                   fontSize: 14.sp,
@@ -116,7 +96,7 @@ class UserBookMarkList extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${utf8.decode(usersBookmarkLists[index].username.runes.toList())}',
+                                    '${usersBookmarkLists[index].username}',
                                     style: TextStyle(
                                       color: Color(0xFF868E96),
                                       fontSize: 12.sp,
@@ -129,9 +109,9 @@ class UserBookMarkList extends StatelessWidget {
                                     width: 8.0.w,
                                   ),
                                   Text(
-                                    '${DateFormat('yy.MM.dd').format(DateTime.parse(usersBookmarkLists[index].updatedAt))}',
+                                    '${usersBookmarkLists[index].updatedAt}',
                                     style: TextStyle(
-                                      color: Color.fromARGB(255, 25, 35, 44),
+                                      color: Color(0XFF868E96),
                                       fontSize: 12.sp,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w500,

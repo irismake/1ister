@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lister/model/followModel.dart';
-import 'package:lister/model/myGroupModel.dart';
+import 'package:lister/model/list_detail_model.dart';
+import 'package:lister/model/user_info_model.dart';
 
-import '../model/listModel.dart';
+import '../model/follows_model.dart';
+import '../model/list_model.dart';
+import '../model/my_group_model.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
-  static const String baseUrl = 'http://172.30.34.254:5999';
+  static const String baseUrl = 'http://172.30.1.87:5999';
   static const String userPrefix = 'user';
   static const String listsPrefix = 'lists';
   static const String actionsPrefix = 'actions';
@@ -163,7 +165,7 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getUserInfo() async {
+  static Future<UserInfoModel> getUserInfo() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final userId = await storage.read(key: 'USER_ID');
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/info?user_id=$userId');
@@ -177,7 +179,8 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        return responseData;
+        UserInfoModel userInfoData = UserInfoModel.fromJson(responseData);
+        return Future.value(userInfoData);
       } else {
         throw Exception(
             'Response code error <getUserInfo> : ${response.statusCode}');
@@ -187,7 +190,7 @@ class ApiService {
     }
   }
 
-  static Future<FollowsModel> getUserFollows() async {
+  static Future<FollowModel> getUserFollows() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/follows');
 
@@ -200,7 +203,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final followsData = json.decode(response.body);
-        FollowsModel followsModel = FollowsModel.fromJson(followsData);
+        FollowModel followsModel = FollowModel.fromJson(followsData);
 
         return Future.value(followsModel);
       } else {
@@ -254,7 +257,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final mainListsData = json.decode(response.body);
 
-        ListsModel mainListsModel = ListsModel.fromJson(mainListsData);
+        ListModel mainListsModel = ListModel.fromJson(mainListsData);
 
         return Future.value(mainListsModel.lists);
       } else {
@@ -265,6 +268,33 @@ class ApiService {
       throw Exception('Request error <getMainLists> : $e');
     }
   }
+
+  // static Future<List<BookmarkData>> getBookmarkLists() async {
+  //   final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+
+  //   final Uri uri = Uri.parse('$baseUrl/$groupPrefix/mylist');
+  //   try {
+  //     final http.Response response = await http.get(
+  //       uri,
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': '$accessToken',
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final bookmarksData = json.decode(response.body);
+
+  //       BookmarkModel bookmarkModel = BookmarkModel.fromJson(bookmarksData);
+
+  //       return Future.value(bookmarkModel.groups);
+  //     } else {
+  //       throw Exception(
+  //           'Response code error <getUsersLists> : ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Request error <getUsersLists> : $e');
+  //   }
+  // }
 
   static Future<List<ListData>> getUsersLists(bool bookmark_page) async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
@@ -283,7 +313,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final mainListsData = json.decode(response.body);
 
-        ListsModel usersListsModel = ListsModel.fromJson(mainListsData);
+        ListModel usersListsModel = ListModel.fromJson(mainListsData);
 
         return Future.value(usersListsModel.lists);
       } else {
@@ -295,14 +325,16 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getListDetail(int listId) async {
+  static Future<ListDetailModel> getListDetail(int listId) async {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/$listsPrefix/$listId'),
       );
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        return responseData;
+        ListDetailModel listsDetailModel =
+            ListDetailModel.fromJson(responseData);
+        return listsDetailModel;
       } else {
         throw Exception(
             'Response code error <getListDetail> : ${response.statusCode}');
@@ -378,7 +410,7 @@ class ApiService {
     }
   }
 
-  static Future<List<MyGroupData>> getMyGroups() async {
+  static Future<MyGroupModel> getMyGroups() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final Uri uri = Uri.parse('$baseUrl/$groupPrefix/mylist?is_bucket=false');
     try {
@@ -392,8 +424,31 @@ class ApiService {
         final myGroupData = json.decode(response.body);
         print('My Group Data: $myGroupData');
 
-        MyGroupsModel myGroupsModel = MyGroupsModel.fromJson(myGroupData);
-        return Future.value(myGroupsModel.groups);
+        MyGroupModel myGroupsModel = MyGroupModel.fromJson(myGroupData);
+        return Future.value(myGroupsModel);
+      } else {
+        throw Exception(
+            'Response code error <getMyGroups> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <getMyGroups> : $e');
+    }
+  }
+
+  static Future<List<ListData>> getMyGroupLists(int groupId) async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    final Uri uri = Uri.parse('$baseUrl/$groupPrefix/$groupId');
+    try {
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': '$accessToken',
+      });
+      if (response.statusCode == 200) {
+        final jsonDataDecoded = json.decode(response.body);
+        final myGrouplistsData = jsonDataDecoded['list_page'];
+        ListModel myGroupLists = ListModel.fromJson(myGrouplistsData);
+        return Future.value(myGroupLists.lists);
       } else {
         throw Exception(
             'Response code error <getMyGroups> : ${response.statusCode}');

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../services/api_service.dart';
-import '../followModel.dart';
+import '../follows_model.dart';
 
-class GetFollowsProvider with ChangeNotifier {
+class FollowsProvider with ChangeNotifier {
   int _usersFollowerCount = 0;
   int _usersFollowingCount = 0;
   final List<FollowData> _usersFollowerLists = [];

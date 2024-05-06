@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../model/provider/create_lists_provider.dart';
+import '../model/provider/create_list_provider.dart';
 
 class EditEnterItem extends StatefulWidget {
   final int itemNum;
@@ -67,8 +67,7 @@ class _EditEnterItemState extends State<EditEnterItem> {
   }
 
   void saveItemsOrder() {
-    Provider.of<CreateListsProvider>(context, listen: false).itemsOrder =
-        _items;
+    Provider.of<CreateListProvider>(context, listen: false).itemsOrder = _items;
   }
 
   @override
@@ -187,7 +186,7 @@ class _ItemWidgetState extends State<ItemWidget> {
 
   void _onTitleFocusChanged() {
     if (!_titleFocusNode.hasFocus) {
-      Provider.of<CreateListsProvider>(context, listen: false).itemTitles = {
+      Provider.of<CreateListProvider>(context, listen: false).itemTitles = {
         itemKey: widget.titleController.text
       };
     }
@@ -195,14 +194,14 @@ class _ItemWidgetState extends State<ItemWidget> {
 
   void _onDescriptionFocusChanged() {
     if (!_descriptionFocusNode.hasFocus) {
-      Provider.of<CreateListsProvider>(context, listen: false)
-          .itemDescriptions = {itemKey: widget.descriptionController.text};
+      Provider.of<CreateListProvider>(context, listen: false).itemDescriptions =
+          {itemKey: widget.descriptionController.text};
     }
   }
 
   void _onTagFocusChanged() {
     if (!_tagFocusNode.hasFocus) {
-      Provider.of<CreateListsProvider>(context, listen: false).itemTags = {
+      Provider.of<CreateListProvider>(context, listen: false).itemTags = {
         itemKey: widget.tagController.text
       };
     }

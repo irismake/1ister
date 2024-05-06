@@ -1,29 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lister/model/provider/list_detail_provider.dart';
+import 'package:provider/provider.dart';
 
+import '../model/list_detail_model.dart';
 import '../widget/custom/custom_keyword.dart';
 import '../widget/custom_app_bar.dart';
 
-class ListDetailPage extends StatelessWidget {
-  final title;
-  final description;
-  final userName;
-  final updateDate;
-  final List<String> keywords;
+class ListDetailPage extends StatefulWidget {
+  final int listId;
+  ListDetailPage({Key? key, required this.listId}) : super(key: key);
 
-  ListDetailPage(
-      {Key? key,
-      required this.title,
-      required this.description,
-      required this.userName,
-      required this.updateDate,
-      required this.keywords})
-      : super(key: key);
+  @override
+  State<ListDetailPage> createState() => _ListDetailPageState();
+}
+
+class _ListDetailPageState extends State<ListDetailPage> {
+  String title = '';
+  String description = '';
+  String userName = '';
+  String updateDate = '';
+  List<String> keywords = [];
+
+  @override
+  void initState() {
+    super.initState();
+    initializeData();
+
+    print('${widget.listId}');
+  }
+
+  Future<void> initializeData() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final listDetailProvider =
+          Provider.of<ListDetailProvider>(context, listen: false);
+      listDetailProvider.listId = widget.listId;
+      listDetailProvider.initializeListDetialData().then((_) {
+        setState(() {
+          ListDetailModel listDetailData = listDetailProvider.listDetail;
+          title = listDetailData.title;
+          description = listDetailData.description;
+          userName = listDetailData.userName;
+          updateDate = listDetailData.updatedAt;
+          keywords.add(listDetailData.keyword1);
+          keywords.add(listDetailData.keyword2);
+        });
+      });
+    });
+  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   final listDetailProvider =
+  //       Provider.of<ListDetailProvider>(context, listen: false);
+  //   listDetailProvider.listId = widget.listId;
+  //   print(listDetailProvider.listId);
+  //   listDetailProvider.initializeListDetialData();
+  //   ListDetailModel listDetailData = listDetailProvider.listDetail;
+  //   title = listDetailData.title;
+  //   description = listDetailData.description;
+  //   userName = listDetailData.userName;
+  //   keywords.add(listDetailData.keyword1);
+  //   keywords.add(listDetailData.keyword2);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Consumer<ListDetailProvider>(builder: (context, provider, child) {
+      return Scaffold(
         appBar: CustomAppbar(
             popState: true,
             titleText: '',
@@ -140,6 +185,8 @@ class ListDetailPage extends StatelessWidget {
               ),
             )
           ],
-        ));
+        ),
+      );
+    });
   }
 }

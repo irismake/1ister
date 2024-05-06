@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/provider/create_lists_provider.dart';
+import '../../model/provider/create_list_provider.dart';
 import '../../model/provider/keywords_provider.dart';
 import '../../model/provider/my_groups_provider.dart';
 import '../../services/api_service.dart';
@@ -35,10 +35,10 @@ class _EditPageState extends State<EditPage> {
           titleState: true,
           actionButtonOnTap: () async {
             String title =
-                Provider.of<CreateListsProvider>(context, listen: false)
+                Provider.of<CreateListProvider>(context, listen: false)
                     .submittedTitle;
             String description =
-                Provider.of<CreateListsProvider>(context, listen: false)
+                Provider.of<CreateListProvider>(context, listen: false)
                     .submittedDescription;
             String keyword_1 =
                 Provider.of<KeywordsProvider>(context, listen: false)
@@ -47,22 +47,22 @@ class _EditPageState extends State<EditPage> {
                 Provider.of<KeywordsProvider>(context, listen: false)
                     .getKeyword_2();
             bool isPrivate =
-                Provider.of<CreateListsProvider>(context, listen: false)
+                Provider.of<CreateListProvider>(context, listen: false)
                     .submittedIsPrivate;
             bool isRankingList =
-                Provider.of<CreateListsProvider>(context, listen: false)
+                Provider.of<CreateListProvider>(context, listen: false)
                     .submittedIsRankingList;
             String? imageFilePath =
-                Provider.of<CreateListsProvider>(context, listen: false)
+                Provider.of<CreateListProvider>(context, listen: false)
                     .submittedImageFilePath;
             int groupId = Provider.of<MyGroupsProvider>(context, listen: false)
                     .getSelectedGroupId() ??
                 0;
             List<int> order =
-                Provider.of<CreateListsProvider>(context, listen: false)
+                Provider.of<CreateListProvider>(context, listen: false)
                     .itemsOrder;
             List<Map<String, dynamic>> items =
-                Provider.of<CreateListsProvider>(context, listen: false)
+                Provider.of<CreateListProvider>(context, listen: false)
                     .submittedItems(order);
             print('아이템$items');
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CreateListsProvider with ChangeNotifier {
+class CreateListProvider with ChangeNotifier {
   String _title = '';
   String _description = '';
   String _imageFilePath = '';
@@ -20,43 +20,39 @@ class CreateListsProvider with ChangeNotifier {
   int get submittedGroupId => _groupId;
   List<int> get itemsOrder => _itmesOrder;
 
-  //Map<String, String> get itemTitles => _itemTitles;
-  //List<Map<dynamic, String>> get itemDescriptions => _itemDescriptions;
-  //List<Map<dynamic, String>> get itemTags => _itemTags;
-
   set submittedTitle(String value) {
     _title = value;
-    print("CreateListsProvider title: $value");
+    print("CreateListProvider title: $value");
     notifyListeners();
   }
 
   set submittedDescription(String value) {
     _description = value;
-    print("CreateListsProvider description : $value");
+    print("CreateListProvider description : $value");
     notifyListeners();
   }
 
   set submittedImageFilePath(String value) {
     _imageFilePath = value;
-    print("CreateListsProvider filePath: $value");
+    print("CreateListProvider filePath: $value");
     notifyListeners();
   }
 
   set submittedIsPrivate(bool value) {
     _isPrivate = value;
-    print("CreateListsProvider is private : $value");
+    print("CreateListProvider is private : $value");
     notifyListeners();
   }
 
   set submittedIsRankingList(bool value) {
     _isRankingList = value;
-    print("CreateListsProvider is ranking : $value");
+    print("CreateListProvider is ranking : $value");
     notifyListeners();
   }
 
   set submittedGroupId(int value) {
     _groupId = value;
-    print("CreateListsProvider group ID : $value");
+    print("CreateListProvider group ID : $value");
     notifyListeners();
   }
 
@@ -78,7 +74,7 @@ class CreateListsProvider with ChangeNotifier {
       _itemTitles.add(itemTitle);
     }
 
-    print("CreateListsProvider itemTitle: $_itemTitles");
+    print("CreateListProvider itemTitle: $_itemTitles");
     notifyListeners();
   }
 
@@ -100,7 +96,7 @@ class CreateListsProvider with ChangeNotifier {
       _itemDescriptions.add(itemDescription);
     }
 
-    print("CreateListsProvider itemDescription: $_itemDescriptions");
+    print("CreateListProvider itemDescription: $_itemDescriptions");
     notifyListeners();
   }
 
@@ -122,13 +118,13 @@ class CreateListsProvider with ChangeNotifier {
       _itemTags.add(itemTag);
     }
 
-    print("CreateListsProvider itemTag: $_itemTags");
+    print("CreateListProvider itemTag: $_itemTags");
     notifyListeners();
   }
 
   set itemsOrder(List<int> itemOrder) {
     _itmesOrder = itemOrder;
-    print("CreateListsProvider itemOrder: $itemOrder");
+    print("CreateListProvider itemOrder: $itemOrder");
     //notifyListeners();
   }
 

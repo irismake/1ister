@@ -1,17 +1,19 @@
-class FollowsModel {
+import 'dart:convert';
+
+class FollowModel {
   final int followingCount;
   final int followerCount;
   final List<FollowData> followers;
   final List<FollowData> followings;
 
-  FollowsModel({
+  FollowModel({
     required this.followingCount,
     required this.followerCount,
     required this.followers,
     required this.followings,
   });
 
-  FollowsModel.fromJson(Map<String, dynamic> json)
+  FollowModel.fromJson(Map<String, dynamic> json)
       : followingCount = json['following_count'],
         followerCount = json['follower_count'],
         followers = (json['followers'] as List<dynamic>)
@@ -36,8 +38,8 @@ class FollowData {
   });
 
   FollowData.fromJson(Map<String, dynamic> json)
-      : username = json['username'] as String,
-        name = json['name'] as String,
-        picture = json['picture'] as String,
-        bio = json['bio'] as String;
+      : username = utf8.decode(json['username'].toString().codeUnits),
+        name = utf8.decode(json['name'].toString().codeUnits),
+        picture = utf8.decode(json['picture'].toString().codeUnits),
+        bio = utf8.decode(json['bio'].toString().codeUnits);
 }

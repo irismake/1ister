@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/provider/get_follow_provider.dart';
+import '../../model/provider/follows_provider.dart';
 import '../../widget/custom_app_bar.dart';
 import '../../widget/navigator/page_view_navigator.dart';
 
@@ -27,7 +27,7 @@ class UserFollowsPage extends StatelessWidget {
           actionButton: 'button_hamburger'),
       body: Padding(
         padding: EdgeInsets.only(top: 24.0.h),
-        child: Consumer<GetFollowsProvider>(
+        child: Consumer<FollowsProvider>(
           builder: (context, getFollowsProvider, child) {
             final provider = getFollowsProvider;
             return PageViewNavigator(

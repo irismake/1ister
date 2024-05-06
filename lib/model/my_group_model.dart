@@ -1,12 +1,14 @@
 import 'dart:convert';
 
-class MyGroupsModel {
+import 'package:intl/intl.dart';
+
+class MyGroupModel {
   final int totalListCount;
   final List<MyGroupData> groups;
 
-  MyGroupsModel({required this.totalListCount, required this.groups});
+  MyGroupModel({required this.totalListCount, required this.groups});
 
-  MyGroupsModel.fromJson(Map<String, dynamic> json)
+  MyGroupModel.fromJson(Map<String, dynamic> json)
       : totalListCount = json['total_list_count'],
         groups = (json['groups'] as List<dynamic>)
             .map((item) => MyGroupData.fromJson(item))
@@ -30,5 +32,6 @@ class MyGroupData {
       : id = json['id'],
         name = utf8.decode(json['name'].toString().codeUnits),
         listCount = json['list_count'],
-        updatedAt = json['updated_at'] as String;
+        updatedAt = DateFormat('yy.MM.dd')
+            .format(DateTime.parse(json['updated_at'] as String));
 }

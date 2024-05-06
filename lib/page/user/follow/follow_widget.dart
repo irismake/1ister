@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../model/followModel.dart';
+import '../../../model/follows_model.dart';
 import '../../../widget/custom/custom_follow_button.dart';
 
 class FollowWidget extends StatelessWidget {
@@ -47,7 +47,7 @@ class FollowWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${utf8.decode(usersFollowLists[index].name.runes.toList())}',
+                            '${usersFollowLists[index].name}',
                             style: TextStyle(
                               color: Color(0xFF343A40),
                               fontSize: 14,
@@ -59,7 +59,7 @@ class FollowWidget extends StatelessWidget {
                             maxLines: 2,
                           ),
                           Text(
-                            '${utf8.decode(usersFollowLists[index].bio.runes.toList())}',
+                            '${usersFollowLists[index].bio}',
                             style: TextStyle(
                               color: Color(0xFF868E96),
                               fontSize: 12,

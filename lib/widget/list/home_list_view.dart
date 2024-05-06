@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lister/model/list_detail_model.dart';
 import "package:provider/provider.dart";
 import 'package:intl/intl.dart';
 
-import '../../model/listModel.dart';
+import '../../model/list_model.dart';
 import '../../model/provider/get_lists_provider.dart';
 import '../../page/list_detail_page.dart';
 import '../../services/api_service.dart';
@@ -22,32 +23,13 @@ class HomeListView extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () async {
-              Map<String, dynamic> listData =
-                  await ApiService.getListDetail(mainLists[index].id);
-              final title = utf8.decode(listData['title'].toString().codeUnits);
-              final description =
-                  utf8.decode(listData['description'].toString().codeUnits);
-              final userName =
-                  utf8.decode(listData['user_name'].toString().codeUnits);
-              final updateDate = DateFormat('yy.MM.dd')
-                  .format(DateTime.parse(listData['updated_at']));
-              List<String> keywords = [];
-              keywords
-                  .add(utf8.decode(listData['keyword_1'].toString().codeUnits));
-              keywords
-                  .add(utf8.decode(listData['keyword_2'].toString().codeUnits));
-              print(keywords);
-
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ListDetailPage(
-                          title: title,
-                          description: description,
-                          userName: userName,
-                          updateDate: updateDate,
-                          keywords: keywords,
-                        )),
+                  builder: (context) => ListDetailPage(
+                    listId: mainLists[index].id,
+                  ),
+                ),
               );
             },
             child: Padding(
@@ -70,7 +52,7 @@ class HomeListView extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${utf8.decode(mainLists[index].title.runes.toList())}',
+                          '${mainLists[index].title}',
                           style: TextStyle(
                             color: Color(0xFF343A40),
                             fontSize: 16.sp,
@@ -82,7 +64,7 @@ class HomeListView extends StatelessWidget {
                           maxLines: 2,
                         ),
                         Text(
-                          '${DateFormat('yy.MM.dd').format(DateTime.parse(mainLists[index].updatedAt))}',
+                          '${mainLists[index].updatedAt}',
                           style: TextStyle(
                             color: Color(0xFF868E96),
                             fontSize: 12.sp,
