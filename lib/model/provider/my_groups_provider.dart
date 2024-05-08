@@ -22,7 +22,7 @@ class MyGroupsProvider with ChangeNotifier {
 
   Future<void> initializeMyGroupData() async {
     if (!_isInitialized) {
-      await _fetchMyGroups();
+      await fetchMyGroups();
       _isInitialized = true;
     }
   }
@@ -48,7 +48,7 @@ class MyGroupsProvider with ChangeNotifier {
     return _selectedGroupId;
   }
 
-  Future<void> _fetchMyGroups() async {
+  Future<void> fetchMyGroups() async {
     final results = await ApiService.getMyGroups();
     List<MyGroupData> myGroups = results.groups;
     totalListCount = results.totalListCount;
