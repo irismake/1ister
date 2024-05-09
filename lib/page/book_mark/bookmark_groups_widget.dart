@@ -17,6 +17,7 @@ class BookMarkGroupsWidget extends StatelessWidget {
     return Consumer<MyGroupsProvider>(
       builder: (context, provider, child) {
         final List<MyGroupData> myGroups = provider.myGroups;
+        final List<MyGroupData> isBucketGroup = provider.isBucketGroup;
 
         return FutureBuilder(
           future: provider.initializeMyGroupData(),
@@ -38,10 +39,13 @@ class BookMarkGroupsWidget extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookmarkListPage(
-                              groupTitle: index == 0
-                                  ? '모든 리스트 (${provider.totalListCount})'
-                                  : '${myGroups[index - 1].name} (${myGroups[index - 1].listCount})',
-                              groupId: myGroups[index - 1].id),
+                            groupTitle: index == 0
+                                ? '모든 리스트 (${isBucketGroup[0].listCount})'
+                                : '${myGroups[index - 1].name} (${myGroups[index - 1].listCount})',
+                            groupId: index == 0
+                                ? isBucketGroup[0].id
+                                : myGroups[index - 1].id,
+                          ),
                         ),
                       );
                     },
@@ -63,7 +67,7 @@ class BookMarkGroupsWidget extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: index == 0
                               ? Text(
-                                  '모든 리스트 (${provider.totalListCount})',
+                                  '모든 리스트 (${isBucketGroup[0].listCount})',
                                   style: TextStyle(
                                     color: Color(0xFF343A40),
                                     fontSize: 14.sp,

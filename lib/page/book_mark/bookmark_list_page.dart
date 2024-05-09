@@ -11,6 +11,7 @@ import 'bookmark_groups_widget.dart';
 class BookmarkListPage extends StatelessWidget {
   final String groupTitle;
   final int groupId;
+
   const BookmarkListPage({
     super.key,
     required this.groupTitle,

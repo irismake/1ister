@@ -410,9 +410,10 @@ class ApiService {
     }
   }
 
-  static Future<MyGroupModel> getMyGroups() async {
+  static Future<MyGroupModel> getMyGroups(bool isBucket) async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
-    final Uri uri = Uri.parse('$baseUrl/$groupPrefix/mylist?is_bucket=false');
+    final Uri uri =
+        Uri.parse('$baseUrl/$groupPrefix/mylist?is_bucket=$isBucket');
     try {
       final response = await http.get(uri, headers: {
         'Content-Type': 'application/json',
