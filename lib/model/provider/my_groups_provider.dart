@@ -6,8 +6,9 @@ import '../my_group_model.dart';
 
 class MyGroupsProvider with ChangeNotifier {
   final List<MyGroupData> _myGroups = [];
+  final List<MyGroupData> _isBucketGroup = [];
   final List<ListData> _myGroupLists = [];
-  int? totalListCount;
+
   bool _isInitialized = false;
   int? _selectedIndex;
   int? _selectedGroupId;
@@ -17,18 +18,20 @@ class MyGroupsProvider with ChangeNotifier {
   int? get bookmarkGroupId => _bookmarkGroupId;
 
   List<MyGroupData> get myGroups => _myGroups;
+  List<MyGroupData> get isBucketGroup => _isBucketGroup;
 
   List<ListData> get myGroupLists => _myGroupLists;
 
   Future<void> initializeMyGroupData() async {
     if (!_isInitialized) {
-      await _fetchMyGroups();
+      await fetchMyGroups();
+      await fetchIsBucketGroup();
       _isInitialized = true;
     }
   }
 
   Future<void> initializeMyGroupListsData() async {
-    await _fetchMyGroupLists();
+    await _fetchMyGroupBookmarkLists();
     print('d');
   }
 
@@ -48,10 +51,9 @@ class MyGroupsProvider with ChangeNotifier {
     return _selectedGroupId;
   }
 
-  Future<void> _fetchMyGroups() async {
-    final results = await ApiService.getMyGroups();
+  Future<void> fetchMyGroups() async {
+    final results = await ApiService.getMyGroups(false);
     List<MyGroupData> myGroups = results.groups;
-    totalListCount = results.totalListCount;
     _myGroups.clear();
     for (var result in myGroups) {
       _myGroups.add(result);
@@ -59,11 +61,23 @@ class MyGroupsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _fetchMyGroupLists() async {
+  Future<void> fetchIsBucketGroup() async {
+    final results = await ApiService.getMyGroups(true);
+    List<MyGroupData> isBucketGroup = results.groups;
+    _isBucketGroup.clear();
+    for (var result in isBucketGroup) {
+      _isBucketGroup.add(result);
+    }
+    notifyListeners();
+  }
+
+  Future<void> _fetchMyGroupBookmarkLists() async {
     final results = await ApiService.getMyGroupLists(_bookmarkGroupId ?? 0);
     _myGroupLists.clear();
     for (var result in results) {
-      _myGroupLists.add(result);
+      if (result.isBookmarked) {
+        _myGroupLists.add(result);
+      }
     }
     notifyListeners();
   }

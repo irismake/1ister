@@ -13,8 +13,10 @@ import 'bookmark_list_page.dart';
 
 class BookMarkGroupListsWidget extends StatefulWidget {
   final int groupId;
-  const BookMarkGroupListsWidget({Key? key, required this.groupId})
-      : super(key: key);
+  const BookMarkGroupListsWidget({
+    Key? key,
+    required this.groupId,
+  }) : super(key: key);
 
   @override
   State<BookMarkGroupListsWidget> createState() =>

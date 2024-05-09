@@ -410,9 +410,10 @@ class ApiService {
     }
   }
 
-  static Future<MyGroupModel> getMyGroups() async {
+  static Future<MyGroupModel> getMyGroups(bool isBucket) async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
-    final Uri uri = Uri.parse('$baseUrl/$groupPrefix/mylist?is_bucket=false');
+    final Uri uri =
+        Uri.parse('$baseUrl/$groupPrefix/mylist?is_bucket=$isBucket');
     try {
       final response = await http.get(uri, headers: {
         'Content-Type': 'application/json',
@@ -426,6 +427,39 @@ class ApiService {
 
         MyGroupModel myGroupsModel = MyGroupModel.fromJson(myGroupData);
         return Future.value(myGroupsModel);
+      } else {
+        throw Exception(
+            'Response code error <getMyGroups> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <getMyGroups> : $e');
+    }
+  }
+
+  static Future<bool> createMyGroups(String groupName) async {
+    final userId = await storage.read(key: 'USER_ID');
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    try {
+      final Uri uri = Uri.parse('$baseUrl/$groupPrefix');
+      final Map<String, dynamic> requestBody = {
+        "name": groupName,
+        "description": "",
+        "user_id": userId,
+        "is_bucket": false
+      };
+      final response = await http.post(
+        uri,
+        body: json.encode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': '$accessToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        final myGroupData = json.decode(response.body);
+        print('My Group Data: $myGroupData');
+        return true;
       } else {
         throw Exception(
             'Response code error <getMyGroups> : ${response.statusCode}');
