@@ -65,27 +65,18 @@ class BookMarkGroupsWidget extends StatelessWidget {
                         ),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: index == 0
-                              ? Text(
-                                  '모든 리스트 (${isBucketGroup[0].listCount})',
-                                  style: TextStyle(
-                                    color: Color(0xFF343A40),
-                                    fontSize: 14.sp,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.4.h,
-                                  ),
-                                )
-                              : Text(
-                                  '${myGroups[index - 1].name} (${myGroups[index - 1].listCount})',
-                                  style: TextStyle(
-                                    color: Color(0XFF343A40),
-                                    fontSize: 14.sp,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.4.h,
-                                  ),
-                                ),
+                          child: Text(
+                            index == 0
+                                ? '모든 리스트 (${isBucketGroup[0].listCount})'
+                                : '${myGroups[index - 1].name} (${myGroups[index - 1].listCount})',
+                            style: TextStyle(
+                              color: Color(0xFF343A40),
+                              fontSize: 14.sp,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w600,
+                              height: 1.4.h,
+                            ),
+                          ),
                         ),
                       ],
                     ),

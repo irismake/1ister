@@ -10,6 +10,7 @@ class MyGroupsProvider with ChangeNotifier {
   final List<ListData> _myGroupLists = [];
 
   bool _isInitialized = false;
+  bool _isInitialized2 = false;
   int? _selectedIndex;
   int? _selectedGroupId;
   int? _bookmarkGroupId;
@@ -27,12 +28,16 @@ class MyGroupsProvider with ChangeNotifier {
       await fetchMyGroups();
       await fetchIsBucketGroup();
       _isInitialized = true;
+      print('내 그룹 초기화');
     }
   }
 
   Future<void> initializeMyGroupListsData() async {
-    await _fetchMyGroupBookmarkLists();
-    print('d');
+    if (!_isInitialized2) {
+      await fetchMyGroupBookmarkLists();
+      print('dddd');
+      _isInitialized2 = true;
+    }
   }
 
   set selectedIndex(int? index) {
@@ -71,7 +76,8 @@ class MyGroupsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _fetchMyGroupBookmarkLists() async {
+  Future<void> fetchMyGroupBookmarkLists() async {
+    print('그룹 아이디 잘 가져왔나$_bookmarkGroupId');
     final results = await ApiService.getMyGroupLists(_bookmarkGroupId ?? 0);
     _myGroupLists.clear();
     for (var result in results) {

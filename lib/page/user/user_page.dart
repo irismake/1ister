@@ -262,17 +262,12 @@ class _UserPageState extends State<UserPage> {
             ),
           ),
           Expanded(
-            child: Consumer<GetListsProvider>(
-              builder: (context, getListsProvider, child) {
-                final provider = getListsProvider;
-                return PageViewNavigator(
-                  followState: false,
-                  provider: provider,
-                  tabName_0: '나의 리스트',
-                  tabName_1: '북마크 리스트',
-                  initialPage: 0,
-                );
-              },
+            child: PageViewNavigator(
+              followState: false,
+              provider: Provider.of<GetListsProvider>(context, listen: true),
+              tabName_0: '나의 리스트',
+              tabName_1: '북마크 리스트',
+              initialPage: 0,
             ),
           ),
         ],

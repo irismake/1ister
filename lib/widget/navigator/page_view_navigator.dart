@@ -32,17 +32,15 @@ class _PageViewNavigatorState extends State<PageViewNavigator> {
   @override
   void initState() {
     super.initState();
-    widget.provider.initializeData();
-    canPop();
+    initializeData();
     _pageController =
         PageController(initialPage: widget.initialPage, viewportFraction: 1);
   }
 
-  void canPop() {
+  Future<void> initializeData() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.followState) {
-        widget.provider.pageState = widget.initialPage == 0 ? false : true;
-      }
+      widget.provider.initializeData();
+      widget.provider.pageState = widget.initialPage == 0 ? false : true;
     });
   }
 

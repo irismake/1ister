@@ -10,8 +10,8 @@ class GetListsProvider with ChangeNotifier {
   final List<ListData> _usersMyLists = [];
   final List<ListData> _usersBookmarkLists = [];
   bool _isInitialized = false;
+  bool __isInitialized2 = false;
   bool _pageState = false;
-  bool _changeBookmarked = false;
 
   bool get pageState => _pageState;
 
@@ -25,6 +25,14 @@ class GetListsProvider with ChangeNotifier {
     if (!_isInitialized) {
       await _fetchMainLists();
       _isInitialized = true;
+    }
+  }
+
+  Future<void> initializeData() async {
+    if (!__isInitialized2) {
+      await _fetchUsersMyLists();
+      await _fetchUsersBookmarkLists();
+      __isInitialized2 = true;
     }
   }
 
@@ -44,7 +52,6 @@ class GetListsProvider with ChangeNotifier {
     for (var result in results) {
       _usersMyLists.add(result);
     }
-    notifyListeners();
   }
 
   Future<void> _fetchUsersBookmarkLists() async {
@@ -56,46 +63,18 @@ class GetListsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> initializeData() async {
-    if (!_isInitialized) {
-      await _fetchUsersMyLists();
-      await _fetchUsersBookmarkLists();
-      _isInitialized = true;
-    }
-  }
-
   set pageState(bool value) {
     _pageState = value;
-
-    if (_changeBookmarked) {
-      if (_pageState) {
-        _fetchUsersBookmarkLists();
-      }
-    }
-    _changeBookmarked = false;
     notifyListeners();
   }
 
   onTapBookMark(int listId, bool isBookMarked) async {
-    // 서버에 좋아요/싫어요 요청을 보냅니다.
     if (isBookMarked) {
       await ApiService.actionUnLike(listId);
     } else {
       await ApiService.actionLike(listId);
     }
-
-    // 리스트들의 isBookmarked 값을 업데이트합니다.
     updateIsBookmarked(listId, !isBookMarked);
-
-    // 사용자의 북마크 리스트를 다시 가져옵니다.
-    if (_pageState) {
-      _fetchUsersBookmarkLists();
-    }
-
-    // 이하 주석 처리한 코드들은 필요에 따라 주석을 해제하여 사용합니다.
-    // _fetchMainLists();
-    // _fetchUsersMyLists();
-    notifyListeners();
   }
 
   void updateIsBookmarked(int listId, bool isBookMarked) {
@@ -112,6 +91,7 @@ class GetListsProvider with ChangeNotifier {
     if (usersBookmarkListIndex != -1) {
       _usersBookmarkLists[usersBookmarkListIndex].isBookmarked = isBookMarked;
     }
+    _fetchUsersBookmarkLists();
   }
 
   int findListIndex(List<ListData> list, int listId) {
