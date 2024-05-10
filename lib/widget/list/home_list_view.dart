@@ -16,7 +16,8 @@ class HomeListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<GetListsProvider>(builder: (context, provider, child) {
-      final List<ListData> mainLists = provider.mainLists();
+      provider.initializeMainLists();
+      final List<ListData> mainLists = provider.mainLists;
       return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: mainLists.length,
@@ -28,6 +29,7 @@ class HomeListView extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => ListDetailPage(
                     listId: mainLists[index].id,
+                    isBookmarked: mainLists[index].isBookmarked,
                   ),
                 ),
               );
@@ -76,10 +78,8 @@ class HomeListView extends StatelessWidget {
                       ],
                     ),
                     CustomBookMarkButton(
-                      index: index,
                       listId: mainLists[index].id,
                       isBookMarked: mainLists[index].isBookmarked,
-                      tag: 'mainList',
                     ),
                   ],
                 ),

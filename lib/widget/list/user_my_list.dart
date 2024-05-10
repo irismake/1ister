@@ -94,6 +94,7 @@ class UserMyList extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => ListDetailPage(
                               listId: usersMyLists[index].id,
+                              isBookmarked: usersMyLists[index].isBookmarked,
                             ),
                           ),
                         );
@@ -144,10 +145,8 @@ class UserMyList extends StatelessWidget {
                             ],
                           ),
                           CustomBookMarkButton(
-                            index: index,
                             listId: usersMyLists[index].id,
                             isBookMarked: usersMyLists[index].isBookmarked,
-                            tag: 'myList',
                           ),
                         ],
                       ),

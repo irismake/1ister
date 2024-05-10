@@ -6,16 +6,12 @@ import 'package:provider/provider.dart';
 import '../../model/provider/get_lists_provider.dart';
 
 class CustomBookMarkButton extends StatelessWidget {
-  final int index;
   final int listId;
   final bool isBookMarked;
-  final String tag;
 
   const CustomBookMarkButton({
-    required this.index,
     required this.listId,
     required this.isBookMarked,
-    required this.tag,
     Key? key,
   }) : super(key: key);
 
@@ -31,7 +27,8 @@ class CustomBookMarkButton extends StatelessWidget {
             width: 32.0.w,
             child: InkWell(
               onTap: () async {
-                await provider.onTapBookMark(index, listId, isBookMarked, tag);
+                print('g');
+                await provider.onTapBookMark(listId, isBookMarked);
               },
               child: isBookMarked
                   ? SvgPicture.asset(

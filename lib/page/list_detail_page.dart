@@ -5,12 +5,18 @@ import 'package:lister/model/provider/list_detail_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../model/list_detail_model.dart';
+import '../widget/custom/custom_book_mark_button.dart';
 import '../widget/custom/custom_keyword.dart';
 import '../widget/custom_app_bar.dart';
 
 class ListDetailPage extends StatefulWidget {
   final int listId;
-  ListDetailPage({Key? key, required this.listId}) : super(key: key);
+  final bool isBookmarked;
+  ListDetailPage({
+    Key? key,
+    required this.listId,
+    required this.isBookmarked,
+  }) : super(key: key);
 
   @override
   State<ListDetailPage> createState() => _ListDetailPageState();
@@ -103,15 +109,9 @@ class _ListDetailPageState extends State<ListDetailPage> {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 10,
                       ),
-                      SizedBox(
-                        height: 32.0.h,
-                        width: 32.0.w,
-                        child: InkWell(
-                          onTap: () {},
-                          child: SvgPicture.asset(
-                            'assets/icons/button_book_mark.svg',
-                          ),
-                        ),
+                      CustomBookMarkButton(
+                        listId: widget.listId,
+                        isBookMarked: widget.isBookmarked,
                       ),
                     ],
                   ),

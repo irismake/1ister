@@ -15,16 +15,13 @@ class GetListsProvider with ChangeNotifier {
 
   bool get pageState => _pageState;
 
+  List<ListData> get mainLists => _mainLists;
+
   List<ListData> get usersMyLists => _usersMyLists;
 
   List<ListData> get usersBookmarkLists => _usersBookmarkLists;
 
-  List<ListData> mainLists() {
-    _initializeMainLists();
-    return _mainLists;
-  }
-
-  void _initializeMainLists() async {
+  Future<void> initializeMainLists() async {
     if (!_isInitialized) {
       await _fetchMainLists();
       _isInitialized = true;
@@ -79,35 +76,45 @@ class GetListsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  onTapBookMark(int index, int listId, bool isBookMarked, String tag) async {
+  onTapBookMark(int listId, bool isBookMarked) async {
+    // 서버에 좋아요/싫어요 요청을 보냅니다.
     if (isBookMarked) {
       await ApiService.actionUnLike(listId);
-      if (tag == 'mainList') {
-        _mainLists[index].isBookmarked = false;
-      }
-      if (tag == 'myList') {
-        _usersMyLists[index].isBookmarked = false;
-      }
-      if (tag == 'bookmarkList') {
-        _usersBookmarkLists[index].isBookmarked = false;
-      }
     } else {
       await ApiService.actionLike(listId);
-      if (tag == 'mainList') {
-        _mainLists[index].isBookmarked = true;
-      }
-      if (tag == 'myList') {
-        _usersMyLists[index].isBookmarked = true;
-      }
-      if (tag == 'bookmarkList') {
-        _usersBookmarkLists[index].isBookmarked = true;
-      }
     }
-    _changeBookmarked = true;
 
+    // 리스트들의 isBookmarked 값을 업데이트합니다.
+    updateIsBookmarked(listId, !isBookMarked);
+
+    // 사용자의 북마크 리스트를 다시 가져옵니다.
     if (_pageState) {
       _fetchUsersBookmarkLists();
     }
+
+    // 이하 주석 처리한 코드들은 필요에 따라 주석을 해제하여 사용합니다.
+    // _fetchMainLists();
+    // _fetchUsersMyLists();
     notifyListeners();
+  }
+
+  void updateIsBookmarked(int listId, bool isBookMarked) {
+    int mainListIndex = findListIndex(_mainLists, listId);
+    int usersMyListIndex = findListIndex(_usersMyLists, listId);
+    int usersBookmarkListIndex = findListIndex(_usersBookmarkLists, listId);
+
+    if (mainListIndex != -1) {
+      _mainLists[mainListIndex].isBookmarked = isBookMarked;
+    }
+    if (usersMyListIndex != -1) {
+      _usersMyLists[usersMyListIndex].isBookmarked = isBookMarked;
+    }
+    if (usersBookmarkListIndex != -1) {
+      _usersBookmarkLists[usersBookmarkListIndex].isBookmarked = isBookMarked;
+    }
+  }
+
+  int findListIndex(List<ListData> list, int listId) {
+    return list.indexWhere((element) => element.id == listId);
   }
 }
