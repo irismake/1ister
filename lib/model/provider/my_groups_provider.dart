@@ -20,7 +20,6 @@ class MyGroupsProvider with ChangeNotifier {
 
   List<MyGroupData> get myGroups => _myGroups;
   List<MyGroupData> get isBucketGroup => _isBucketGroup;
-
   List<ListData> get myGroupLists => _myGroupLists;
 
   Future<void> initializeMyGroupData() async {
@@ -63,7 +62,6 @@ class MyGroupsProvider with ChangeNotifier {
     for (var result in myGroups) {
       _myGroups.add(result);
     }
-    notifyListeners();
   }
 
   Future<void> fetchIsBucketGroup() async {

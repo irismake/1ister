@@ -17,7 +17,7 @@ class BookMarkGroupListsWidget extends StatelessWidget {
       builder: (context, provider, child) {
         final List<ListData> myGroupLists = provider.myGroupLists;
         return FutureBuilder(
-          future: provider.initializeMyGroupListsData(),
+          future: Future.delayed(const Duration(milliseconds: 500)),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(

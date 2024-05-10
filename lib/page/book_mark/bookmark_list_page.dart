@@ -29,9 +29,12 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
   }
 
   Future<void> fetchGroupId() async {
-    final provider = Provider.of<MyGroupsProvider>(context, listen: false);
-    provider.bookmarkGroupId = widget.groupId;
-    print('${provider.bookmarkGroupId}');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<MyGroupsProvider>(context, listen: false);
+      provider.bookmarkGroupId = widget.groupId;
+      print('${provider.bookmarkGroupId}');
+      provider.initializeMyGroupListsData();
+    });
   }
 
   @override
