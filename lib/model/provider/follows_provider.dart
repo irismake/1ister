@@ -10,7 +10,6 @@ class FollowsProvider with ChangeNotifier {
   final List<FollowData> _usersFollowingLists = [];
 
   bool _pageState = false;
-  bool _isInitialized = false;
 
   bool get pageState => _pageState;
 
@@ -21,10 +20,7 @@ class FollowsProvider with ChangeNotifier {
   List<FollowData> get usersFollowingLists => _usersFollowingLists;
 
   Future<void> initializeData() async {
-    if (!_isInitialized) {
-      await _fetchFollowsData();
-      _isInitialized = true;
-    }
+    await _fetchFollowsData();
   }
 
   Future<void> _fetchFollowsData() async {

@@ -136,7 +136,8 @@ class _UserPageState extends State<UserPage> {
                                       height: 20.0.h,
                                       child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context).push(
+                                          Navigator.of(context)
+                                              .push(
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   UserFollowsPage(
@@ -144,7 +145,10 @@ class _UserPageState extends State<UserPage> {
                                                 initialPage: 0,
                                               ),
                                             ),
-                                          );
+                                          )
+                                              .then((value) {
+                                            initializeFollows();
+                                          });
                                         },
                                         child: Text(
                                           textAlign: TextAlign.center,
@@ -184,7 +188,8 @@ class _UserPageState extends State<UserPage> {
                                       height: 20.0.h,
                                       child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context).push(
+                                          Navigator.of(context)
+                                              .push(
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   UserFollowsPage(
@@ -192,7 +197,10 @@ class _UserPageState extends State<UserPage> {
                                                 initialPage: 1,
                                               ),
                                             ),
-                                          );
+                                          )
+                                              .then((value) {
+                                            initializeFollows();
+                                          });
                                         },
                                         child: Text(
                                           '$followingCount',
