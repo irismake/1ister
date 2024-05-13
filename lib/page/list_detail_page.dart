@@ -42,7 +42,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
       final listDetailProvider =
           Provider.of<ListDetailProvider>(context, listen: false);
       listDetailProvider.listId = widget.listId;
-      listDetailProvider.initializeListDetialData().then((_) {
+      listDetailProvider.initializeListDetailData().then((_) {
         setState(() {
           ListDetailModel listDetailData = listDetailProvider.listDetail;
           title = listDetailData.title;

@@ -19,7 +19,8 @@ class BookMarkPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final FocusNode _createGroupFocus = FocusNode();
     final userInfoProvider = Provider.of<UserInfoProvider>(context);
-    userInfoProvider.initializeData();
+
+    //userInfoProvider.fetchUserInfo();
 
     String username =
         Provider.of<UserInfoProvider>(context, listen: false).userInfo.name;

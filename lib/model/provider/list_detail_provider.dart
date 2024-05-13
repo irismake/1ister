@@ -29,7 +29,7 @@ class ListDetailProvider with ChangeNotifier {
 
   int? get listId => _listId;
 
-  Future<void> initializeListDetialData() async {
+  Future<void> initializeListDetailData() async {
     await _fetchListDetailData();
   }
 
