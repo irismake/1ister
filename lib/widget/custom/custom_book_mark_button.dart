@@ -27,7 +27,7 @@ class CustomBookMarkButton extends StatelessWidget {
           onTap: () async {
             print('g');
             await Provider.of<GetListsProvider>(context, listen: false)
-                .onTapBookMark(listId, isBookMarked);
+                .onTapBookmark(context, listId, isBookMarked);
           },
           child: isBookMarked
               ? SvgPicture.asset('assets/icons/button_book_mark_fill_white.svg')

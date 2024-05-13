@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/api_service.dart';
 import '../list_model.dart';
+import 'my_groups_provider.dart';
 
 class GetListsProvider with ChangeNotifier {
   final storage = FlutterSecureStorage();
@@ -68,16 +70,17 @@ class GetListsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  onTapBookMark(int listId, bool isBookMarked) async {
+  onTapBookmark(BuildContext context, int listId, bool isBookMarked) async {
     if (isBookMarked) {
       await ApiService.actionUnLike(listId);
     } else {
       await ApiService.actionLike(listId);
     }
-    updateIsBookmarked(listId, !isBookMarked);
+    updateBookmarkState(listId, !isBookMarked);
+    fetchChangedBookmarkData(context);
   }
 
-  void updateIsBookmarked(int listId, bool isBookMarked) {
+  void updateBookmarkState(int listId, bool isBookMarked) {
     int mainListIndex = findListIndex(_mainLists, listId);
     int usersMyListIndex = findListIndex(_usersMyLists, listId);
     int usersBookmarkListIndex = findListIndex(_usersBookmarkLists, listId);
@@ -91,10 +94,17 @@ class GetListsProvider with ChangeNotifier {
     if (usersBookmarkListIndex != -1) {
       _usersBookmarkLists[usersBookmarkListIndex].isBookmarked = isBookMarked;
     }
-    _fetchUsersBookmarkLists();
   }
 
   int findListIndex(List<ListData> list, int listId) {
     return list.indexWhere((element) => element.id == listId);
+  }
+
+  void fetchChangedBookmarkData(BuildContext context) async {
+    await _fetchUsersBookmarkLists();
+    final myGroupProvider =
+        Provider.of<MyGroupsProvider>(context, listen: false);
+    await myGroupProvider.fetchMyGroups();
+    await myGroupProvider.fetchIsBucketGroup();
   }
 }

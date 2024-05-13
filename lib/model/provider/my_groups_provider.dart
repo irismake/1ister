@@ -10,7 +10,6 @@ class MyGroupsProvider with ChangeNotifier {
   final List<ListData> _myGroupLists = [];
 
   bool _isInitialized = false;
-  bool _isInitialized2 = false;
   int? _selectedIndex;
   int? _selectedGroupId;
   int? _bookmarkGroupId;
@@ -32,11 +31,7 @@ class MyGroupsProvider with ChangeNotifier {
   }
 
   Future<void> initializeMyGroupListsData() async {
-    if (!_isInitialized2) {
-      await fetchMyGroupBookmarkLists();
-      print('dddd');
-      _isInitialized2 = true;
-    }
+    await fetchMyGroupBookmarkLists();
   }
 
   set selectedIndex(int? index) {
