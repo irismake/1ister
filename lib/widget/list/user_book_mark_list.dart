@@ -17,7 +17,6 @@ class UserBookMarkList extends StatelessWidget {
     return Consumer<GetListsProvider>(
       builder: (context, provider, child) {
         final List<ListData> usersBookmarkLists = provider.usersBookmarkLists;
-        print('notify$usersBookmarkLists');
 
         return usersBookmarkLists.isEmpty
             ? Container(

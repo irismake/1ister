@@ -12,7 +12,6 @@ class GetListsProvider with ChangeNotifier {
   final List<ListData> _usersMyLists = [];
   final List<ListData> _usersBookmarkLists = [];
   bool _isInitialized = false;
-  bool __isInitialized2 = false;
   bool _pageState = false;
 
   bool get pageState => _pageState;
@@ -31,11 +30,8 @@ class GetListsProvider with ChangeNotifier {
   }
 
   Future<void> initializeData() async {
-    if (!__isInitialized2) {
-      await _fetchUsersMyLists();
-      await _fetchUsersBookmarkLists();
-      __isInitialized2 = true;
-    }
+    await _fetchUsersMyLists();
+    await _fetchUsersBookmarkLists();
   }
 
   Future<void> _fetchMainLists() async {

@@ -46,7 +46,6 @@ class _BookMarkPageState extends State<BookMarkPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('fd');
     _username =
         Provider.of<UserInfoProvider>(context, listen: true).userInfo.name;
     void _createGroupDialog(BuildContext context) {
