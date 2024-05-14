@@ -7,6 +7,7 @@ import '../list_detail_model.dart';
 class ListDetailProvider with ChangeNotifier {
   final storage = FlutterSecureStorage();
   int? _listId;
+  bool _bookmarkState = false;
   late ListDetailModel _listDetail = ListDetailModel.fromJson({
     'id': 0,
     'user_id': 0,
@@ -25,9 +26,10 @@ class ListDetailProvider with ChangeNotifier {
     'updated_at': '',
     'items': [],
   });
-  ListDetailModel get listDetail => _listDetail;
 
+  ListDetailModel get listDetail => _listDetail;
   int? get listId => _listId;
+  bool get bookmarkState => _bookmarkState;
 
   Future<void> initializeListDetailData() async {
     await _fetchListDetailData();
@@ -35,6 +37,11 @@ class ListDetailProvider with ChangeNotifier {
 
   set listId(int? index) {
     _listId = index;
+    notifyListeners();
+  }
+
+  set bookmarkState(bool value) {
+    _bookmarkState = value;
     notifyListeners();
   }
 

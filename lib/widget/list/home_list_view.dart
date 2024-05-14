@@ -73,9 +73,14 @@ class HomeListView extends StatelessWidget {
                         )
                       ],
                     ),
-                    CustomBookMarkButton(
-                      listId: mainLists[index].id,
-                      isBookMarked: mainLists[index].isBookmarked,
+                    Positioned(
+                      top: 4.0.h,
+                      right: 0.0,
+                      child: CustomBookMarkButton(
+                        listId: mainLists[index].id,
+                        isBookMarked: mainLists[index].isBookmarked,
+                        inListDetail: false,
+                      ),
                     ),
                   ],
                 ),

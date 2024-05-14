@@ -121,10 +121,15 @@ class UserBookMarkList extends StatelessWidget {
                               )
                             ],
                           ),
-                          CustomBookMarkButton(
-                            listId: usersBookmarkLists[index].id,
-                            isBookMarked:
-                                usersBookmarkLists[index].isBookmarked,
+                          Positioned(
+                            top: 4.0.h,
+                            right: 0.0,
+                            child: CustomBookMarkButton(
+                              listId: usersBookmarkLists[index].id,
+                              isBookMarked:
+                                  usersBookmarkLists[index].isBookmarked,
+                              inListDetail: false,
+                            ),
                           ),
                         ],
                       ),

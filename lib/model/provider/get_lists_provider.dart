@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lister/model/provider/list_detail_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/api_service.dart';
@@ -100,7 +101,12 @@ class GetListsProvider with ChangeNotifier {
     await _fetchUsersBookmarkLists();
     final myGroupProvider =
         Provider.of<MyGroupsProvider>(context, listen: false);
+    final listDetailProvider =
+        Provider.of<ListDetailProvider>(context, listen: false);
     await myGroupProvider.fetchMyGroups();
     await myGroupProvider.fetchIsBucketGroup();
+    await listDetailProvider.initializeListDetailData();
+    listDetailProvider.bookmarkState = !listDetailProvider.bookmarkState;
+    print(listDetailProvider.bookmarkState);
   }
 }
