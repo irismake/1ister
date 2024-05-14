@@ -19,52 +19,34 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  String userName = '';
-  String name = '';
-  String bio = '';
-  String profileImage = '';
-
-  int followingCount = 0;
-  int followerCount = 0;
-
   @override
   initState() {
     super.initState();
-    initializeFollows();
-    initializeUserInfo();
+    initializeData();
   }
 
-  Future<void> initializeFollows() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final followsProvider =
-          Provider.of<FollowsProvider>(context, listen: false);
-      followsProvider.initializeData().then((_) {
-        followingCount = followsProvider.usersFollowingCount;
-        followerCount = followsProvider.usersFollowerCount;
-      });
-    });
-  }
-
-  Future<void> initializeUserInfo() async {
+  Future<void> initializeData() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final userInfoProvider =
           Provider.of<UserInfoProvider>(context, listen: false);
-      userInfoProvider.fetchUserInfo().then((_) {
-        userName = userInfoProvider.userInfo.username;
-        name = userInfoProvider.userInfo.name;
-        //picture = userInfoProvider.userInfo.picture;
-        bio = userInfoProvider.userInfo.bio;
-      });
+      userInfoProvider.fetchUserInfo();
+      final followsProvider =
+          Provider.of<FollowsProvider>(context, listen: false);
+      followsProvider.initializeData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<UserInfoProvider>(builder: (context, provider, child) {
+      String _name = provider.userInfo.name;
+      String _userName = provider.userInfo.username;
+      String _profileImage = provider.userInfo.picture;
+      String _bio = provider.userInfo.bio;
       return Scaffold(
         appBar: CustomAppbar(
             popState: true,
-            titleText: name,
+            titleText: _name,
             titleState: true,
             actionButtonOnTap: () {},
             actionButton: 'button_hamburger'),
@@ -85,7 +67,7 @@ class _UserPageState extends State<UserPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          profileImage == ''
+                          _profileImage == ''
                               ? SvgPicture.asset(
                                   'assets/images/image_user_profile.svg',
                                   height: 64.0.h,
@@ -106,7 +88,7 @@ class _UserPageState extends State<UserPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  name,
+                                  _name,
                                   style: TextStyle(
                                     color: Color(0xFF212529),
                                     fontSize: 18.sp,
@@ -136,30 +118,30 @@ class _UserPageState extends State<UserPage> {
                                       height: 20.0.h,
                                       child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .push(
+                                          Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   UserFollowsPage(
-                                                name: name,
+                                                name: _name,
                                                 initialPage: 0,
                                               ),
                                             ),
-                                          )
-                                              .then((value) {
-                                            initializeFollows();
-                                          });
+                                          );
                                         },
-                                        child: Text(
-                                          textAlign: TextAlign.center,
-                                          '$followerCount',
-                                          style: TextStyle(
-                                            color: Color(0xFF868E96),
-                                            fontSize: 14.sp,
-                                            fontFamily: 'Pretendard',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
+                                        child: Consumer<FollowsProvider>(
+                                            builder:
+                                                (context, provider, child) {
+                                          return Text(
+                                            textAlign: TextAlign.center,
+                                            '${provider.usersFollowerCount}',
+                                            style: TextStyle(
+                                              color: Color(0xFF868E96),
+                                              fontSize: 14.sp,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          );
+                                        }),
                                       ),
                                     ),
                                     SizedBox(
@@ -188,29 +170,29 @@ class _UserPageState extends State<UserPage> {
                                       height: 20.0.h,
                                       child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .push(
+                                          Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   UserFollowsPage(
-                                                name: name,
+                                                name: _name,
                                                 initialPage: 1,
                                               ),
                                             ),
-                                          )
-                                              .then((value) {
-                                            initializeFollows();
-                                          });
+                                          );
                                         },
-                                        child: Text(
-                                          '$followingCount',
-                                          style: TextStyle(
-                                            color: Color(0xFF868E96),
-                                            fontSize: 14.sp,
-                                            fontFamily: 'Pretendard',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
+                                        child: Consumer<FollowsProvider>(
+                                            builder:
+                                                (context, provider, child) {
+                                          return Text(
+                                            '${provider.usersFollowingCount}',
+                                            style: TextStyle(
+                                              color: Color(0xFF868E96),
+                                              fontSize: 14.sp,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          );
+                                        }),
                                       ),
                                     ),
                                   ],
@@ -228,7 +210,7 @@ class _UserPageState extends State<UserPage> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      bio,
+                      _bio,
                       style: TextStyle(
                         color: Color(0xFF868E96),
                         fontSize: 14.sp,
@@ -251,15 +233,13 @@ class _UserPageState extends State<UserPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => UserEditInfoPage(
-                              userName: userName,
-                              name: name,
-                              bio: bio,
-                              picture: profileImage,
+                              userName: _userName,
+                              name: _name,
+                              bio: _bio,
+                              picture: _profileImage,
                             ),
                           ),
-                        ).then((value) {
-                          initializeUserInfo();
-                        });
+                        );
                       },
                       style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
