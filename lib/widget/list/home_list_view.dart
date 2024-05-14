@@ -1,14 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lister/model/list_detail_model.dart';
 import "package:provider/provider.dart";
-import 'package:intl/intl.dart';
 
 import '../../model/list_model.dart';
 import '../../model/provider/get_lists_provider.dart';
 import '../../page/list_detail_page.dart';
-import '../../services/api_service.dart';
 import '../custom/custom_book_mark_button.dart';
 
 class HomeListView extends StatelessWidget {
@@ -16,7 +12,8 @@ class HomeListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<GetListsProvider>(builder: (context, provider, child) {
-      final List<ListData> mainLists = provider.mainLists();
+      provider.initializeMainLists();
+      final List<ListData> mainLists = provider.mainLists;
       return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: mainLists.length,
@@ -28,6 +25,7 @@ class HomeListView extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => ListDetailPage(
                     listId: mainLists[index].id,
+                    isBookmarked: mainLists[index].isBookmarked,
                   ),
                 ),
               );
@@ -76,10 +74,8 @@ class HomeListView extends StatelessWidget {
                       ],
                     ),
                     CustomBookMarkButton(
-                      index: index,
                       listId: mainLists[index].id,
                       isBookMarked: mainLists[index].isBookmarked,
-                      tag: 'mainList',
                     ),
                   ],
                 ),

@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:lister/services/api_service.dart';
+import 'package:provider/provider.dart';
+import '../../model/provider/user_info_provider.dart';
 import '../../widget/custom/custom_next_page_button.dart';
 import '../../widget/custom/custom_text_field.dart';
 import '../../widget/custom_app_bar.dart';
@@ -204,9 +206,14 @@ class _UserEditInfoPageState extends State<UserEditInfoPage> {
                     if (userNameValidState) {
                       await ApiService.updateUserInfo(
                           changedUserName, changedName, '', changedBio);
+                      final userInfoProvider =
+                          Provider.of<UserInfoProvider>(context, listen: false);
+
+                      await userInfoProvider.fetchUserInfo();
                     }
                   }
-                  Navigator.pop(context, true);
+
+                  Navigator.pop(context);
                 },
               ),
             ],

@@ -1,16 +1,12 @@
-import 'dart:convert';
-
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
-import 'package:lister/model/list_detail_model.dart';
+
 import 'package:provider/provider.dart';
 
 import '../../model/list_model.dart';
 import '../../model/provider/get_lists_provider.dart';
 import '../../page/list_detail_page.dart';
-import '../../services/api_service.dart';
 import '../custom/custom_book_mark_button.dart';
 
 class UserBookMarkList extends StatelessWidget {
@@ -21,6 +17,7 @@ class UserBookMarkList extends StatelessWidget {
     return Consumer<GetListsProvider>(
       builder: (context, provider, child) {
         final List<ListData> usersBookmarkLists = provider.usersBookmarkLists;
+
         return usersBookmarkLists.isEmpty
             ? Container(
                 color: Color(0xffF8F9FA),
@@ -55,6 +52,8 @@ class UserBookMarkList extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => ListDetailPage(
                               listId: usersBookmarkLists[index].id,
+                              isBookmarked:
+                                  usersBookmarkLists[index].isBookmarked,
                             ),
                           ),
                         );
@@ -123,11 +122,9 @@ class UserBookMarkList extends StatelessWidget {
                             ],
                           ),
                           CustomBookMarkButton(
-                            index: index,
                             listId: usersBookmarkLists[index].id,
                             isBookMarked:
                                 usersBookmarkLists[index].isBookmarked,
-                            tag: 'bookmarkList',
                           ),
                         ],
                       ),

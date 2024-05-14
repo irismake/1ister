@@ -13,21 +13,11 @@ class UserInfoProvider with ChangeNotifier {
     'can_change_password': false,
   });
 
-  bool _isInitialized = false;
-
   UserInfoModel get userInfo => _userInfo;
 
-  Future<void> initializeData() async {
-    if (!_isInitialized) {
-      await _fetchUserInfo();
-      _isInitialized = true;
-    }
-  }
-
-  Future<void> _fetchUserInfo() async {
+  Future<void> fetchUserInfo() async {
     final results = await ApiService.getUserInfo();
     _userInfo = results;
-
     notifyListeners();
   }
 }

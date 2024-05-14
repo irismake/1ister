@@ -12,18 +12,42 @@ import '../../widget/custom/custom_text_form_field.dart';
 import '../../widget/custom_app_bar.dart';
 import 'bookmark_groups_widget.dart';
 
-class BookMarkPage extends StatelessWidget {
+class BookMarkPage extends StatefulWidget {
   const BookMarkPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final userInfoProvider = Provider.of<UserInfoProvider>(context);
-    userInfoProvider.initializeData();
-    String _groupName = '';
-    String name =
-        Provider.of<UserInfoProvider>(context, listen: false).userInfo.name;
-    final FocusNode _createGroupFocus = FocusNode();
+  State<BookMarkPage> createState() => _BookMarkPageState();
+}
 
+class _BookMarkPageState extends State<BookMarkPage> {
+  late FocusNode _createGroupFocus;
+  String _createdGroupName = '';
+  String _username = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserName();
+    _createGroupFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> _fetchUserName() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userInfoProvider =
+          Provider.of<UserInfoProvider>(context, listen: false);
+      userInfoProvider.fetchUserInfo();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _username =
+        Provider.of<UserInfoProvider>(context, listen: true).userInfo.name;
     void _createGroupDialog(BuildContext context) {
       showModalBottomSheet(
         context: context,
@@ -80,7 +104,7 @@ class BookMarkPage extends StatelessWidget {
                         hintText: '그룹 이름을 입력해주세요. (최대 30글자)',
                         focusNode: _createGroupFocus,
                         onChanged: (value) {
-                          _groupName = value;
+                          _createdGroupName = value;
                         },
                         keyboardType: TextInputType.name,
                       ),
@@ -89,8 +113,9 @@ class BookMarkPage extends StatelessWidget {
                         secondFieldState: true,
                         text: '만들기',
                         onPressed: () async {
-                          if (_groupName != '') {
-                            await ApiService.createMyGroups('$_groupName');
+                          if (_createdGroupName != '') {
+                            await ApiService.createMyGroups(
+                                '$_createdGroupName');
                             final myGroupProvider =
                                 Provider.of<MyGroupsProvider>(context,
                                     listen: false);
@@ -112,7 +137,7 @@ class BookMarkPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppbar(
         popState: true,
-        titleText: '${name}의 북마크',
+        titleText: '${_username}의 북마크',
         titleState: true,
         actionButtonOnTap: () {
           _createGroupDialog(context);

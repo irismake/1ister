@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/api_service.dart';
 import '../list_model.dart';
+import 'my_groups_provider.dart';
 
 class GetListsProvider with ChangeNotifier {
   final storage = FlutterSecureStorage();
@@ -11,24 +13,25 @@ class GetListsProvider with ChangeNotifier {
   final List<ListData> _usersBookmarkLists = [];
   bool _isInitialized = false;
   bool _pageState = false;
-  bool _changeBookmarked = false;
 
   bool get pageState => _pageState;
+
+  List<ListData> get mainLists => _mainLists;
 
   List<ListData> get usersMyLists => _usersMyLists;
 
   List<ListData> get usersBookmarkLists => _usersBookmarkLists;
 
-  List<ListData> mainLists() {
-    _initializeMainLists();
-    return _mainLists;
-  }
-
-  void _initializeMainLists() async {
+  Future<void> initializeMainLists() async {
     if (!_isInitialized) {
       await _fetchMainLists();
       _isInitialized = true;
     }
+  }
+
+  Future<void> initializeData() async {
+    await _fetchUsersMyLists();
+    await _fetchUsersBookmarkLists();
   }
 
   Future<void> _fetchMainLists() async {
@@ -47,7 +50,6 @@ class GetListsProvider with ChangeNotifier {
     for (var result in results) {
       _usersMyLists.add(result);
     }
-    notifyListeners();
   }
 
   Future<void> _fetchUsersBookmarkLists() async {
@@ -59,55 +61,46 @@ class GetListsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> initializeData() async {
-    if (!_isInitialized) {
-      await _fetchUsersMyLists();
-      await _fetchUsersBookmarkLists();
-      _isInitialized = true;
-    }
-  }
-
   set pageState(bool value) {
     _pageState = value;
-
-    if (_changeBookmarked) {
-      if (_pageState) {
-        _fetchUsersBookmarkLists();
-      }
-    }
-    _changeBookmarked = false;
     notifyListeners();
   }
 
-  onTapBookMark(int index, int listId, bool isBookMarked, String tag) async {
+  onTapBookmark(BuildContext context, int listId, bool isBookMarked) async {
     if (isBookMarked) {
       await ApiService.actionUnLike(listId);
-      if (tag == 'mainList') {
-        _mainLists[index].isBookmarked = false;
-      }
-      if (tag == 'myList') {
-        _usersMyLists[index].isBookmarked = false;
-      }
-      if (tag == 'bookmarkList') {
-        _usersBookmarkLists[index].isBookmarked = false;
-      }
     } else {
       await ApiService.actionLike(listId);
-      if (tag == 'mainList') {
-        _mainLists[index].isBookmarked = true;
-      }
-      if (tag == 'myList') {
-        _usersMyLists[index].isBookmarked = true;
-      }
-      if (tag == 'bookmarkList') {
-        _usersBookmarkLists[index].isBookmarked = true;
-      }
     }
-    _changeBookmarked = true;
+    updateBookmarkState(listId, !isBookMarked);
+    fetchChangedBookmarkData(context);
+  }
 
-    if (_pageState) {
-      _fetchUsersBookmarkLists();
+  void updateBookmarkState(int listId, bool isBookMarked) {
+    int mainListIndex = findListIndex(_mainLists, listId);
+    int usersMyListIndex = findListIndex(_usersMyLists, listId);
+    int usersBookmarkListIndex = findListIndex(_usersBookmarkLists, listId);
+
+    if (mainListIndex != -1) {
+      _mainLists[mainListIndex].isBookmarked = isBookMarked;
     }
-    notifyListeners();
+    if (usersMyListIndex != -1) {
+      _usersMyLists[usersMyListIndex].isBookmarked = isBookMarked;
+    }
+    if (usersBookmarkListIndex != -1) {
+      _usersBookmarkLists[usersBookmarkListIndex].isBookmarked = isBookMarked;
+    }
+  }
+
+  int findListIndex(List<ListData> list, int listId) {
+    return list.indexWhere((element) => element.id == listId);
+  }
+
+  void fetchChangedBookmarkData(BuildContext context) async {
+    await _fetchUsersBookmarkLists();
+    final myGroupProvider =
+        Provider.of<MyGroupsProvider>(context, listen: false);
+    await myGroupProvider.fetchMyGroups();
+    await myGroupProvider.fetchIsBucketGroup();
   }
 }

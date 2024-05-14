@@ -6,9 +6,8 @@ import '../../model/provider/my_groups_provider.dart';
 import '../../widget/custom/custom_search_bar.dart';
 import '../../widget/custom_app_bar.dart';
 import 'bookmark_group_lists_widget.dart';
-import 'bookmark_groups_widget.dart';
 
-class BookmarkListPage extends StatelessWidget {
+class BookmarkListPage extends StatefulWidget {
   final String groupTitle;
   final int groupId;
 
@@ -19,11 +18,31 @@ class BookmarkListPage extends StatelessWidget {
   });
 
   @override
+  State<BookmarkListPage> createState() => _BookmarkListPageState();
+}
+
+class _BookmarkListPageState extends State<BookmarkListPage> {
+  @override
+  void initState() {
+    super.initState();
+    fetchGroupId();
+  }
+
+  Future<void> fetchGroupId() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<MyGroupsProvider>(context, listen: false);
+      provider.bookmarkGroupId = widget.groupId;
+      print('${provider.bookmarkGroupId}');
+      provider.initializeMyGroupListsData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
           popState: true,
-          titleText: '${groupTitle}',
+          titleText: '${widget.groupTitle}',
           titleState: true,
           actionButtonOnTap: () {},
           actionButton: 'button_more'),
@@ -40,19 +59,9 @@ class BookmarkListPage extends StatelessWidget {
             SizedBox(
               height: 24.0.h,
             ),
-            Consumer<MyGroupsProvider>(builder: (context, provider, child) {
-              //provider.bookmarkGroupId = groupId;
-              // WidgetsBinding.instance.addPostFrameCallback((_) {
-              //   provider.initializeMyGroupListsData();
-              // });
-
-              //print(provider.bookmarkGroupId);
-              return Expanded(
-                child: BookMarkGroupListsWidget(
-                  groupId: groupId,
-                ),
-              );
-            }),
+            Expanded(
+              child: BookMarkGroupListsWidget(),
+            ),
           ],
         ),
       ),

@@ -19,264 +19,262 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  String userName = '';
-  String name = '';
-  String bio = '';
-  String profileImage = '';
-
-  int followingCount = 0;
-  int followerCount = 0;
-
   @override
   initState() {
     super.initState();
+    initializeData();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final followsProvider = Provider.of<FollowsProvider>(context);
-    final userInfoProvider = Provider.of<UserInfoProvider>(context);
-    followsProvider.initializeData();
-    userInfoProvider.initializeData();
-    followingCount = followsProvider.usersFollowingCount;
-    followerCount = followsProvider.usersFollowerCount;
-    userName = userInfoProvider.userInfo.username;
-    name = userInfoProvider.userInfo.name;
-    //picture = userInfoProvider.userInfo.picture;
-    bio = userInfoProvider.userInfo.bio;
+  Future<void> initializeData() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userInfoProvider =
+          Provider.of<UserInfoProvider>(context, listen: false);
+      userInfoProvider.fetchUserInfo();
+      final followsProvider =
+          Provider.of<FollowsProvider>(context, listen: false);
+      followsProvider.initializeData();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppbar(
-          popState: true,
-          titleText: name,
-          titleState: true,
-          actionButtonOnTap: () {},
-          actionButton: 'button_hamburger'),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                top: 24.0.h, left: 16.0.w, right: 16.0.w, bottom: 40.0.h),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  height: 88.0.h,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.0.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        profileImage == ''
-                            ? SvgPicture.asset(
-                                'assets/images/image_user_profile.svg',
-                                height: 64.0.h,
-                                width: 64.0.w,
-                              )
-                            : Container(
-                                color: Colors.red,
-                                height: 64.0.h,
-                                width: 64.0.w,
-                              ),
-                        SizedBox(
-                          width: 16.0.w,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6.0.h),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                name,
-                                style: TextStyle(
-                                  color: Color(0xFF212529),
-                                  fontSize: 18.sp,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w700,
-                                  height: 1.5.h,
+    return Consumer<UserInfoProvider>(builder: (context, provider, child) {
+      String _name = provider.userInfo.name;
+      String _userName = provider.userInfo.username;
+      String _profileImage = provider.userInfo.picture;
+      String _bio = provider.userInfo.bio;
+      return Scaffold(
+        appBar: CustomAppbar(
+            popState: true,
+            titleText: _name,
+            titleState: true,
+            actionButtonOnTap: () {},
+            actionButton: 'button_hamburger'),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  top: 24.0.h, left: 16.0.w, right: 16.0.w, bottom: 40.0.h),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 88.0.h,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12.0.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _profileImage == ''
+                              ? SvgPicture.asset(
+                                  'assets/images/image_user_profile.svg',
+                                  height: 64.0.h,
+                                  width: 64.0.w,
+                                )
+                              : Container(
+                                  color: Colors.red,
+                                  height: 64.0.h,
+                                  width: 64.0.w,
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '팔로워',
-                                    style: TextStyle(
-                                      color: Color(0xFF868E96),
-                                      fontSize: 14.sp,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.4.h,
+                          SizedBox(
+                            width: 16.0.w,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 6.0.h),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _name,
+                                  style: TextStyle(
+                                    color: Color(0xFF212529),
+                                    fontSize: 18.sp,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.5.h,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '팔로워',
+                                      style: TextStyle(
+                                        color: Color(0xFF868E96),
+                                        fontSize: 14.sp,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.4.h,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 6.0.w,
-                                  ),
-                                  SizedBox(
-                                    height: 20.0.h,
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                UserFollowsPage(
-                                              name: name,
-                                              initialPage: 0,
+                                    SizedBox(
+                                      width: 6.0.w,
+                                    ),
+                                    SizedBox(
+                                      height: 20.0.h,
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  UserFollowsPage(
+                                                name: _name,
+                                                initialPage: 0,
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        textAlign: TextAlign.center,
-                                        '$followerCount',
-                                        style: TextStyle(
-                                          color: Color(0xFF868E96),
-                                          fontSize: 14.sp,
-                                          fontFamily: 'Pretendard',
-                                          fontWeight: FontWeight.w600,
+                                          );
+                                        },
+                                        child: Consumer<FollowsProvider>(
+                                            builder:
+                                                (context, provider, child) {
+                                          return Text(
+                                            textAlign: TextAlign.center,
+                                            '${provider.usersFollowerCount}',
+                                            style: TextStyle(
+                                              color: Color(0xFF868E96),
+                                              fontSize: 14.sp,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 24.0.w,
+                                      height: 20.0.h,
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                          'assets/images/image_vertical_line.svg',
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 24.0.w,
-                                    height: 20.0.h,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        'assets/images/image_vertical_line.svg',
+                                    Text(
+                                      '팔로잉',
+                                      style: TextStyle(
+                                        color: Color(0xFF868E96),
+                                        fontSize: 14.sp,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.4.h,
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    '팔로잉',
-                                    style: TextStyle(
-                                      color: Color(0xFF868E96),
-                                      fontSize: 14.sp,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.4.h,
+                                    SizedBox(
+                                      width: 6.0.w,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 6.0.w,
-                                  ),
-                                  SizedBox(
-                                    height: 20.0.h,
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                UserFollowsPage(
-                                              name: name,
-                                              initialPage: 1,
+                                    SizedBox(
+                                      height: 20.0.h,
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  UserFollowsPage(
+                                                name: _name,
+                                                initialPage: 1,
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        '$followingCount',
-                                        style: TextStyle(
-                                          color: Color(0xFF868E96),
-                                          fontSize: 14.sp,
-                                          fontFamily: 'Pretendard',
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                          );
+                                        },
+                                        child: Consumer<FollowsProvider>(
+                                            builder:
+                                                (context, provider, child) {
+                                          return Text(
+                                            '${provider.usersFollowingCount}',
+                                            style: TextStyle(
+                                              color: Color(0xFF868E96),
+                                              fontSize: 14.sp,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          );
+                                        }),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 8.0.h,
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    bio,
-                    style: TextStyle(
-                      color: Color(0xFF868E96),
-                      fontSize: 14.sp,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w500,
-                      height: 1.4.h,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ),
-                SizedBox(
-                  height: 24.0.h,
-                ),
-                Container(
-                  width: double.infinity,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserEditInfoPage(
-                            userName: userName,
-                            name: name,
-                            bio: bio,
-                            picture: profileImage,
-                          ),
-                        ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                                  ],
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 8.0.h),
-                      backgroundColor: Color(0xffF1F3F5),
                     ),
+                  ),
+                  SizedBox(
+                    height: 8.0.h,
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
                     child: Text(
-                      '계정 편집',
+                      _bio,
                       style: TextStyle(
-                        color: Color(0xFF495057),
+                        color: Color(0xFF868E96),
                         fontSize: 14.sp,
                         fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                         height: 1.4.h,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24.0.h,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserEditInfoPage(
+                              userName: _userName,
+                              name: _name,
+                              bio: _bio,
+                              picture: _profileImage,
+                            ),
+                          ),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 8.0.h),
+                        backgroundColor: Color(0xffF1F3F5),
+                      ),
+                      child: Text(
+                        '계정 편집',
+                        style: TextStyle(
+                          color: Color(0xFF495057),
+                          fontSize: 14.sp,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w600,
+                          height: 1.4.h,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Consumer<GetListsProvider>(
-              builder: (context, getListsProvider, child) {
-                final provider = getListsProvider;
-                return PageViewNavigator(
-                  followState: false,
-                  provider: provider,
-                  tabName_0: '나의 리스트',
-                  tabName_1: '북마크 리스트',
-                  initialPage: 0,
-                );
-              },
+            Expanded(
+              child: PageViewNavigator(
+                followState: false,
+                provider: Provider.of<GetListsProvider>(context, listen: true),
+                tabName_0: '나의 리스트',
+                tabName_1: '북마크 리스트',
+                initialPage: 0,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }
