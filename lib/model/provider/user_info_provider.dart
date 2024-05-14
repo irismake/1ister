@@ -14,12 +14,10 @@ class UserInfoProvider with ChangeNotifier {
   });
 
   UserInfoModel get userInfo => _userInfo;
-  bool _isInitialized = false;
 
   Future<void> fetchUserInfo() async {
     final results = await ApiService.getUserInfo();
     _userInfo = results;
-    print('object');
     notifyListeners();
   }
 }

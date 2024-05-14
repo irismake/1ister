@@ -12,20 +12,43 @@ import '../../widget/custom/custom_text_form_field.dart';
 import '../../widget/custom_app_bar.dart';
 import 'bookmark_groups_widget.dart';
 
-class BookMarkPage extends StatelessWidget {
+class BookMarkPage extends StatefulWidget {
   const BookMarkPage({Key? key}) : super(key: key);
 
   @override
+  State<BookMarkPage> createState() => _BookMarkPageState();
+}
+
+class _BookMarkPageState extends State<BookMarkPage> {
+  late FocusNode _createGroupFocus;
+  String _createdGroupName = '';
+  String _username = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserName();
+    _createGroupFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> _fetchUserName() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userInfoProvider =
+          Provider.of<UserInfoProvider>(context, listen: false);
+      userInfoProvider.fetchUserInfo();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final FocusNode _createGroupFocus = FocusNode();
-    final userInfoProvider = Provider.of<UserInfoProvider>(context);
-
-    //userInfoProvider.fetchUserInfo();
-
-    String username =
-        Provider.of<UserInfoProvider>(context, listen: false).userInfo.name;
-    String _createdGroupName = '';
-
+    print('fd');
+    _username =
+        Provider.of<UserInfoProvider>(context, listen: true).userInfo.name;
     void _createGroupDialog(BuildContext context) {
       showModalBottomSheet(
         context: context,
@@ -115,7 +138,7 @@ class BookMarkPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppbar(
         popState: true,
-        titleText: '${username}의 북마크',
+        titleText: '${_username}의 북마크',
         titleState: true,
         actionButtonOnTap: () {
           _createGroupDialog(context);
