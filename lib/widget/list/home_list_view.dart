@@ -4,7 +4,7 @@ import "package:provider/provider.dart";
 
 import '../../model/list_model.dart';
 import '../../model/provider/get_lists_provider.dart';
-import '../../page/list_detail_page.dart';
+import 'list_detail_page.dart';
 import '../custom/custom_book_mark_button.dart';
 
 class HomeListView extends StatelessWidget {
@@ -73,9 +73,14 @@ class HomeListView extends StatelessWidget {
                         )
                       ],
                     ),
-                    CustomBookMarkButton(
-                      listId: mainLists[index].id,
-                      isBookMarked: mainLists[index].isBookmarked,
+                    Positioned(
+                      top: 4.0.h,
+                      right: 0.0,
+                      child: CustomBookMarkButton(
+                        listId: mainLists[index].id,
+                        isBookMarked: mainLists[index].isBookmarked,
+                        inListDetail: false,
+                      ),
                     ),
                   ],
                 ),

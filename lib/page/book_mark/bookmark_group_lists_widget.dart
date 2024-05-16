@@ -5,7 +5,7 @@ import 'package:lister/model/list_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/provider/my_groups_provider.dart';
-import '../list_detail_page.dart';
+import '../../widget/list/list_detail_page.dart';
 
 class BookMarkGroupListsWidget extends StatelessWidget {
   const BookMarkGroupListsWidget({
