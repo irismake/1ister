@@ -30,7 +30,6 @@ class _EditAddListState extends State<EditAddList> {
 
   late FocusNode titleFocusNode;
   late FocusNode bioFocusNode;
-  //FocusNode keywordFocusNode = FocusNode();
 
   bool _rankingState = false;
   bool _privateState = false;
@@ -320,6 +319,7 @@ class _EditAddListState extends State<EditAddList> {
                           SizedBox(height: 20.0.h),
                           EditEnterItem(
                             itemNum: _itemNum,
+                            rankingState: _rankingState,
                           ),
                         ],
                       )
