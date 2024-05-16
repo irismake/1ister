@@ -4,10 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lister/model/provider/list_detail_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../model/list_detail_model.dart';
-import '../widget/custom/custom_book_mark_button.dart';
-import '../widget/custom/custom_keyword.dart';
-import '../widget/custom_app_bar.dart';
+import '../../model/list_detail_model.dart';
+import '../custom/custom_book_mark_button.dart';
+import '../custom/custom_keyword.dart';
+import '../custom_app_bar.dart';
+import 'list_item.dart';
 
 class ListDetailPage extends StatefulWidget {
   final int listId;
@@ -28,6 +29,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
   String userName = '';
   String updateDate = '';
   List<String> keywords = [];
+  List<ItemData> items = [];
 
   @override
   void initState() {
@@ -52,6 +54,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
           updateDate = listDetailData.updatedAt;
           keywords.add(listDetailData.keyword1);
           keywords.add(listDetailData.keyword2);
+          items = listDetailData.items;
         });
       });
     });
@@ -69,6 +72,8 @@ class _ListDetailPageState extends State<ListDetailPage> {
             actionButton: null),
         body: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 color: Colors.pink,
@@ -76,10 +81,11 @@ class _ListDetailPageState extends State<ListDetailPage> {
                 width: double.infinity,
               ),
               Padding(
-                padding:
-                    EdgeInsets.only(left: 16.0.h, right: 16.0.h, top: 20.0.w),
+                padding: EdgeInsets.only(
+                    left: 16.0.h, right: 16.0.h, top: 20.0.w, bottom: 27.h),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,21 +125,19 @@ class _ListDetailPageState extends State<ListDetailPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 32.0.h,
+                      height: 16.0.h,
                     ),
-                    Container(
-                      child: Text(
-                        description,
-                        style: TextStyle(
-                          color: Color(0xFF343A40),
-                          fontSize: 15.sp,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.3.h,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 10,
+                    Text(
+                      description,
+                      style: TextStyle(
+                        color: Color(0xFF343A40),
+                        fontSize: 15.sp,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 1.3.h,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 10,
                     ),
                     SizedBox(
                       height: 8.0.h,
@@ -168,7 +172,10 @@ class _ListDetailPageState extends State<ListDetailPage> {
                     ),
                     SizedBox(
                       height: 40.0.h,
-                    )
+                    ),
+                    ListItem(
+                      items: items,
+                    ),
                   ],
                 ),
               )

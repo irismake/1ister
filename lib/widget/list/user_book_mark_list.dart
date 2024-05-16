@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../model/list_model.dart';
 import '../../model/provider/get_lists_provider.dart';
-import '../../page/list_detail_page.dart';
+import 'list_detail_page.dart';
 import '../custom/custom_book_mark_button.dart';
 
 class UserBookMarkList extends StatelessWidget {
