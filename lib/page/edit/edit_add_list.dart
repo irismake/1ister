@@ -10,7 +10,7 @@ import '../../model/my_group_model.dart';
 import '../../model/keyword_model.dart';
 import '../../model/provider/create_list_provider.dart';
 import '../../model/provider/keywords_provider.dart';
-import '../../widget/custom/custom_drop_down_button.dart';
+import '../../widget/custom/custom_dropdown_button.dart';
 import '../../widget/custom/custom_keyword.dart';
 import '../../widget/custom/custom_switch.dart';
 import '../../widget/custom/custom_text_field.dart';
@@ -30,12 +30,12 @@ class _EditAddListState extends State<EditAddList> {
 
   late FocusNode titleFocusNode;
   late FocusNode bioFocusNode;
-  //FocusNode keywordFocusNode = FocusNode();
 
   bool _rankingState = false;
   bool _privateState = false;
   bool _itemState = false;
   int _itemNum = 0;
+  int _keywordIndex = 0;
 
   XFile? _image;
   final ImagePicker picker = ImagePicker();
@@ -51,13 +51,19 @@ class _EditAddListState extends State<EditAddList> {
 
   @override
   void initState() {
+    super.initState();
     titleFocusNode = FocusNode();
     bioFocusNode = FocusNode();
-
     titleFocusNode.addListener(_onTitleFocusChanged);
     bioFocusNode.addListener(_onDescriptionFocusChanged);
+    fetchMyGroup();
+  }
 
-    super.initState();
+  Future<void> fetchMyGroup() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<MyGroupsProvider>(context, listen: false);
+      provider.fetchMyGroups();
+    });
   }
 
   @override
@@ -111,8 +117,10 @@ class _EditAddListState extends State<EditAddList> {
                       Consumer<MyGroupsProvider>(
                         builder: (context, provider, child) {
                           final List<MyGroupData> myGroups = provider.myGroups;
-                          return CustomDropDownButton(
-                              dropDownItems: myGroups, provider: provider);
+                          return CustomDropdownButton(
+                            dropDownItems: myGroups,
+                            provider: provider,
+                          );
                         },
                       ),
                     ],
@@ -311,6 +319,7 @@ class _EditAddListState extends State<EditAddList> {
                           SizedBox(height: 20.0.h),
                           EditEnterItem(
                             itemNum: _itemNum,
+                            rankingState: _rankingState,
                           ),
                         ],
                       )
@@ -376,7 +385,7 @@ class _EditAddListState extends State<EditAddList> {
                                   height: 1.5.h,
                                 ),
                               ),
-                              CustomDropDownButton(
+                              CustomDropdownButton(
                                   dropDownItems: keywords, provider: provider),
                             ],
                           ),
@@ -416,9 +425,9 @@ class _EditAddListState extends State<EditAddList> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                   onFieldSubmitted: (String value) {
+                                    _keywordIndex++;
                                     KeywordData keywordData = KeywordData(
-                                      name: value,
-                                    );
+                                        name: value, id: _keywordIndex);
                                     KeywordsProvider provider =
                                         Provider.of<KeywordsProvider>(context,
                                             listen: false);

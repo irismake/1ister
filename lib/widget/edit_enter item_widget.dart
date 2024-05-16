@@ -8,8 +8,13 @@ import '../model/provider/create_list_provider.dart';
 
 class EditEnterItem extends StatefulWidget {
   final int itemNum;
+  final bool rankingState;
 
-  const EditEnterItem({Key? key, required this.itemNum}) : super(key: key);
+  const EditEnterItem({
+    Key? key,
+    required this.itemNum,
+    required this.rankingState,
+  }) : super(key: key);
 
   @override
   _EditEnterItemState createState() => _EditEnterItemState();
@@ -86,24 +91,31 @@ class _EditEnterItemState extends State<EditEnterItem> {
           ),
         );
       },
-      buildDefaultDragHandles: true,
+      buildDefaultDragHandles: widget.rankingState,
       physics: ClampingScrollPhysics(),
       shrinkWrap: true,
       itemCount: _items.length,
       itemBuilder: (context, index) {
-        return CustomReorderableDelayedDragStartListener(
-          key: Key('$index'),
-          delay: const Duration(
-            milliseconds: 150,
-          ),
-          index: index,
-          child: ItemWidget(
-            key: ValueKey(_items[index]),
-            titleController: _titleControllers[index],
-            tagController: _tagControllers[index],
-            descriptionController: _descriptionControllers[index],
-          ),
-        );
+        return widget.rankingState
+            ? CustomReorderableDelayedDragStartListener(
+                key: Key('$index'),
+                delay: const Duration(
+                  milliseconds: 150,
+                ),
+                index: index,
+                child: ItemWidget(
+                  key: ValueKey(_items[index]),
+                  titleController: _titleControllers[index],
+                  tagController: _tagControllers[index],
+                  descriptionController: _descriptionControllers[index],
+                ),
+              )
+            : ItemWidget(
+                key: ValueKey(_items[index]),
+                titleController: _titleControllers[index],
+                tagController: _tagControllers[index],
+                descriptionController: _descriptionControllers[index],
+              );
       },
       onReorder: (oldIndex, newIndex) {
         if (oldIndex < newIndex) {
