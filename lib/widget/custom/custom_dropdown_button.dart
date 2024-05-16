@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CustomDropDownButton extends StatelessWidget {
+class CustomDropdownButton extends StatelessWidget {
   final List<dynamic> dropDownItems;
   final dynamic provider;
 
-  const CustomDropDownButton({
+  const CustomDropdownButton({
     super.key,
     required this.dropDownItems,
     required this.provider,
@@ -16,7 +16,7 @@ class CustomDropDownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
-      child: DropdownButton2<String>(
+      child: DropdownButton2<int>(
         isExpanded: true,
         hint: Text(
           '선택하세요',
@@ -29,8 +29,8 @@ class CustomDropDownButton extends StatelessWidget {
         ),
         items: dropDownItems
             .map(
-              (item) => DropdownMenuItem<String>(
-                value: item.name,
+              (item) => DropdownMenuItem<int>(
+                value: item.id,
                 child: Text(
                   item.name,
                   style: TextStyle(
@@ -46,10 +46,10 @@ class CustomDropDownButton extends StatelessWidget {
             .toList(),
         value: provider.selectedIndex == null
             ? null
-            : dropDownItems[provider.selectedIndex!].name,
+            : dropDownItems[provider.selectedIndex!].id,
         onChanged: (value) {
           int index = dropDownItems
-              .indexWhere((dropDownItem) => dropDownItem.name == value);
+              .indexWhere((dropDownItem) => dropDownItem.id == value);
           provider.selectedIndex = index;
         },
         buttonStyleData: ButtonStyleData(
