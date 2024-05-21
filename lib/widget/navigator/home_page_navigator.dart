@@ -6,6 +6,7 @@ import '../../page/home/home_page.dart';
 import '../../page/search/search_page.dart';
 import '../../page/user/user_page.dart';
 import '../custom/custom_icon_button.dart';
+import 'custom_route_observer.dart';
 
 class HomePageNavigator extends StatefulWidget {
   HomePageNavigator({Key? key}) : super(key: key);
@@ -18,7 +19,6 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
   final _navigatorKey = GlobalKey<NavigatorState>();
 
   int currentIndex = 0;
-  bool homePageState = false;
 
   final _pages = [
     HomePage(),
@@ -27,20 +27,12 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
     BookMarkPage(),
     UserPage(),
   ];
-  final _navigatorKeyList =
-      List.generate(5, (index) => GlobalKey<NavigatorState>());
-
-  void _pushRoute() {
-    _navigatorKey.currentState?.pushNamed(routeC);
-    final route = _navigatorKey.currentState;
-    print('네이게이터 루트 : $route');
-  }
 
   static const routeA = "/";
-  static const routeB = "/B";
-  static const routeC = "/C";
-  static const routeD = "/D";
-  static const routeE = "/E";
+  static const routeB = "/search";
+  static const routeC = "/edit";
+  static const routeD = "/bookmark";
+  static const routeE = "/user";
 
   late List<String> route;
 
@@ -87,7 +79,6 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
       canPop: false,
       onPopInvoked: (bool didPop) {
         if (didPop) {
-          // IOS 뒤로가기 버튼, ButtonWidget이건 뒤로가기 제스쳐가 감지되면 호출 된다.
           print('didPop호출');
           return;
         }
@@ -99,9 +90,10 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Navigator(
-            key: _navigatorKeyList[currentIndex],
-            initialRoute: route[currentIndex],
+            key: _navigatorKey,
+            initialRoute: route[0],
             onGenerateRoute: _onGenerateRoute,
+            observers: [CustomRouteObserver()],
           ),
           bottomNavigationBar: BottomAppBar(
             padding: EdgeInsets.only(top: 12.0),
@@ -113,29 +105,19 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
               isScrollable: false,
               onTap: (index) {
                 print(index);
-                if (index == 0) {
-                  _navigatorKeyList[currentIndex]
-                      .currentState
-                      ?.pushNamed(routeA);
-                } else if (index == 1) {
-                  _navigatorKeyList[currentIndex]
-                      .currentState
-                      ?.pushNamed(routeB);
-                } else if (index == 2) {
-                  _navigatorKeyList[currentIndex]
-                      .currentState
-                      ?.pushNamed(routeC);
-                } else if (index == 3) {
-                  _navigatorKeyList[currentIndex]
-                      .currentState
-                      ?.pushNamed(routeD);
-                } else if (index == 4) {
-                  _navigatorKeyList[currentIndex]
-                      .currentState
-                      ?.pushNamed(routeE);
-                }
-                final route = _navigatorKeyList[currentIndex].currentState;
-                print('네이게이터 루트 : $route');
+                setState(() {
+                  if (index == 0) {
+                    _navigatorKey.currentState?.pushNamed(routeA);
+                  } else if (index == 1) {
+                    _navigatorKey.currentState?.pushNamed(routeB);
+                  } else if (index == 2) {
+                    _navigatorKey.currentState?.pushNamed(routeC);
+                  } else if (index == 3) {
+                    _navigatorKey.currentState?.pushNamed(routeD);
+                  } else if (index == 4) {
+                    _navigatorKey.currentState?.pushNamed(routeE);
+                  }
+                });
               },
               tabs: <Widget>[
                 CustomIconButton(
