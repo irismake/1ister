@@ -5,8 +5,7 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
       {PageRoute<dynamic>? oldRoute,
       PageRoute<dynamic>? newRoute,
       String? routeType}) {
-    debugPrint(
-        '[track] screen old : ${oldRoute?.settings.name}, new : ${newRoute?.settings.name}');
+    RouteState().currentRoute = newRoute?.settings.name;
   }
 
   PageRoute? checkPageRoute(Route<dynamic>? route) {
@@ -52,4 +51,38 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
       routeType: 'remove',
     );
   }
+}
+
+class RouteState {
+  static final RouteState _instance = RouteState._internal();
+  String? _currentRoute;
+
+  factory RouteState() {
+    return _instance;
+  }
+
+  static RouteState get instance => _instance;
+
+  set currentRoute(String? value) {
+    _currentRoute = value;
+  }
+
+  int? get onCurrentRouteChanged {
+    switch (_currentRoute) {
+      case '/':
+        return 0;
+      case '/search':
+        return 1;
+      case '/edit':
+        return 2;
+      case '/bookmark':
+        return 3;
+      case '/user':
+        return 4;
+      default:
+        return null;
+    }
+  }
+
+  RouteState._internal();
 }

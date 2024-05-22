@@ -36,11 +36,6 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
             popState
                 ? InkWell(
                     onTap: () {
-                      // var route = ModalRoute.of(context);
-
-                      // if (route != null) {
-                      //   print(route.settings.name);
-                      // }
                       Navigator.pop(context);
                     },
                     child: SvgPicture.asset(

@@ -38,23 +38,18 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
 
   MaterialPageRoute _onGenerateRoute(RouteSettings setting) {
     if (setting.name == routeA) {
-      print('page1');
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[0], settings: setting);
     } else if (setting.name == routeB) {
-      print('page2');
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[1], settings: setting);
     } else if (setting.name == routeC) {
-      print('page3');
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[2], settings: setting);
     } else if (setting.name == routeD) {
-      print('page4');
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[3], settings: setting);
     } else if (setting.name == routeE) {
-      print('page5');
       return MaterialPageRoute<dynamic>(
           builder: (context) => _pages[4], settings: setting);
     } else {
@@ -104,8 +99,11 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
               indicatorColor: Colors.transparent,
               isScrollable: false,
               onTap: (index) {
-                print(index);
                 setState(() {
+                  if (RouteState().onCurrentRouteChanged == index) {
+                    print('같은 페이지');
+                    return;
+                  }
                   if (index == 0) {
                     _navigatorKey.currentState?.pushNamed(routeA);
                   } else if (index == 1) {
