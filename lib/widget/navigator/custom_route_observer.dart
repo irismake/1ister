@@ -55,14 +55,10 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
 
 class RouteState {
   static final RouteState _instance = RouteState._internal();
+  factory RouteState() => _instance;
+  RouteState._internal();
+
   String? _currentRoute;
-
-  factory RouteState() {
-    return _instance;
-  }
-
-  static RouteState get instance => _instance;
-
   set currentRoute(String? value) {
     _currentRoute = value;
   }
@@ -83,6 +79,4 @@ class RouteState {
         return null;
     }
   }
-
-  RouteState._internal();
 }
