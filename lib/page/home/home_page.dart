@@ -59,10 +59,7 @@ class HomePage extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SearchPage()),
-                      );
+                      Navigator.pushNamed(context, "/search");
                     },
                     child: CustomSearchBar(
                       autoFocus: false,

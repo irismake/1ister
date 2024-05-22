@@ -77,7 +77,7 @@ class _EditPageState extends State<EditPage> {
               groupId,
               items,
             );
-            Navigator.pop(context, true);
+            Navigator.pop(context);
           },
           actionButton: 'button_upload_test'),
       body: GestureDetector(
