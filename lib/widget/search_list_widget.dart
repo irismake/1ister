@@ -313,7 +313,10 @@ class SearchUserWidget extends StatelessWidget {
                 ),
               ),
             ),
-            CustomFollowButton(),
+            // CustomFollowButton(
+            //   isFollow: true,
+            //   followUserId: 0,
+            // ),
           ],
         ),
       ),

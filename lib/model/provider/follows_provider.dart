@@ -31,8 +31,28 @@ class FollowsProvider with ChangeNotifier {
     _usersFollowingLists.clear();
     _usersFollowerLists.addAll(results.followers);
     _usersFollowingLists.addAll(results.followings);
-
+    for (var following in _usersFollowingLists) {
+      following.isFollow = true;
+      for (var follower in _usersFollowerLists) {
+        if (follower.id == following.id) {
+          follower.isFollow = true;
+        }
+      }
+    }
     notifyListeners();
+  }
+
+  onTapFollowButton(
+      BuildContext context, int followUserId, bool isFollow) async {
+    if (isFollow) {
+      await ApiService.actionUnfollow(followUserId);
+      int index = _usersFollowingLists
+          .indexWhere((element) => element.id == followUserId);
+      _usersFollowingLists[index].isFollow = false;
+    } else {
+      await ApiService.actionFollow(followUserId);
+    }
+    _fetchFollowsData();
   }
 
   set pageState(bool value) {
