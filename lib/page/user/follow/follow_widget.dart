@@ -73,7 +73,10 @@ class FollowWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  CustomFollowButton(),
+                  CustomFollowButton(
+                    isFollow: usersFollowLists[index].isFollow,
+                    followUserId: usersFollowLists[index].id,
+                  ),
                 ],
               ),
             ),
