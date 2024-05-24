@@ -9,7 +9,7 @@ import '../../widget/custom_app_bar.dart';
 class UserSettingPage extends StatelessWidget {
   UserSettingPage({super.key});
 
-  List<String> settingTab = ['공지사항', '도움말', '문의하기', ''];
+  List<String> settingCategory = ['공지사항', '도움말', '문의하기', ''];
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +33,21 @@ class UserSettingPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Container(
                     width: double.infinity,
-                    height: 68.0,
+                    height: 68.0.h,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12.0),
+                      padding: EdgeInsets.symmetric(vertical: 12.0.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            settingTab[index],
+                            settingCategory[index],
                             style: TextStyle(
                               color: Color(0xff212529),
                               fontSize: 18.sp,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w700,
-                              height: 1.5,
+                              height: 1.5.h,
                             ),
                           ),
                         ],
