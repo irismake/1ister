@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../services/api_service.dart';
 import '../../widget/custom/custom_text_form_field.dart';
-import '../../widget/join_widget.dart';
+import '../../widget/sign_widget.dart';
 import '../../widget/custom/custom_next_page_button.dart';
 import '../../widget/custom/custom_progress_bar.dart';
 import '../../widget/pop_up/agreement_pop_up.dart';
@@ -107,7 +107,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: ProgressBar(progress: 3, totalProgress: 3),
-        body: JoinWidget(
+        body: SignWidget(
           title: '마지막으로\n비밀번호를 설정해 주세요.',
           firstFieldText: '비밀번호',
           firstCustomForm: Form(
@@ -127,7 +127,6 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
               keyboardType: TextInputType.text,
             ),
           ),
-          firstGuideState: true,
           firstGuideText: '영어, 숫자 포함 n자 이내',
           secondFieldText: '비밀번호 확인',
           secondCustomForm: Form(
@@ -150,11 +149,6 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
               keyboardType: TextInputType.text,
             ),
           ),
-          secondGuideState: false,
-          secondGuideText: null,
-          authenticationState: false,
-          authenticationButton: null,
-          timer: null,
           nextPageButton: NextPageButton(
               firstFieldState: _passwordFilled,
               secondFieldState: _passwordCheckFilled,

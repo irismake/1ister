@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../widget/custom/custom_next_page_button.dart';
 import '../../widget/custom/custom_progress_bar.dart';
 import '../../widget/custom/custom_text_form_field.dart';
-import '../../widget/join_widget.dart';
+import '../../widget/sign_widget.dart';
 import '../../services/api_service.dart';
 import 'set_id_name_page.dart';
 
@@ -122,13 +122,9 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: ProgressBar(progress: 1, totalProgress: 3),
-        body: JoinWidget(
+        body: SignWidget(
           title: '회원가입을 위해\n이메일을 인증해주세요.',
           firstFieldText: '이메일 주소',
-          firstGuideState: false,
-          firstGuideText: null,
-          secondGuideState: false,
-          secondGuideText: null,
           firstCustomForm: Form(
             key: _emailAddressFormKey,
             child: CustomTextFormField(
@@ -180,7 +176,6 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                   color: _timerState ? noFocusColor : Colors.transparent),
             ),
           ),
-          authenticationState: true,
           timer: Positioned(
             top: 12.h,
             right: 16.w,

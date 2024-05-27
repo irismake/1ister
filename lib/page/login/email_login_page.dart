@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 import '../../widget/custom/custom_text_form_field.dart';
 import '../../widget/custom/custom_next_page_button.dart';
-import '../../widget/join_widget.dart';
+import '../../widget/sign_widget.dart';
 import '../../widget/navigator/home_page_navigator.dart';
 
 class EmailLoginPage extends StatefulWidget {
@@ -65,13 +65,14 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: JoinWidget(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          scrolledUnderElevation: 0,
+          automaticallyImplyLeading: false,
+        ),
+        body: SignWidget(
           title: '가입하신 아이디와\n비밀번호를 입력해주세요.',
-          firstFieldText: '',
-          firstGuideState: false,
-          firstGuideText: null,
-          secondGuideState: false,
-          secondGuideText: null,
           firstCustomForm: Form(
             key: _emailFormkey,
             child: CustomTextFormField(
@@ -89,7 +90,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
               keyboardType: TextInputType.text,
             ),
           ),
-          secondFieldText: '',
           secondCustomForm: Form(
             key: _passwordFormkey,
             child: CustomTextFormField(
@@ -107,9 +107,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
               keyboardType: TextInputType.text,
             ),
           ),
-          authenticationState: false,
-          authenticationButton: null,
-          timer: null,
           nextPageButton: NextPageButton(
             firstFieldState: _emailFilled,
             secondFieldState: _passwordFilled,

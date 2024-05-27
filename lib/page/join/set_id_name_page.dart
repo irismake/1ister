@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lister/services/api_service.dart';
 
 import '../../widget/custom/custom_text_form_field.dart';
-import '../../widget/join_widget.dart';
+import '../../widget/sign_widget.dart';
 import '../../widget/custom/custom_next_page_button.dart';
 import '../../widget/custom/custom_progress_bar.dart';
 import 'set_password_page.dart';
@@ -72,7 +72,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: ProgressBar(progress: 2, totalProgress: 3),
-        body: JoinWidget(
+        body: SignWidget(
             title: '사용자 아이디와\n이름을 정해주세요.',
             firstFieldText: '사용자 아이디',
             firstCustomForm: Form(
@@ -92,7 +92,6 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                 keyboardType: TextInputType.name,
               ),
             ),
-            firstGuideState: true,
             firstGuideText: '영어, 숫자 포함 n자 이내',
             secondFieldText: '이름',
             secondCustomForm: Form(
@@ -109,11 +108,7 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                 keyboardType: TextInputType.name,
               ),
             ),
-            secondGuideState: true,
             secondGuideText: '한국어, 영어, 일본어 n자 이내',
-            authenticationState: false,
-            authenticationButton: null,
-            timer: null,
             nextPageButton: NextPageButton(
               firstFieldState: _userIdFilled,
               secondFieldState: _nameFilled,
