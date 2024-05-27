@@ -90,13 +90,37 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     }
   }
 
+  void emailVerificationRequest() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    try {
+      _emailAuthenticationFormKey.currentState?.reset();
+      FocusScope.of(context).unfocus();
+      _emailAddressValid = await ApiService.sendValidCode(userEmailAddress);
+      final formKeyState = _emailAddressFormKey.currentState!;
+      if (formKeyState.validate()) {
+        formKeyState.save();
+        startTimer();
+        FocusScope.of(context).requestFocus(_emailAuthenticationFocus);
+      }
+    } finally {
+      Navigator.of(context).pop();
+    }
+  }
+
   void startTimer() {
     _timerState ? timer.cancel() : null;
     remainingTime = 180;
     _timerState = true;
-    const Duration interval = Duration(seconds: 1);
 
-    timer = Timer.periodic(interval, (Timer timer) {
+    timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
       if (remainingTime > 0) {
         setState(() {
           remainingTime--;
@@ -164,7 +188,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
               keyboardType: TextInputType.number,
             ),
           ),
-          authenticationButton: Positioned(
+          timer: Positioned(
             top: 21.h,
             right: 108.w,
             child: Text(
@@ -176,7 +200,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                   color: _timerState ? noFocusColor : Colors.transparent),
             ),
           ),
-          timer: Positioned(
+          authenticationButton: Positioned(
             top: 12.h,
             right: 16.w,
             child: TextButton(
@@ -188,18 +212,8 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                     fontWeight: FontWeight.w600,
                     color: _emailAddressFilled ? darkGrayColor : noFocusColor),
               ),
-              onPressed: () async {
-                _emailAuthenticationFormKey.currentState?.reset();
-                FocusScope.of(context).unfocus();
-                _emailAddressValid =
-                    await ApiService.sendValidCode(userEmailAddress);
-                final formKeyState = _emailAddressFormKey.currentState!;
-                if (formKeyState.validate()) {
-                  formKeyState.save();
-                  startTimer();
-                  FocusScope.of(context)
-                      .requestFocus(_emailAuthenticationFocus);
-                }
+              onPressed: () {
+                emailVerificationRequest();
               },
               style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
