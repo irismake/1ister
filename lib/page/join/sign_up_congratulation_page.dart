@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,8 +8,48 @@ import 'package:flutter_svg/svg.dart';
 import '../../widget/custom/custom_next_page_button.dart';
 import '../login/login_page.dart';
 
-class SignUpCongratulationPage extends StatelessWidget {
+class SignUpCongratulationPage extends StatefulWidget {
   SignUpCongratulationPage({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpCongratulationPage> createState() =>
+      _SignUpCongratulationPageState();
+}
+
+class _SignUpCongratulationPageState extends State<SignUpCongratulationPage> {
+  late Timer _timer;
+  int _remainingSeconds = 3;
+
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_remainingSeconds > 0) {
+        setState(() {
+          _remainingSeconds--;
+        });
+      } else {
+        _navigateToHomePage();
+      }
+    });
+  }
+
+  void _navigateToHomePage() {
+    _timer.cancel();
+    Navigator.of(context).pushAndRemoveUntil(
+      CupertinoPageRoute(builder: (context) => LoginPage()),
+      (route) => false,
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +79,6 @@ class SignUpCongratulationPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // SizedBox(
-                //   height: 40.0.h,
-                // ),
                 SizedBox(
                   height: 40.0.h,
                 ),
@@ -49,8 +88,6 @@ class SignUpCongratulationPage extends StatelessWidget {
                     fit: BoxFit.fill,
                     child: SvgPicture.asset(
                       'assets/images/image_welcome.svg',
-                      width: 115.2.w,
-                      height: 32.h,
                     ),
                   ),
                 ),
@@ -59,7 +96,7 @@ class SignUpCongratulationPage extends StatelessWidget {
             NextPageButton(
               firstFieldState: true,
               secondFieldState: true,
-              text: '3초 후에 메인으로 이동해요',
+              text: '$_remainingSeconds초 후에 메인으로 이동해요',
               onPressed: () {
                 Navigator.of(context).pushAndRemoveUntil(
                     CupertinoPageRoute(builder: (context) => LoginPage()),
