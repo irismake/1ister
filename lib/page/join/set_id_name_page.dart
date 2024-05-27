@@ -17,12 +17,8 @@ class SetIdNamePage extends StatefulWidget {
 }
 
 class _SetIdNamePageState extends State<SetIdNamePage> {
-  // final noFocusColor = Color(0xffCED4DA);
-  // final darkGrayColor = Color(0xff495057);
-  // final mildGrayColor = Color(0xffADB5BD);
-
-  bool _userIdState = false;
-  bool _nameState = false;
+  bool _userIdFilled = false;
+  bool _nameFilled = false;
   bool _userIdValid = false;
 
   FocusNode _userIdFocus = FocusNode();
@@ -58,12 +54,11 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
   }
 
   String? _checknameValid(String? value) {
-    if (_nameFocus.hasFocus) {
+    if (_userIdFocus.hasFocus) {
+      _userIdValid = true;
       return null;
     }
-    if (!_userIdValid) {
-      //_nameState = true;
-      print('valid 출력');
+    if (!_userIdValid && _userIdFilled) {
       return '이미 사용중인 아이디 입니다.';
     }
   }
@@ -87,12 +82,12 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                 focusNode: _userIdFocus,
                 onChanged: (value) {
                   setState(() {
-                    userId = value!;
-                    value == '' ? _userIdState = false : _userIdState = true;
+                    userId = value;
+                    value == '' ? _userIdFilled = false : _userIdFilled = true;
                   });
                 },
                 validator: (value) {
-                  _checknameValid(value!);
+                  return _checknameValid(value!);
                 },
                 keyboardType: TextInputType.name,
               ),
@@ -107,11 +102,10 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
                 focusNode: _nameFocus,
                 onChanged: (value) {
                   setState(() {
-                    name = value!;
-                    value == '' ? _nameState = false : _nameState = true;
+                    name = value;
+                    value == '' ? _nameFilled = false : _nameFilled = true;
                   });
                 },
-                validator: (value) {},
                 keyboardType: TextInputType.name,
               ),
             ),
@@ -121,25 +115,25 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
             authenticationButton: null,
             timer: null,
             nextPageButton: NextPageButton(
-              firstFieldState: _userIdState,
-              secondFieldState: _nameState,
+              firstFieldState: _userIdFilled,
+              secondFieldState: _nameFilled,
               text: '다음',
               onPressed: () async {
-                if (_userIdState && _nameState) {
-                  final formKeyState = _nameFormKey.currentState!;
+                if (_userIdFilled && _nameFilled) {
+                  _userIdValid =
+                      await ApiService.checkDuplicateUserName(userId);
+                  final formKeyState = _userIdFormKey.currentState!;
                   if (formKeyState.validate()) {
                     formKeyState.save();
-                    _userIdValid =
-                        await ApiService.checkDuplicateUserName(userId);
-                    if (_userIdValid) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SetPasswordPage(
-                                  userEmail: widget.userEmail,
-                                  userId: userId,
-                                  name: name)));
-                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SetPasswordPage(
+                            userEmail: widget.userEmail,
+                            userId: userId,
+                            name: name),
+                      ),
+                    );
                   }
                 }
               },

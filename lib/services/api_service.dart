@@ -24,6 +24,7 @@ class ApiService {
       if (checkEmailResponse.statusCode == 200) {
         final checkEmailResponseData = json.decode(checkEmailResponse.body);
         if (checkEmailResponseData['result']) {
+          return false;
           throw Exception(
               'Response data error <checkEmail> : ${checkEmailResponseData['result']}');
         }
@@ -35,8 +36,9 @@ class ApiService {
           if (response.statusCode == 200) {
             final responseData = json.decode(response.body);
             if (responseData['ok']) {
-              return false;
+              return true;
             } else {
+              return false;
               throw Exception(
                   'Response data error <sendValidCode> : ${responseData['ok']}');
             }
@@ -66,8 +68,9 @@ class ApiService {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         if (responseData['is_valid']) {
-          return false;
+          return true;
         } else {
+          return false;
           throw Exception(
               'Response data error <checkValidCode> : ${responseData['is_valid']}');
         }
@@ -89,6 +92,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         if (responseData['result']) {
+          return false;
           throw Exception('이미 사용중인 이름입니다');
         } else {
           return true;

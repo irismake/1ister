@@ -32,8 +32,8 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
   final checkTextColor = Color(0xff868E96);
   final xIconColor = Color(0xff343A40);
 
-  bool _passwordState = false;
-  bool _passwordCheckState = false;
+  bool _passwordFilled = false;
+  bool _passwordCheckFilled = false;
   bool _passwordCheckValid = false;
   bool _isChecked_A = false;
   bool _isChecked_B = false;
@@ -58,11 +58,6 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-        // if (_passwordState && _passwordCheckState) {
-        //   _nextButtonState = true;
-        // } else {
-        //   _nextButtonState = false;
-        // }
       });
     });
 
@@ -72,24 +67,18 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
         if (formKeyState.validate()) {
           formKeyState.save();
         }
-        // if (_passwordState && _passwordCheckState) {
-        //   _nextButtonState = true;
-        // } else {
-        //   _nextButtonState = false;
-        // }
       });
     });
   }
 
   String? _checkPasswordCheckValid(String? value) {
     if (_passwordCheckFocus.hasFocus) {
-      _passwordCheckValid = false;
+      _passwordCheckValid = true;
       return null;
     }
-    if (password != passwordCheck && _passwordCheckValid) {
+    if (password != passwordCheck) {
       return '비밀번호가 일치하지 않습니다';
     }
-    return null;
   }
 
   void _agreementPopUp() {
@@ -175,11 +164,6 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                                         activeColor: checkBoxColor,
                                         checkColor: Colors.white,
                                         hoverColor: Colors.black,
-                                        // overlayColor: MaterialStatePropertyAll(
-                                        //     Colors.green.withOpacity(0.2)),
-                                        // fillColor: MaterialStatePropertyAll(
-                                        //   Colors.white.withOpacity(1),
-                                        // ),
                                         side: BorderSide(
                                             width: 1.sp, color: noFocusColor),
                                         shape: RoundedRectangleBorder(
@@ -234,11 +218,6 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                                                 activeColor: checkBoxColor,
                                                 checkColor: Colors.white,
                                                 hoverColor: Colors.black,
-                                                // overlayColor: MaterialStatePropertyAll(
-                                                //     Colors.green.withOpacity(0.2)),
-                                                // fillColor: MaterialStatePropertyAll(
-                                                //   Colors.white.withOpacity(1),
-                                                // ),
                                                 side: BorderSide(
                                                     width: 1.sp,
                                                     color: noFocusColor),
@@ -265,7 +244,6 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                                     ),
                                     Container(
                                       height: 24.h,
-                                      //color: Colors.deepOrange,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -319,8 +297,8 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                         ),
                       ),
                       NextPageButton(
-                        firstFieldState: _passwordState,
-                        secondFieldState: _passwordCheckState,
+                        firstFieldState: _passwordFilled,
+                        secondFieldState: _passwordCheckFilled,
                         text: '회원가입',
                         onPressed: () async {
                           if (_isChecked_A && _isChecked_B && _isChecked_C) {
@@ -370,11 +348,12 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
               isObscureText: true,
               onChanged: (value) {
                 setState(() {
-                  password = value!;
-                  value == '' ? _passwordState = false : _passwordState = true;
+                  password = value;
+                  value == ''
+                      ? _passwordFilled = false
+                      : _passwordFilled = true;
                 });
               },
-              validator: (value) {},
               keyboardType: TextInputType.text,
             ),
           ),
@@ -389,23 +368,14 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
               isObscureText: true,
               onChanged: (value) {
                 setState(() {
-                  passwordCheck = value!;
+                  passwordCheck = value;
                   value == ''
-                      ? _passwordCheckState = false
-                      : _passwordCheckState = true;
+                      ? _passwordCheckFilled = false
+                      : _passwordCheckFilled = true;
                 });
               },
               validator: (value) {
-                List<String? Function(String)> validators = [
-                  _checkPasswordCheckValid,
-                ];
-                for (var validator in validators) {
-                  var result = validator(value!);
-                  if (result != null) {
-                    return result;
-                  }
-                }
-                return null;
+                return _checkPasswordCheckValid(value);
               },
               keyboardType: TextInputType.text,
             ),
@@ -416,20 +386,16 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
           authenticationButton: null,
           timer: null,
           nextPageButton: NextPageButton(
-            firstFieldState: _passwordState,
-            secondFieldState: _passwordCheckState,
-            text: '회원가입',
-            onPressed: () {
-              if (_passwordState && _passwordCheckState) {
-                _passwordCheckValid = true;
+              firstFieldState: _passwordFilled,
+              secondFieldState: _passwordCheckFilled,
+              text: '회원가입',
+              onPressed: () {
                 final formKeyState = _passwordCheckFormkey.currentState!;
                 if (formKeyState.validate()) {
                   formKeyState.save();
                   _agreementPopUp();
                 }
-              }
-            },
-          ),
+              }),
         ),
       ),
     );
