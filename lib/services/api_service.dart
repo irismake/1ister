@@ -161,6 +161,7 @@ class ApiService {
         await storage.write(key: 'USER_ID', value: userId.toString());
         return true;
       } else {
+        return false;
         throw Exception(
             'Response code error <signIn> : ${response.statusCode}');
       }
