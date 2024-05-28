@@ -53,6 +53,13 @@ class _SetIdNamePageState extends State<SetIdNamePage> {
     });
   }
 
+  @override
+  void dispose() {
+    _userIdFocus.dispose();
+    _nameFocus.dispose();
+    super.dispose();
+  }
+
   String? _checknameValid(String? value) {
     if (_userIdFocus.hasFocus) {
       _userIdValid = true;

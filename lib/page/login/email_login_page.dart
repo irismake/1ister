@@ -50,6 +50,13 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
     });
   }
 
+  @override
+  void dispose() {
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+    super.dispose();
+  }
+
   String? _checkSignInValid(String? value) {
     if (_emailFocus.hasFocus) {
       _signInValid = true;

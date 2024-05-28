@@ -39,7 +39,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   String userEmailAddress = '';
   String authenticationNumber = '';
 
-  late Timer timer;
+  late Timer _timer;
   int remainingTime = 180; // 3 minutes in seconds
 
   @override
@@ -63,6 +63,14 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
         }
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _emailAddressFocus.dispose();
+    _emailAuthenticationFocus.dispose();
+    _timer.cancel();
+    super.dispose();
   }
 
   String? _checkEmailDuplicate(String? value) {
@@ -116,11 +124,11 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   }
 
   void startTimer() {
-    _timerState ? timer.cancel() : null;
+    _timerState ? _timer.cancel() : null;
     remainingTime = 180;
     _timerState = true;
 
-    timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
       if (remainingTime > 0) {
         setState(() {
           remainingTime--;
@@ -133,7 +141,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
 
   void resetTimer() {
     setState(() {
-      _timerState ? timer.cancel() : null;
+      _timerState ? _timer.cancel() : null;
       _timerState = false;
     });
   }

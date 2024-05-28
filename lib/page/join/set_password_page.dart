@@ -65,6 +65,13 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
     });
   }
 
+  @override
+  void dispose() {
+    _passwordFocus.dispose();
+    _passwordCheckFocus.dispose();
+    super.dispose();
+  }
+
   String? _checkPasswordCheckValid(String? value) {
     if (_passwordCheckFocus.hasFocus) {
       _passwordCheckValid = true;
