@@ -57,6 +57,7 @@ class MyGroupsProvider with ChangeNotifier {
     for (var result in myGroups) {
       _myGroups.add(result);
     }
+    notifyListeners();
   }
 
   Future<void> fetchIsBucketGroup() async {
@@ -70,7 +71,6 @@ class MyGroupsProvider with ChangeNotifier {
   }
 
   Future<void> fetchMyGroupBookmarkLists() async {
-    print('그룹 아이디 잘 가져왔나$_bookmarkGroupId');
     final results = await ApiService.getMyGroupLists(_bookmarkGroupId ?? 0);
     _myGroupLists.clear();
     for (var result in results) {

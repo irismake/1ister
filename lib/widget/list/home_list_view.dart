@@ -49,17 +49,21 @@ class HomeListView extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8)),
                           ),
                         ),
-                        Text(
-                          '${mainLists[index].title}',
-                          style: TextStyle(
-                            color: Color(0xFF343A40),
-                            fontSize: 16.sp,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w600,
-                            height: 1.5.h,
+                        SizedBox(
+                          height: 48.0.h,
+                          child: Text(
+                            '${mainLists[index].title}',
+                            style: TextStyle(
+                              color: Color(0xFF343A40),
+                              fontSize: 16.sp,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w600,
+                              height: 1.5.h,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            textAlign: TextAlign.start,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
                         ),
                         Text(
                           '${mainLists[index].updatedAt}',

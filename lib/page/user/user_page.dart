@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lister/model/provider/user_info_provider.dart';
+import 'package:lister/page/user/user_setting_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/provider/follows_provider.dart';
@@ -48,7 +49,14 @@ class _UserPageState extends State<UserPage> {
             popState: true,
             titleText: _name,
             titleState: true,
-            actionButtonOnTap: () {},
+            actionButtonOnTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserSettingPage(),
+                ),
+              );
+            },
             actionButton: 'button_hamburger'),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
