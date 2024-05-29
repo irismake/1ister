@@ -33,6 +33,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
 
   @override
   void dispose() {
+    _createGroupFocus.dispose();
     super.dispose();
   }
 
