@@ -69,7 +69,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   void dispose() {
     _emailAddressFocus.dispose();
     _emailAuthenticationFocus.dispose();
-    _timer.cancel();
+    _timerState ? _timer.cancel() : null;
     super.dispose();
   }
 
