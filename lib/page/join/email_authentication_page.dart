@@ -24,11 +24,11 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   final darkGrayColor = Color(0xff495057);
 
   bool _emailAddressFilled = false;
-  bool _emailAddressValid = false;
+  bool _emailAddressDuplicateValid = false;
   bool _timerState = false;
   bool _emailAuthenticationFilled = false;
   bool _emailAuthenticationValid = false;
-  bool _authenticationRequestButton = false;
+  bool _reAuthentication = false;
 
   FocusNode _emailAddressFocus = FocusNode();
   FocusNode _emailAuthenticationFocus = FocusNode();
@@ -40,7 +40,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
   String authenticationNumber = '';
 
   late Timer _timer;
-  int remainingTime = 180; // 3 minutes in seconds
+  int remainingTime = 180;
 
   @override
   void initState() {
@@ -73,17 +73,15 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     super.dispose();
   }
 
-  String? _checkEmailDuplicate(String? value) {
-    if (_emailAddressFocus.hasFocus) {
-      _emailAddressValid = true;
-      return null;
-    }
-    if (!_emailAddressValid) {
-      _emailAddressValid = true;
-      return '이미 사용중인 이메일입니다.';
-    }
+  String? _checkEmailInput(String? value) {
     if (!_emailAddressFilled) {
       return '이메일을 입력해주세요.';
+    }
+  }
+
+  String? _checkEmailDuplicate(String? value) {
+    if (!_emailAddressDuplicateValid) {
+      return '이미 사용중인 이메일입니다.';
     }
   }
 
@@ -93,12 +91,12 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
       return null;
     }
     if (!_emailAuthenticationValid) {
-      _authenticationRequestButton = true;
+      _reAuthentication = true;
       return '잘못된 인증번호에요.';
     }
   }
 
-  void emailVerificationRequest() async {
+  void emailAuthenticationRequest() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -111,7 +109,13 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
     try {
       _emailAuthenticationFormKey.currentState?.reset();
       FocusScope.of(context).unfocus();
-      _emailAddressValid = await ApiService.sendValidCode(userEmailAddress);
+
+      _emailAddressDuplicateValid =
+          await ApiService.checkDuplicateEmail(userEmailAddress);
+      if (_emailAddressDuplicateValid) {
+        await ApiService.sendValidCode(userEmailAddress);
+      }
+
       final formKeyState = _emailAddressFormKey.currentState!;
       if (formKeyState.validate()) {
         formKeyState.save();
@@ -171,7 +175,20 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                 });
               },
               validator: (value) {
-                return _checkEmailDuplicate(value!);
+                if (_emailAddressFocus.hasFocus) {
+                  _emailAddressDuplicateValid = true;
+                  return null;
+                }
+                List<String? Function(String)> validators = [
+                  _checkEmailDuplicate,
+                  _checkEmailInput
+                ];
+                for (var validator in validators) {
+                  var result = validator(value!);
+                  if (result != null) {
+                    return result;
+                  }
+                }
               },
               keyboardType: TextInputType.emailAddress,
             ),
@@ -213,7 +230,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
             right: 16.w,
             child: TextButton(
               child: Text(
-                _authenticationRequestButton ? '재인증' : '인증 요청',
+                _reAuthentication ? '재인증' : '인증 요청',
                 style: TextStyle(
                     fontFamily: 'PretendardRegular',
                     fontSize: 14.sp,
@@ -221,7 +238,7 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                     color: _emailAddressFilled ? darkGrayColor : noFocusColor),
               ),
               onPressed: () {
-                emailVerificationRequest();
+                emailAuthenticationRequest();
               },
               style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(

@@ -16,45 +16,63 @@ class ApiService {
   static const String actionsPrefix = 'actions';
   static const String groupPrefix = 'groups';
 
-  static Future<bool> sendValidCode(String userEmailAddress) async {
+  static Future<bool> checkEmail(String userEmailAddress) async {
     try {
       final checkEmailResponse = await http.get(
         Uri.parse('$baseUrl/$userPrefix/check-email?email=$userEmailAddress'),
       );
       if (checkEmailResponse.statusCode == 200) {
         final checkEmailResponseData = json.decode(checkEmailResponse.body);
-        if (checkEmailResponseData['result']) {
-          return false;
-          throw Exception(
-              'Response data error <checkEmail> : ${checkEmailResponseData['result']}');
-        }
-        try {
-          final response = await http.get(
-            Uri.parse(
-                '$baseUrl/$userPrefix/send-valid-code?email=$userEmailAddress'),
-          );
-          if (response.statusCode == 200) {
-            final responseData = json.decode(response.body);
-            if (responseData['ok']) {
-              return true;
-            } else {
-              return false;
-              throw Exception(
-                  'Response data error <sendValidCode> : ${responseData['ok']}');
-            }
-          } else {
-            throw Exception(
-                'Response code error <sendValidCode> : ${response.statusCode}');
-          }
-        } catch (e) {
-          throw Exception('Request error <sendValidCode> : $e');
-        }
+
+        return checkEmailResponseData['result'];
       } else {
         throw Exception(
             'Response code error <checkEmail> : ${checkEmailResponse.statusCode}');
       }
     } catch (e) {
       throw Exception('Request error <checkEmail> : $e');
+    }
+  }
+
+  static Future<bool> checkDuplicateEmail(String userEmailAddress) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '$baseUrl/$userPrefix/check-duplicate-email?email=$userEmailAddress'),
+      );
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        return !responseData['result'];
+      } else {
+        throw Exception(
+            'Response code error <checkDuplicateEmail> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <checkDuplicateEmail> : $e');
+    }
+  }
+
+  static Future<bool> sendValidCode(String userEmailAddress) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '$baseUrl/$userPrefix/send-valid-code?email=$userEmailAddress'),
+      );
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData['ok']) {
+          return true;
+        } else {
+          //return false;
+          throw Exception(
+              'Response data error <sendValidCode> : ${responseData['ok']}');
+        }
+      } else {
+        throw Exception(
+            'Response code error <sendValidCode> : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Request error <sendValidCode> : $e');
     }
   }
 
