@@ -22,7 +22,9 @@ class NextPageButton extends StatelessWidget {
         width: double.infinity,
         child: TextButton(
           onPressed: () async {
-            onPressed();
+            if (firstFieldState && secondFieldState) {
+              onPressed();
+            }
           },
           style: TextButton.styleFrom(
             shape: RoundedRectangleBorder(
