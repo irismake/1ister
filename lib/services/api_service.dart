@@ -63,7 +63,7 @@ class ApiService {
         if (responseData['ok']) {
           return true;
         } else {
-          //return false;
+          return false;
           throw Exception(
               'Response data error <sendValidCode> : ${responseData['ok']}');
         }

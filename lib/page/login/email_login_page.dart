@@ -23,7 +23,8 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
 
   bool _emailFilled = false;
   bool _passwordFilled = false;
-  bool _signInValid = false;
+  bool _emailSignInValid = false;
+  bool _emailExistenceValid = false;
 
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
@@ -58,12 +59,14 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
   }
 
   String? _checkSignInValid(String? value) {
-    if (_emailFocus.hasFocus) {
-      _signInValid = true;
-      return null;
-    }
-    if (!_signInValid) {
+    if (!_emailSignInValid) {
       return '아이디 또는 비밀번호가 일치하지 않습니다';
+    }
+  }
+
+  String? _checkEmailExistence(String? value) {
+    if (!_emailExistenceValid) {
+      return '일치하는 아이디가 존재하지 않습니다.';
     }
   }
 
@@ -92,7 +95,21 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                 });
               },
               validator: (value) {
-                return _checkSignInValid(value);
+                if (_emailFocus.hasFocus) {
+                  _emailExistenceValid = true;
+                  _emailSignInValid = true;
+                  return null;
+                }
+                List<String? Function(String)> validators = [
+                  _checkSignInValid,
+                  _checkEmailExistence,
+                ];
+                for (var validator in validators) {
+                  var result = validator(value!);
+                  if (result != null) {
+                    return result;
+                  }
+                }
               },
               keyboardType: TextInputType.text,
             ),
@@ -119,14 +136,14 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
             secondFieldState: _passwordFilled,
             text: '로그인',
             onPressed: () async {
-              print("[final email] : $_userEmail");
-              print("[final password] : $_userPassword");
-              _signInValid = await ApiService.signIn(_userEmail, _userPassword);
-              print(_signInValid);
+              _emailExistenceValid = await ApiService.checkEmail(_userEmail);
+              if (_emailExistenceValid) {
+                _emailSignInValid =
+                    await ApiService.signIn(_userEmail, _userPassword);
+              }
               final formKeyState = _emailFormkey.currentState!;
               if (formKeyState.validate()) {
                 formKeyState.save();
-
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
