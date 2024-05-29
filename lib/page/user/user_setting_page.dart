@@ -34,24 +34,21 @@ class UserSettingPage extends StatelessWidget {
                   return Container(
                     width: double.infinity,
                     height: 68.0.h,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12.0.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            settingCategory[index],
-                            style: TextStyle(
-                              color: Color(0xff212529),
-                              fontSize: 18.sp,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w700,
-                              height: 1.5.h,
-                            ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          settingCategory[index],
+                          style: TextStyle(
+                            color: Color(0xff212529),
+                            fontSize: 18.sp,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w700,
+                            height: 1.5.h,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                   ;
