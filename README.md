@@ -83,7 +83,8 @@ _App Download Link:_
 │   ├── model                   # 데이터 저장 모델
 │   │   └── provider            # Provider
 │   ├── page                    # 페이지
-│   │   ├── book_mark
+│   │   ├── list
+│   │   ├── bookmark
 │   │   ├── edit
 │   │   ├── home
 │   │   ├── join
@@ -91,12 +92,11 @@ _App Download Link:_
 │   │   ├── search
 │   │   ├── splash
 │   │   └── user
-│   │       └── follow
 │   ├── services                # API 호출 클래스
 │   └── components               # 컴포넌트
-│       ├── custom
-│       ├── list
+│       ├── custom_ui_kit
 │       ├── navigator
+│       ├── widget
 │       └── pop_up
 ├── lister.iml
 ├── pubspec.lock
