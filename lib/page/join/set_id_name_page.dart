@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lister/services/api_service.dart';
 
-import '../../widget/custom/custom_text_form_field.dart';
-import '../../widget/sign_widget.dart';
-import '../../widget/custom/custom_next_page_button.dart';
-import '../../widget/custom/custom_progress_bar.dart';
+import '../../components/custom_ui_kit/custom_next_page_button.dart';
+import '../../components/custom_ui_kit/custom_progress_bar.dart';
+import '../../components/custom_ui_kit/custom_text_form_field.dart';
+import '../../components/widget/sign_widget.dart';
 import 'set_password_page.dart';
 
 class SetIdNamePage extends StatefulWidget {

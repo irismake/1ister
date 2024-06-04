@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../page/user/follow/follow_widget.dart';
-import '../custom/custom_tab_bar.dart';
-import '../list/user_book_mark_list.dart';
-import '../list/user_my_list.dart';
+import '../custom_ui_kit/custom_tab_bar.dart';
+import '../../page/user/users_list/user_book_mark_list.dart';
+import '../../page/user/users_list/user_my_list.dart';
 
 class PageViewNavigator extends StatefulWidget {
   final bool followState;

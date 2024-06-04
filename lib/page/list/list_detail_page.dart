@@ -5,10 +5,10 @@ import 'package:lister/model/provider/list_detail_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/list_detail_model.dart';
-import '../custom/custom_book_mark_button.dart';
-import '../custom/custom_keyword.dart';
-import '../custom_app_bar.dart';
-import 'list_item.dart';
+import '../../components/custom_ui_kit/custom_book_mark_button.dart';
+import '../../components/custom_ui_kit/custom_keyword.dart';
+import '../../components/navigator/custom_app_bar.dart';
+import '../../components/widget/list_item_widget.dart';
 
 class ListDetailPage extends StatefulWidget {
   final int listId;
@@ -173,7 +173,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
                     SizedBox(
                       height: 40.0.h,
                     ),
-                    ListItem(
+                    ListItemWidget(
                       items: items,
                     ),
                   ],

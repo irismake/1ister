@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../model/provider/create_list_provider.dart';
+import '../../model/provider/create_list_provider.dart';
 
 class EditEnterItem extends StatefulWidget {
   final int itemNum;

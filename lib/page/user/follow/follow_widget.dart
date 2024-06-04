@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../components/custom_ui_kit/custom_follow_button.dart';
 import '../../../model/follows_model.dart';
-import '../../../widget/custom/custom_follow_button.dart';
 
 class FollowWidget extends StatelessWidget {
   final int followCount;

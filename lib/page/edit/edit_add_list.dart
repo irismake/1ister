@@ -6,15 +6,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lister/model/provider/my_groups_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/custom_ui_kit/custom_dropdown_button.dart';
+import '../../components/custom_ui_kit/custom_keyword.dart';
+import '../../components/custom_ui_kit/custom_switch.dart';
+import '../../components/custom_ui_kit/custom_text_field.dart';
+import '../../components/widget/edit_enter item_widget.dart';
 import '../../model/my_group_model.dart';
 import '../../model/keyword_model.dart';
 import '../../model/provider/create_list_provider.dart';
 import '../../model/provider/keywords_provider.dart';
-import '../../widget/custom/custom_dropdown_button.dart';
-import '../../widget/custom/custom_keyword.dart';
-import '../../widget/custom/custom_switch.dart';
-import '../../widget/custom/custom_text_field.dart';
-import '../../widget/edit_enter item_widget.dart';
 
 class EditAddList extends StatefulWidget {
   EditAddList({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'custom/custom_icon_button.dart';
+import '../custom_ui_kit/custom_icon_button.dart';
 
 class BottomNavigationBar extends StatelessWidget {
   final VoidCallback? onTap;

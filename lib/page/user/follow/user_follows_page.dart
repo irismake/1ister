@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/provider/follows_provider.dart';
-import '../../widget/custom_app_bar.dart';
-import '../../widget/navigator/page_view_navigator.dart';
+import '../../../components/navigator/custom_app_bar.dart';
+import '../../../components/navigator/page_view_navigator.dart';
+import '../../../model/provider/follows_provider.dart';
 
 class UserFollowsPage extends StatelessWidget {
   final String name;

@@ -5,11 +5,12 @@ import 'package:lister/model/provider/user_info_provider.dart';
 import 'package:lister/services/api_service.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/custom_ui_kit/custom_next_page_button.dart';
+import '../../components/custom_ui_kit/custom_search_bar.dart';
+import '../../components/custom_ui_kit/custom_text_form_field.dart';
+import '../../components/navigator/custom_app_bar.dart';
 import '../../model/provider/my_groups_provider.dart';
-import '../../widget/custom/custom_next_page_button.dart';
-import '../../widget/custom/custom_search_bar.dart';
-import '../../widget/custom/custom_text_form_field.dart';
-import '../../widget/custom_app_bar.dart';
+
 import 'bookmark_groups_widget.dart';
 
 class BookMarkPage extends StatefulWidget {

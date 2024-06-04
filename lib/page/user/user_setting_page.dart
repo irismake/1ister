@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lister/services/api_service.dart';
 import 'package:restart_app/restart_app.dart';
 
-import '../../widget/custom/custom_next_page_button.dart';
-import '../../widget/custom_app_bar.dart';
+import '../../components/custom_ui_kit/custom_next_page_button.dart';
+import '../../components/navigator/custom_app_bar.dart';
 
 class UserSettingPage extends StatelessWidget {
   UserSettingPage({super.key});

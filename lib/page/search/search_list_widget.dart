@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'custom/custom_follow_button.dart';
-import 'custom/custom_keyword.dart';
+import '../../components/custom_ui_kit/custom_follow_button.dart';
+import '../../components/custom_ui_kit/custom_keyword.dart';
 
 class ListViewWidget extends StatefulWidget {
   final List<dynamic> userInfo;

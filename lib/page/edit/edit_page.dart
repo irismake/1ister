@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/navigator/custom_app_bar.dart';
 import '../../model/provider/create_list_provider.dart';
 import '../../model/provider/keywords_provider.dart';
 import '../../model/provider/my_groups_provider.dart';
 import '../../services/api_service.dart';
-import '../../widget/custom_app_bar.dart';
+
 import 'edit_add_list.dart';
 
 class EditPage extends StatefulWidget {

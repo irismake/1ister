@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/custom_ui_kit/custom_search_bar.dart';
+import '../../components/navigator/custom_app_bar.dart';
 import '../../model/provider/my_groups_provider.dart';
-import '../../widget/custom/custom_search_bar.dart';
-import '../../widget/custom_app_bar.dart';
+
 import 'bookmark_group_lists_widget.dart';
 
 class BookmarkListPage extends StatefulWidget {
