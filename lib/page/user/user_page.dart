@@ -5,12 +5,13 @@ import 'package:lister/model/provider/user_info_provider.dart';
 import 'package:lister/page/user/user_setting_page.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/navigator/custom_app_bar.dart';
+import '../../components/navigator/page_view_navigator.dart';
 import '../../model/provider/follows_provider.dart';
 import '../../model/provider/get_lists_provider.dart';
-import '../../widget/custom_app_bar.dart';
-import '../../widget/navigator/page_view_navigator.dart';
+
 import 'user_edit_info_page.dart';
-import 'user_follows_page.dart';
+import 'follow/user_follows_page.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);

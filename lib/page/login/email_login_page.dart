@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../components/custom_ui_kit/custom_next_page_button.dart';
+import '../../components/custom_ui_kit/custom_text_form_field.dart';
+import '../../components/navigator/home_page_navigator.dart';
+import '../../components/widget/sign_widget.dart';
 import '../../services/api_service.dart';
-import '../../widget/custom/custom_text_form_field.dart';
-import '../../widget/custom/custom_next_page_button.dart';
-import '../../widget/sign_widget.dart';
-import '../../widget/navigator/home_page_navigator.dart';
 
 class EmailLoginPage extends StatefulWidget {
   const EmailLoginPage({Key? key}) : super(key: key);

@@ -4,10 +4,10 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:lister/services/api_service.dart';
 import 'package:provider/provider.dart';
+import '../../components/custom_ui_kit/custom_next_page_button.dart';
+import '../../components/custom_ui_kit/custom_text_field.dart';
+import '../../components/navigator/custom_app_bar.dart';
 import '../../model/provider/user_info_provider.dart';
-import '../../widget/custom/custom_next_page_button.dart';
-import '../../widget/custom/custom_text_field.dart';
-import '../../widget/custom_app_bar.dart';
 
 class UserEditInfoPage extends StatefulWidget {
   final String userName;

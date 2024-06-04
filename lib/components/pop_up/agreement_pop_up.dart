@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../custom/custom_next_page_button.dart';
+import '../custom_ui_kit/custom_next_page_button.dart';
 
 class AgreementPopUp extends StatelessWidget {
   final VoidCallback onAgree;

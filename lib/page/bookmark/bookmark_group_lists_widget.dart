@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lister/model/list_model.dart';
 import 'package:provider/provider.dart';
 
+import '../list/list_detail_page.dart';
 import '../../model/provider/my_groups_provider.dart';
-import '../../widget/list/list_detail_page.dart';
 
 class BookMarkGroupListsWidget extends StatelessWidget {
   const BookMarkGroupListsWidget({

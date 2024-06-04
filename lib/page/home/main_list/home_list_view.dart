@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:provider/provider.dart";
 
-import '../../model/list_model.dart';
-import '../../model/provider/get_lists_provider.dart';
-import 'list_detail_page.dart';
-import '../custom/custom_book_mark_button.dart';
+import '../../../model/list_model.dart';
+import '../../../model/provider/get_lists_provider.dart';
+import '../../list/list_detail_page.dart';
+import '../../../components/custom_ui_kit/custom_book_mark_button.dart';
 
-class HomeListView extends StatelessWidget {
-  HomeListView({Key? key});
+class MainListView extends StatelessWidget {
+  MainListView({Key? key});
   @override
   Widget build(BuildContext context) {
     return Consumer<GetListsProvider>(builder: (context, provider, child) {

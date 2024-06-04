@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../model/list_detail_model.dart';
 
-class ListItem extends StatelessWidget {
+class ListItemWidget extends StatelessWidget {
   List<ItemData> items;
-  ListItem({
+  ListItemWidget({
     super.key,
     required this.items,
   });

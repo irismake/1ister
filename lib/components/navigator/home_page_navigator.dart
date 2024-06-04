@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../page/book_mark/bookmark_page.dart';
+import '../../page/bookmark/bookmark_page.dart';
 import '../../page/edit/edit_page.dart';
 import '../../page/home/home_page.dart';
 import '../../page/search/search_page.dart';
 import '../../page/user/user_page.dart';
-import '../custom/custom_icon_button.dart';
+import '../custom_ui_kit/custom_icon_button.dart';
 import 'custom_route_observer.dart';
 
 class HomePageNavigator extends StatefulWidget {
