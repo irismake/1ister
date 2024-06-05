@@ -10,7 +10,7 @@ import '../model/my_group_model.dart';
 
 class ApiService {
   static final storage = FlutterSecureStorage();
-  static const String baseUrl = 'http://172.30.1.87:5999';
+  static const String baseUrl = 'http://localhost:5999';
   static const String userPrefix = 'user';
   static const String listsPrefix = 'lists';
   static const String actionsPrefix = 'actions';
