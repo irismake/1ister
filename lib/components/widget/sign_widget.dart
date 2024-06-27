@@ -12,7 +12,6 @@ class SignWidget extends StatelessWidget {
   final String? secondGuideText;
   final Form firstCustomForm;
   final Form secondCustomForm;
-  final Widget? authenticationButton;
   final Widget? timer;
 
   SignWidget({
@@ -24,7 +23,6 @@ class SignWidget extends StatelessWidget {
     this.secondGuideText,
     required this.firstCustomForm,
     required this.secondCustomForm,
-    this.authenticationButton,
     this.timer,
   });
 
@@ -44,113 +42,111 @@ class SignWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 70.0.h),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  height: 80.h,
+                Align(
                   alignment: Alignment.centerLeft,
-                  child: FittedBox(
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                          fontFamily: 'PretendardRegular',
-                          fontSize: 28.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          height: 1.4.h),
-                    ),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                        fontFamily: 'PretendardRegular',
+                        fontSize: 28.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                        height: 1.4),
                   ),
                 ),
                 SizedBox(
                   height: 48.h,
                 ),
-                Column(
+                firstFieldText != null
+                    ? Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  firstFieldText!,
+                                  style: TextStyle(
+                                      fontFamily: 'PretendardRegular',
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: darkGrayColor,
+                                      height: 1.4.h),
+                                ),
+                              ),
+                              Text(
+                                firstGuideText ?? '',
+                                style: TextStyle(
+                                  fontFamily: 'PretendardRegular',
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: mildGrayColor,
+                                  height: 1.5.h,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 6.h,
+                          ),
+                        ],
+                      )
+                    : SizedBox.shrink(),
+                firstCustomForm,
+                SizedBox(
+                  height: 12.h,
+                ),
+                secondFieldText != null
+                    ? Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  secondFieldText!,
+                                  style: TextStyle(
+                                    fontFamily: 'PretendardRegular',
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: darkGrayColor,
+                                    height: 1.4.h,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                secondGuideText ?? '',
+                                style: TextStyle(
+                                  fontFamily: 'PretendardRegular',
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: mildGrayColor,
+                                  height: 1.5.h,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 6.h,
+                          ),
+                        ],
+                      )
+                    : SizedBox.shrink(),
+                Stack(
                   children: [
-                    firstFieldText != null
-                        ? Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      firstFieldText!,
-                                      style: TextStyle(
-                                          fontFamily: 'PretendardRegular',
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: darkGrayColor,
-                                          height: 1.4.h),
-                                    ),
-                                  ),
-                                  Text(
-                                    firstGuideText ?? '',
-                                    style: TextStyle(
-                                      fontFamily: 'PretendardRegular',
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: mildGrayColor,
-                                      height: 1.5.h,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 6.h,
-                              ),
-                            ],
-                          )
-                        : SizedBox.shrink(),
-                    firstCustomForm,
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    secondFieldText != null
-                        ? Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      secondFieldText!,
-                                      style: TextStyle(
-                                        fontFamily: 'PretendardRegular',
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: darkGrayColor,
-                                        height: 1.4.h,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    secondGuideText ?? '',
-                                    style: TextStyle(
-                                      fontFamily: 'PretendardRegular',
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: mildGrayColor,
-                                      height: 1.5.h,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 6.h,
-                              ),
-                            ],
-                          )
-                        : SizedBox.shrink(),
-                    Stack(
-                      alignment: Alignment.centerRight,
-                      children: [
-                        secondCustomForm,
-                        authenticationButton ?? SizedBox(),
-                        timer ?? SizedBox(),
-                      ],
+                    secondCustomForm,
+                    Positioned.fill(
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 108.0.w),
+                          child: timer ?? SizedBox.shrink(),
+                        ),
+                      ),
                     ),
                   ],
                 ),

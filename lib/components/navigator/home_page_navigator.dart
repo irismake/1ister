@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../page/bookmark/bookmark_page.dart';
 import '../../page/edit/edit_page.dart';
 import '../../page/home/home_page.dart';
 import '../../page/search/search_page.dart';
 import '../../page/user/user_page.dart';
-import '../custom_ui_kit/custom_icon_button.dart';
+import '../custom_ui_kit/custom_tab_button.dart';
 import 'custom_route_observer.dart';
 
 class HomePageNavigator extends StatefulWidget {
@@ -79,8 +80,11 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
             observers: [CustomRouteObserver()],
           ),
           bottomNavigationBar: BottomAppBar(
-            padding: EdgeInsets.only(top: 12.0),
-            height: 60.0,
+            padding: EdgeInsets.only(
+              top: 12.0.h,
+              bottom: 16.0.h,
+            ),
+            height: 60.0.h,
             color: Colors.black,
             child: TabBar(
               dividerHeight: 0,
@@ -96,19 +100,19 @@ class _HomePageNavigatorState extends State<HomePageNavigator> {
                 });
               },
               tabs: <Widget>[
-                CustomIconButton(
+                CustomTabButton(
                   iconName: 'tab_home',
                 ),
-                CustomIconButton(
+                CustomTabButton(
                   iconName: 'tab_search',
                 ),
-                CustomIconButton(
+                CustomTabButton(
                   iconName: 'tab_edit',
                 ),
-                CustomIconButton(
+                CustomTabButton(
                   iconName: 'tab_book_mark',
                 ),
-                CustomIconButton(
+                CustomTabButton(
                   iconName: 'tab_user',
                 ),
               ],
