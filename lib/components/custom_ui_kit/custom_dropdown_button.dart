@@ -21,11 +21,12 @@ class CustomDropdownButton extends StatelessWidget {
         hint: Text(
           '선택하세요',
           style: TextStyle(
-              color: Color(0xFFADB5BD),
-              fontSize: 15.sp,
-              fontFamily: 'Pretendard',
-              fontWeight: FontWeight.w500,
-              height: 1),
+            color: Color(0xFFADB5BD),
+            fontSize: 15.sp,
+            fontFamily: 'Pretendard',
+            fontWeight: FontWeight.w500,
+            height: 1.3.h,
+          ),
         ),
         items: dropDownItems
             .map(
@@ -56,7 +57,9 @@ class CustomDropdownButton extends StatelessWidget {
           height: 48.0.h,
           width: 200.0.w,
           padding: EdgeInsets.only(
-              left: 12.0.w, top: 14.0.h, bottom: 14.0.h, right: 8.0.h),
+            left: 12.0.w,
+            right: 8.0.w,
+          ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
@@ -88,9 +91,9 @@ class CustomDropdownButton extends StatelessWidget {
             thumbVisibility: MaterialStateProperty.all<bool>(true),
           ),
         ),
-        menuItemStyleData: const MenuItemStyleData(
+        menuItemStyleData: MenuItemStyleData(
           height: 40,
-          padding: EdgeInsets.only(left: 14, right: 14),
+          padding: EdgeInsets.symmetric(horizontal: 14.0.w),
         ),
       ),
     );
