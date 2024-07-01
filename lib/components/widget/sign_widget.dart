@@ -56,7 +56,7 @@ class SignWidget extends StatelessWidget {
                           fontSize: 28.sp,
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
-                          height: 1.4.h),
+                          height: 1.4),
                     ),
                   ),
                 ),
