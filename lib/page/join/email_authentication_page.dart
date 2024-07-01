@@ -213,42 +213,33 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
               keyboardType: TextInputType.number,
             ),
           ),
-          timer: Positioned(
-            top: 21.h,
-            right: 108.w,
+          timer: Text(
+            '${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(2, '0')}',
+            style: TextStyle(
+                fontFamily: 'PretendardRegular',
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: _timerState ? noFocusColor : Colors.transparent),
+          ),
+          authenticationButton: TextButton(
             child: Text(
-              '${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(2, '0')}',
+              _reAuthentication ? '재인증' : '인증 요청',
               style: TextStyle(
                   fontFamily: 'PretendardRegular',
                   fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: _timerState ? noFocusColor : Colors.transparent),
+                  fontWeight: FontWeight.w600,
+                  color: _emailAddressFilled ? darkGrayColor : noFocusColor),
             ),
-          ),
-          authenticationButton: Positioned(
-            top: 12.h,
-            right: 16.w,
-            child: TextButton(
-              child: Text(
-                _reAuthentication ? '재인증' : '인증 요청',
-                style: TextStyle(
-                    fontFamily: 'PretendardRegular',
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: _emailAddressFilled ? darkGrayColor : noFocusColor),
-              ),
-              onPressed: () {
-                emailAuthenticationRequest();
-              },
-              style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0)),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
-                  backgroundColor: _emailAddressFilled
-                      ? focusButtonColor
-                      : noFocusButtonColor),
-            ),
+            onPressed: () {
+              emailAuthenticationRequest();
+            },
+            style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50.0)),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
+                backgroundColor: _emailAddressFilled
+                    ? focusButtonColor
+                    : noFocusButtonColor),
           ),
           nextPageButton: NextPageButton(
               firstFieldState: _emailAddressFilled,
