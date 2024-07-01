@@ -32,18 +32,22 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            popState
-                ? InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: SvgPicture.asset(
-                      'assets/icons/button_go_back.svg',
-                      fit: BoxFit.contain,
-                    ),
-                  )
-                : SizedBox(),
+            SizedBox(
+              width: 32.w,
+              child: popState
+                  ? InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: SvgPicture.asset(
+                        'assets/icons/button_go_back.svg',
+                        fit: BoxFit.contain,
+                      ),
+                    )
+                  : null,
+            ),
             titleState
                 ? Text(
                     titleText,
@@ -56,15 +60,18 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                 : Text(
                     '',
                   ),
-            actionButton == null
-                ? SizedBox()
-                : InkWell(
-                    onTap: actionButtonOnTap,
-                    child: SvgPicture.asset(
-                      'assets/icons/${actionButton}.svg',
-                      fit: BoxFit.contain,
+            SizedBox(
+              width: 32.w,
+              child: actionButton == null
+                  ? null
+                  : InkWell(
+                      onTap: actionButtonOnTap,
+                      child: SvgPicture.asset(
+                        'assets/icons/${actionButton}.svg',
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                  ),
+            ),
           ],
         ),
         titleSpacing: 16.0.w,

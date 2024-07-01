@@ -19,11 +19,12 @@ class KeyWord extends StatelessWidget {
         child: Text(
           keyWordName,
           style: TextStyle(
-              color: Color(0xFF5BFF7F),
-              fontSize: 12.0.sp,
-              fontFamily: 'Pretendard',
-              fontWeight: FontWeight.w700,
-              height: 1.5.h),
+            color: Color(0xFF5BFF7F),
+            fontSize: 12.0.sp,
+            fontFamily: 'Pretendard',
+            fontWeight: FontWeight.w700,
+            height: 1.5,
+          ),
         ),
       ),
     );

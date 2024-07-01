@@ -9,7 +9,7 @@ class CustomTextFormField extends StatefulWidget {
   final bool isObscureText;
   final TextInputType keyboardType;
 
-   const CustomTextFormField({
+  const CustomTextFormField({
     Key? key,
     required this.hintText,
     required this.focusNode,
@@ -21,7 +21,6 @@ class CustomTextFormField extends StatefulWidget {
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
-
 }
 
 final noFocusColor = Color(0xffCED4DA);
@@ -43,9 +42,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         fontFamily: 'PretendardRegular',
         decorationThickness: 0,
         fontSize: 16.sp,
-        color: widget.focusNode.hasFocus ? Colors.black :  noFocusTextColor,
+        color: widget.focusNode.hasFocus ? Colors.black : noFocusTextColor,
         fontWeight: FontWeight.w600,
-        letterSpacing: widget.isObscureText? 6.0.w : 0.0,
+        letterSpacing: widget.isObscureText ? 6.0.w : 0.0,
       ),
       showCursor: false,
       focusNode: widget.focusNode,
@@ -63,23 +62,20 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
-          borderSide: BorderSide(width: 1.w, color: Theme.of(context).primaryColor),
+          borderSide:
+              BorderSide(width: 1.w, color: Theme.of(context).primaryColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
           borderSide: BorderSide(width: 1.w, color: noFocusColor),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius:
-          BorderRadius.all(Radius.circular(4)),
-          borderSide: BorderSide(
-              width: 1.w, color: errorColor),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderSide: BorderSide(width: 1.w, color: errorColor),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius:
-          BorderRadius.all(Radius.circular(4)),
-          borderSide: BorderSide(
-              width: 1.w, color: errorColor),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderSide: BorderSide(width: 1.w, color: errorColor),
         ),
         errorStyle: TextStyle(
           fontFamily: 'PretendardRegular',
@@ -88,10 +84,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           fontWeight: FontWeight.w500,
         ),
         disabledBorder: OutlineInputBorder(
-          borderRadius:
-          BorderRadius.all(Radius.circular(4)),
-          borderSide: BorderSide(
-              width: 1.w, color: noFocusColor),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderSide: BorderSide(width: 1.w, color: noFocusColor),
         ),
       ),
     );

@@ -60,11 +60,20 @@ class _SplashPageState extends State<SplashPage> {
     return Container(
       color: Colors.white,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(123.0.w, 376.0.h, 123.0.w, 428.0.h),
-        child: SvgPicture.asset(
-          'assets/images/image_logo_name.svg',
-          height: 144.0.h,
-          width: 40.0.w,
+        padding: EdgeInsets.only(
+          left: 123.0.w,
+          top: 376.0.h,
+          right: 123.0.w,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SvgPicture.asset(
+              'assets/images/image_logo_name.svg',
+              width: 144.0.w,
+              height: 40.0.h,
+            ),
+          ],
         ),
       ),
     );

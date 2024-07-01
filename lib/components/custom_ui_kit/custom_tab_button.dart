@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomIconButton extends StatelessWidget {
+class CustomTabButton extends StatelessWidget {
   late final String iconName;
 
-  CustomIconButton({
+  CustomTabButton({
     required this.iconName,
   });
 

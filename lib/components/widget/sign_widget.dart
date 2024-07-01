@@ -56,7 +56,7 @@ class SignWidget extends StatelessWidget {
                           fontSize: 28.sp,
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
-                          height: 1.4.h),
+                          height: 1.4),
                     ),
                   ),
                 ),
@@ -145,11 +145,18 @@ class SignWidget extends StatelessWidget {
                           )
                         : SizedBox.shrink(),
                     Stack(
-                      alignment: Alignment.centerRight,
                       children: [
                         secondCustomForm,
-                        authenticationButton ?? SizedBox(),
-                        timer ?? SizedBox(),
+                        Positioned(
+                          top: 12.0.h,
+                          bottom: 12.0.h,
+                          right: 16.0.w,
+                          child: authenticationButton ?? SizedBox(),
+                        ),
+                        Positioned(
+                            top: 21.0.h,
+                            right: 108.w,
+                            child: timer ?? SizedBox()),
                       ],
                     ),
                   ],

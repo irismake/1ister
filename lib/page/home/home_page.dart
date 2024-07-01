@@ -21,11 +21,14 @@ class HomePage extends StatelessWidget {
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
           leading: Padding(
-            padding: EdgeInsets.only(top: 16.0.h, left: 16.0.w),
-            child: SvgPicture.asset(
-              'assets/images/image_logo_name.svg',
+            padding: EdgeInsets.only(top: 16.0.h, left: 16.0.w, bottom: 24.0.h),
+            child: Container(
               height: 24.0.h,
               width: 86.4.w,
+              child: SvgPicture.asset(
+                'assets/images/image_logo_name.svg',
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           shape: Border(
