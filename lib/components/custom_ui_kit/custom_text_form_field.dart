@@ -8,6 +8,7 @@ class CustomTextFormField extends StatefulWidget {
   final String? Function(String?)? validator;
   final bool isObscureText;
   final TextInputType keyboardType;
+  final Widget? authButton;
 
   const CustomTextFormField({
     Key? key,
@@ -17,6 +18,7 @@ class CustomTextFormField extends StatefulWidget {
     this.validator,
     this.isObscureText = false,
     this.keyboardType = TextInputType.text,
+    this.authButton,
   }) : super(key: key);
 
   @override
@@ -39,13 +41,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       obscuringCharacter: '●',
       keyboardType: widget.keyboardType,
       style: TextStyle(
-        fontFamily: 'PretendardRegular',
-        decorationThickness: 0,
-        fontSize: 16.sp,
-        color: widget.focusNode.hasFocus ? Colors.black : noFocusTextColor,
-        fontWeight: FontWeight.w600,
-        letterSpacing: widget.isObscureText ? 6.0.w : 0.0,
-      ),
+          fontFamily: 'PretendardRegular',
+          decorationThickness: 0,
+          fontSize: 16.sp,
+          color: widget.focusNode.hasFocus ? Colors.black : noFocusTextColor,
+          fontWeight: FontWeight.w600,
+          letterSpacing: widget.isObscureText ? 6.0.w : 0.0,
+          height: 1.5),
       showCursor: false,
       focusNode: widget.focusNode,
       decoration: InputDecoration(
@@ -54,12 +56,12 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         contentPadding: EdgeInsets.symmetric(vertical: 20.0.h),
         hintText: widget.hintText,
         hintStyle: TextStyle(
-          fontFamily: 'PretendardRegular',
-          color: noFocusColor,
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.0.w,
-        ),
+            fontFamily: 'PretendardRegular',
+            color: noFocusColor,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.0.w,
+            height: 1.5),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
           borderSide:
@@ -87,6 +89,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           borderRadius: BorderRadius.all(Radius.circular(4)),
           borderSide: BorderSide(width: 1.w, color: noFocusColor),
         ),
+        suffixIcon: widget.authButton,
       ),
     );
   }
