@@ -8,8 +8,7 @@ class ProgressBar extends StatelessWidget implements PreferredSizeWidget {
   ProgressBar({required this.progress, required this.totalProgress});
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight(58.0.h); // Adjust the height as needed
+  Size get preferredSize => Size.fromHeight(4.0.h);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class ProgressBar extends StatelessWidget implements PreferredSizeWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
-          height: 54.h,
+          height: MediaQuery.of(context).padding.top,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
