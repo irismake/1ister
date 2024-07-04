@@ -33,7 +33,6 @@ class AgreementPopUp extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   height: 160.h,
@@ -45,6 +44,7 @@ class AgreementPopUp extends StatelessWidget {
                         height: 32.h,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               '시작하기 전, 이용약관에 동의해주세요.',
@@ -52,11 +52,13 @@ class AgreementPopUp extends StatelessWidget {
                                   fontFamily: 'PretendardRegular',
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.black),
+                                  color: Colors.black,
+                                  height: 1.2),
                             ),
                             InkWell(
                               child: SizedBox(
                                 height: 32.0.h,
+                                width: 32.0.w,
                                 child: SvgPicture.asset(
                                   'assets/icons/icon_close_black.svg',
                                   fit: BoxFit.contain,
@@ -69,63 +71,81 @@ class AgreementPopUp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 32.h,
-                      ),
-                      CustomCheckbox(
-                        checkState: _isChecked_A,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isChecked_A = value!;
-                            _isChecked_B = value;
-                            _isChecked_C = value;
-                          });
-                        },
-                        textStyle: Text(
-                          "리스터의 모든 약관을 확인했고 동의해요.",
-                          style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w600,
-                              color: darkGrayColor),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      CustomCheckbox(
-                        checkState: _isChecked_B,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isChecked_B = value!;
-                          });
-                        },
-                        textStyle: Text(
-                          "(필수) 이용약관에 동의해요.",
-                          style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: checkTextColor),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      CustomCheckbox(
-                        checkState: _isChecked_C,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isChecked_C = value!;
-                          });
-                        },
-                        textStyle: Text(
-                          "(필수) 개인정보 수집 및 이용에 동의해요.",
-                          style: TextStyle(
-                              fontFamily: 'PretendardRegular',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: checkTextColor),
+                      Container(
+                        height: 96.0.h,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CustomCheckbox(
+                              checkState: _isChecked_A,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _isChecked_A = value!;
+                                  _isChecked_B = value;
+                                  _isChecked_C = value;
+                                });
+                              },
+                              textStyle: Text(
+                                "리스터의 모든 약관을 확인했고 동의해요.",
+                                style: TextStyle(
+                                  fontFamily: 'PretendardRegular',
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: darkGrayColor,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 56.0.h,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomCheckbox(
+                                    checkState: _isChecked_B,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        _isChecked_B = value!;
+                                      });
+                                    },
+                                    textStyle: Text(
+                                      "(필수) 이용약관에 동의해요.",
+                                      style: TextStyle(
+                                        fontFamily: 'PretendardRegular',
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: checkTextColor,
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                  ),
+                                  CustomCheckbox(
+                                    checkState: _isChecked_C,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        _isChecked_C = value!;
+                                      });
+                                    },
+                                    textStyle: Text(
+                                      "(필수) 개인정보 수집 및 이용에 동의해요.",
+                                      style: TextStyle(
+                                        fontFamily: 'PretendardRegular',
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: checkTextColor,
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // SizedBox(
+                            //   height: 8.h,
+                            // ),
+                          ],
                         ),
                       ),
                     ],
@@ -168,6 +188,7 @@ class CustomCheckbox extends StatelessWidget {
       height: 24.h,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Transform.scale(
             scale: 2.5,
@@ -187,7 +208,10 @@ class CustomCheckbox extends StatelessWidget {
             ),
           ),
           SizedBox(width: 8.0.w),
-          textStyle,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: textStyle,
+          ),
         ],
       ),
     );
