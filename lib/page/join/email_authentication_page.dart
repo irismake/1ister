@@ -211,44 +211,44 @@ class _EmailAuthenticationPageState extends State<EmailAuthenticationPage> {
                 return _checkAuthenticationValid(value!);
               },
               keyboardType: TextInputType.number,
-            ),
-          ),
-          timer: Positioned(
-            top: 21.h,
-            right: 108.w,
-            child: Text(
-              '${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(2, '0')}',
-              style: TextStyle(
-                  fontFamily: 'PretendardRegular',
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: _timerState ? noFocusColor : Colors.transparent),
-            ),
-          ),
-          authenticationButton: Positioned(
-            top: 12.h,
-            right: 16.w,
-            child: TextButton(
-              child: Text(
-                _reAuthentication ? '재인증' : '인증 요청',
-                style: TextStyle(
-                    fontFamily: 'PretendardRegular',
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: _emailAddressFilled ? darkGrayColor : noFocusColor),
+              authButton: Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 5.0.h),
+                child: TextButton(
+                  child: Text(
+                    _reAuthentication ? '재인증' : '인증 요청',
+                    style: TextStyle(
+                      fontFamily: 'PretendardRegular',
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: _emailAddressFilled ? darkGrayColor : noFocusColor,
+                    ),
+                  ),
+                  onPressed: () {
+                    emailAuthenticationRequest();
+                  },
+                  style: TextButton.styleFrom(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0)),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    backgroundColor: _emailAddressFilled
+                        ? focusButtonColor
+                        : noFocusButtonColor,
+                  ),
+                ),
               ),
-              onPressed: () {
-                emailAuthenticationRequest();
-              },
-              style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0)),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
-                  backgroundColor: _emailAddressFilled
-                      ? focusButtonColor
-                      : noFocusButtonColor),
             ),
+          ),
+          timer: Text(
+            '${(remainingTime ~/ 60).toString().padLeft(2, '0')}:${(remainingTime % 60).toString().padLeft(2, '0')}',
+            style: TextStyle(
+                fontFamily: 'PretendardRegular',
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: _timerState ? noFocusColor : Colors.transparent),
           ),
           nextPageButton: NextPageButton(
               firstFieldState: _emailAddressFilled,

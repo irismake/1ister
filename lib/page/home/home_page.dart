@@ -5,11 +5,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../components/custom_ui_kit/custom_search_bar.dart';
 import 'main_list/home_list_view.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatelessWidget implements PreferredSizeWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  Size get preferredSize => Size.fromHeight(64.0.h);
+
+  @override
   Widget build(BuildContext context) {
+    double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -20,12 +24,19 @@ class HomePage extends StatelessWidget {
           scrolledUnderElevation: 0,
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-          leading: Padding(
-            padding: EdgeInsets.only(top: 16.0.h, left: 16.0.w),
-            child: SvgPicture.asset(
-              'assets/images/image_logo_name.svg',
-              height: 24.0.h,
-              width: 86.4.w,
+          flexibleSpace: Padding(
+            padding: EdgeInsets.only(
+              top: statusBarHeight + 16.0.h,
+              left: 16.0.w,
+            ),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/images/image_logo_name.svg',
+                  height: 24.0.h,
+                  width: 86.4.w, // Ensure the SVG has a width constraint
+                ),
+              ],
             ),
           ),
           shape: Border(
@@ -53,6 +64,7 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 28.0.sp,
+                        height: 1.4,
                       ),
                     ),
                   ),

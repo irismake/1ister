@@ -50,7 +50,7 @@ class MainListView extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 48.0.h,
+                          height: 48.0,
                           child: Text(
                             '${mainLists[index].title}',
                             style: TextStyle(

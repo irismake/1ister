@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,47 +50,38 @@ class _SignUpCongratulationPageState extends State<SignUpCongratulationPage> {
     super.dispose();
   }
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.0.h),
+        padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 40.0.h),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 74.0.h),
-                  child: Container(
-                    height: 80.h,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '리스터가 된 걸 축하해요!\n'
-                      '나만의 리스트를 만들어봐요.',
-                      style: TextStyle(
-                        fontFamily: 'PretendardRegular',
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
+            Padding(
+              padding: EdgeInsets.only(top: 74.0.h),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '리스터가 된 걸 축하해요!\n'
+                  '나만의 리스트를 만들어봐요.',
+                  style: TextStyle(
+                    fontFamily: 'PretendardRegular',
+                    fontSize: 28.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                    height: 1.43,
                   ),
                 ),
-                SizedBox(
-                  height: 40.0.h,
+              ),
+            ),
+            SizedBox(height: 40.0.h),
+            Expanded(
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/images/image_welcome.svg',
+                  width: 358.w, // Ensure the SVG has a width constraint
                 ),
-                SizedBox(
-                  height: 358.h,
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: SvgPicture.asset(
-                      'assets/images/image_welcome.svg',
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
             NextPageButton(
               firstFieldState: true,
@@ -102,7 +92,7 @@ class _SignUpCongratulationPageState extends State<SignUpCongratulationPage> {
                     CupertinoPageRoute(builder: (context) => LoginPage()),
                     (route) => false);
               },
-            )
+            ),
           ],
         ),
       ),
