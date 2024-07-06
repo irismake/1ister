@@ -262,10 +262,11 @@ class ApiService {
   static Future<bool> updateUserInfo(
       String userName, String name, String picture, String bio) async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
-
+    final userId = await storage.read(key: 'USER_ID');
     final Uri uri = Uri.parse('$baseUrl/$userPrefix/update');
     try {
       final Map<String, dynamic> requestBody = {
+        "id": userId,
         "username": userName,
         "name": name,
         "picture": picture,
